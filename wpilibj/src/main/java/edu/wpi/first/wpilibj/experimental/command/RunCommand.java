@@ -16,7 +16,7 @@ public class RunCommand extends SendableCommandBase {
 
   /**
    * Creates a new RunCommand.  The Runnable will be run continuously until the command
-   * ends.
+   * ends.  Does not run when disabled.
    *
    * @param toRun        the Runnable to run
    * @param requirements the subsystems to require

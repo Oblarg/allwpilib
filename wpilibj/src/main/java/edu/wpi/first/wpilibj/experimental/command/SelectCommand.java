@@ -7,6 +7,8 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Runs one of a selection of commands, either using a selector and a key->command mapping, or a
  * supplier that returns the command directly at runtime.  Does not actually schedule the selected
@@ -20,8 +22,6 @@ import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
  * scheduled individually.
  *
  * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
- *
- * @param <K> the type of the selector to use, e.g. String or enum
  */
 public class SelectCommand extends SendableCommandBase {
 
@@ -42,6 +42,9 @@ public class SelectCommand extends SendableCommandBase {
     }
 
     CommandGroupBase.registerGroupedCommands(commands.values().toArray(new Command[]{}));
+
+    requireNonNull(commands);
+    requireNonNull(selector);
 
     m_commands = commands;
     m_selector = selector;

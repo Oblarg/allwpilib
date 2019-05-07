@@ -66,7 +66,7 @@ public final class CommandScheduler extends SendableBase {
   //as a list of currently-registered subsystems.
   private final Map<Subsystem, Command> m_subsystems = new LinkedHashMap<>();
 
-  //The set of currently-bound buttons.
+  //The set of currently-registered buttons that will be polled every iteration.
   private final Collection<ButtonScheduler> m_buttons = new LinkedHashSet<>();
 
   private boolean m_disabled;
@@ -114,7 +114,6 @@ public final class CommandScheduler extends SendableBase {
    */
   @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
   public void scheduleCommand(Command command, boolean interruptible) {
-
     if (CommandGroupBase.getGroupedCommands().contains(command)) {
       throw new IllegalUseOfCommandException(
           "A command that is part of a command group cannot be independently scheduled");
@@ -198,7 +197,6 @@ public final class CommandScheduler extends SendableBase {
    */
   @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
   public void run() {
-
     if (m_disabled) {
       return;
     }
@@ -218,7 +216,7 @@ public final class CommandScheduler extends SendableBase {
          iterator.hasNext(); ) {
       Command command = iterator.next();
 
-      if (RobotState.isDisabled() && !command.runsWhenDisabled()) {
+      if (!command.runsWhenDisabled() && RobotState.isDisabled()) {
         iterator.remove();
         cancelCommand(command);
         continue;
@@ -377,14 +375,14 @@ public final class CommandScheduler extends SendableBase {
   }
 
   /**
-   * Disable the command scheduler.
+   * Disables the command scheduler.
    */
   public void disable() {
     m_disabled = true;
   }
 
   /**
-   * Enable the command scheduler.
+   * Enables the command scheduler.
    */
   public void enable() {
     m_disabled = false;

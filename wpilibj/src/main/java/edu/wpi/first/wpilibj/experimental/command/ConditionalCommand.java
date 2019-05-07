@@ -1,11 +1,10 @@
 package edu.wpi.first.wpilibj.experimental.command;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
+import static edu.wpi.first.wpilibj.experimental.command.CommandGroupBase.requireUngrouped;
 
 /**
  * Runs one of two commands, depending on the value of the given condition when this command is
@@ -36,9 +35,7 @@ public class ConditionalCommand extends SendableCommandBase {
    * @param condition the condition to determine which command to run
    */
   public ConditionalCommand(Command onTrue, Command onFalse, BooleanSupplier condition) {
-    if (!Collections.disjoint(CommandGroupBase.getGroupedCommands(), Set.of(onTrue, onFalse))) {
-      throw new IllegalUseOfCommandException("Commands cannot be added to multiple CommandGroups");
-    }
+    requireUngrouped(onTrue, onFalse);
 
     CommandGroupBase.registerGroupedCommands(onTrue, onFalse);
 

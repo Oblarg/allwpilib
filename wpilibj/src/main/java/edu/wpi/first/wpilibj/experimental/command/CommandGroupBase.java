@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
+
 /**
  * A base for CommandGroups.  Statically tracks commands that have been allocated to groups
  * to ensure those commands are not also used independently, which can result in inconsistent
@@ -38,6 +40,13 @@ public abstract class CommandGroupBase extends SendableCommandBase implements Co
    */
   public static void clearGroupedCommand(Command command) {
     m_groupedCommands.remove(command);
+  }
+
+  public static void requireUngrouped(Command... commands) {
+    if (!Collections.disjoint(Set.of(commands), getGroupedCommands())) {
+      throw new IllegalUseOfCommandException(
+          "Commands cannot be added to more than one CommandGroup");
+    }
   }
 
   static Set<Command> getGroupedCommands() {
@@ -87,4 +96,3 @@ public abstract class CommandGroupBase extends SendableCommandBase implements Co
     return new ParallelDeadlineGroup(deadline, commands);
   }
 }
-

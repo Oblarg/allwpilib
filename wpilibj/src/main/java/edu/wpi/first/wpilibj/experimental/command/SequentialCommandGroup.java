@@ -1,7 +1,6 @@
 package edu.wpi.first.wpilibj.experimental.command;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -30,10 +29,7 @@ public class SequentialCommandGroup extends CommandGroupBase {
 
   @Override
   public void addCommands(Command... commands) {
-    if (!Collections.disjoint(Set.of(commands), getGroupedCommands())) {
-      throw new IllegalUseOfCommandException(
-          "Commands cannot be added to more than one CommandGroup");
-    }
+    requireUngrouped(commands);
 
     if (m_currentCommandIndex != -1) {
       throw new IllegalUseOfCommandException(
@@ -60,7 +56,6 @@ public class SequentialCommandGroup extends CommandGroupBase {
 
   @Override
   public void execute() {
-
     if (m_commands.isEmpty()) {
       return;
     }

@@ -1,5 +1,8 @@
 package edu.wpi.first.wpilibj.experimental.command;
 
+import static edu.wpi.first.wpilibj.experimental.command.CommandGroupBase.registerGroupedCommands;
+import static edu.wpi.first.wpilibj.experimental.command.CommandGroupBase.requireUngrouped;
+
 /**
  * A command that runs another command in perpetuity, ignoring that command's end conditions.  While
  * this class does not extend {@link CommandGroupBase}, it is still considered a CommandGroup, as it
@@ -19,9 +22,10 @@ public class PerpetualCommand extends SendableCommandBase {
    * @param command the command to run perpetually
    */
   public PerpetualCommand(Command command) {
+    requireUngrouped(command);
+    registerGroupedCommands(command);
     m_command = command;
     m_requirements.addAll(command.getRequirements());
-    CommandGroupBase.registerGroupedCommands(command);
   }
 
   @Override
@@ -37,5 +41,10 @@ public class PerpetualCommand extends SendableCommandBase {
   @Override
   public void end(boolean interrupted) {
     m_command.end(interrupted);
+  }
+
+  @Override
+  public boolean runsWhenDisabled() {
+    return m_command.runsWhenDisabled();
   }
 }

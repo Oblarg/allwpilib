@@ -31,9 +31,7 @@ public class ParallelRaceGroup extends CommandGroupBase {
 
   @Override
   public void addCommands(Command... commands) {
-    if (!Collections.disjoint(Set.of(commands), getGroupedCommands())) {
-      throw new IllegalUseOfCommandException("Commands cannot be added to multiple CommandGroups");
-    }
+    requireUngrouped(commands);
 
     if (!m_finished) {
       throw new IllegalUseOfCommandException(

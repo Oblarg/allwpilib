@@ -13,8 +13,7 @@ import edu.wpi.first.wpilibj.experimental.command.Command;
  * This class provides an easy way to link commands to OI inputs.
  *
  * <p>It is very easy to link a button to a command. For instance, you could link the trigger
- * button
- * of a joystick to a "score" command.
+ * button of a joystick to a "score" command.
  *
  * <p>This class represents a subclass of Trigger that is specifically aimed at buttons on an
  * operator interface as a common use case of the more generalized Trigger objects. This is a simple
@@ -93,8 +92,9 @@ public abstract class Button extends Trigger {
    * @param toRun the runnable to run
    * @return this button, so calls can be chained
    */
-  public void whileHeld(final Runnable toRun) {
+  public Button whileHeld(final Runnable toRun) {
     whileActiveContinuous(toRun);
+    return this;
   }
 
   /**
@@ -182,7 +182,7 @@ public abstract class Button extends Trigger {
   }
 
   /**
-   * Cancel the command when the button is pressed.
+   * Cancels the command when the button is pressed.
    *
    * @param command the command to start
    * @return this button, so calls can be chained
