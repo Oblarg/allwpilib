@@ -68,7 +68,16 @@ public class SelectCommand extends SendableCommandBase {
 
   @Override
   public void initialize() {
-    m_selectedCommand = (m_selector != null) ? m_commands.get(m_selector.get()) : m_toRun.get();
+    if (m_selector != null) {
+      if (!m_commands.keySet().contains(m_selector.get())) {
+        m_selectedCommand = new PrintCommand("SelectCommand selector value does not correspond to"
+            + " any command!");
+        return;
+      }
+      m_selectedCommand = m_commands.get(m_selector.get());
+    } else {
+      m_selectedCommand = m_toRun.get();
+    }
     m_selectedCommand.initialize();
   }
 
