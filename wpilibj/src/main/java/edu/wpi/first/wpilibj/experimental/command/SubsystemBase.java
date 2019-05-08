@@ -17,6 +17,7 @@ public class SubsystemBase implements Subsystem {
    *
    * @param defaultCommand the default command to use
    */
+  @Override
   public void setDefaultCommand(Command defaultCommand) {
     m_defaultCommand = defaultCommand;
   }

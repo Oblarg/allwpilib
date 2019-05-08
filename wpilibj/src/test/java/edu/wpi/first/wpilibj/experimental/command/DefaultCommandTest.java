@@ -39,7 +39,7 @@ public class DefaultCommandTest extends CommandTestBase {
     assertFalse(scheduler.isScheduled(defaultCommand));
     assertTrue(scheduler.isScheduled(interrupter));
 
-    scheduler.cancelCommand(interrupter);
+    scheduler.cancelCommands(interrupter);
     scheduler.run();
 
     assertTrue(scheduler.isScheduled(defaultCommand));

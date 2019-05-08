@@ -33,7 +33,7 @@ class SchedulerTest extends CommandTestBase {
     Command command = new WaitCommand(10);
 
     scheduler.scheduleCommand(command, true);
-    scheduler.cancelCommand(command);
+    scheduler.cancelCommands(command);
 
     assertEquals(counter.m_counter, 1);
   }

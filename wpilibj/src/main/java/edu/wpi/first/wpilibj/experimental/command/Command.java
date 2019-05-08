@@ -243,7 +243,7 @@ public interface Command {
    * Commands will be canceled even if they are not marked as interruptible.
    */
   default void cancel() {
-    CommandScheduler.getInstance().cancelCommand(this);
+    CommandScheduler.getInstance().cancelCommands(this);
   }
 
   /**

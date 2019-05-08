@@ -61,7 +61,7 @@ public class SequentialCommandGroupTest extends CommandTestBase {
 
     command1Holder.setFinished(true);
     scheduler.run();
-    scheduler.cancelCommand(group);
+    scheduler.cancelCommands(group);
     scheduler.run();
 
     verify(command1).execute();
@@ -89,6 +89,6 @@ public class SequentialCommandGroupTest extends CommandTestBase {
 
     Command group = new SequentialCommandGroup(command1, command2);
 
-    assertDoesNotThrow(() -> scheduler.cancelCommand(group));
+    assertDoesNotThrow(() -> scheduler.cancelCommands(group));
   }
 }

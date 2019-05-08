@@ -153,7 +153,7 @@ public final class CommandScheduler extends SendableBase {
       if (allInterruptible) {
         for (Subsystem requirement : requirements) {
           if (m_requirements.containsKey(requirement)) {
-            cancelCommand(m_requirements.get(requirement));
+            cancelCommands(m_requirements.get(requirement));
           }
         }
         command.initialize();
@@ -218,7 +218,7 @@ public final class CommandScheduler extends SendableBase {
 
       if (!command.runsWhenDisabled() && RobotState.isDisabled()) {
         iterator.remove();
-        cancelCommand(command);
+        cancelCommands(command);
         continue;
       }
 
@@ -310,7 +310,7 @@ public final class CommandScheduler extends SendableBase {
    *
    * @param commands the commands to cancel
    */
-  public void cancelCommand(Command... commands) {
+  public void cancelCommands(Command... commands) {
     for (Command command : commands) {
       if (!m_scheduledCommands.containsKey(command)) {
         continue;
@@ -330,7 +330,7 @@ public final class CommandScheduler extends SendableBase {
    */
   public void cancelAll() {
     for (Command command : m_scheduledCommands.keySet()) {
-      cancelCommand(command);
+      cancelCommands(command);
     }
   }
 
@@ -446,7 +446,7 @@ public final class CommandScheduler extends SendableBase {
       double[] toCancel = m_cancelEntry.getDoubleArray(new double[0]);
       if (toCancel.length > 0) {
         for (double hash : toCancel) {
-          cancelCommand(ids.get(hash));
+          cancelCommands(ids.get(hash));
           ids.remove(hash);
         }
         m_cancelEntry.setDoubleArray(new double[0]);

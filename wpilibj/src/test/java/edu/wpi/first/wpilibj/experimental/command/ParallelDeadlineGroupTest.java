@@ -65,7 +65,7 @@ public class ParallelDeadlineGroupTest extends CommandTestBase {
 
     scheduler.run();
     scheduler.run();
-    scheduler.cancelCommand(group);
+    scheduler.cancelCommands(group);
 
     verify(command1, times(2)).execute();
     verify(command1, never()).end(false);
