@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class WaitCommand extends SendableCommandBase {
   protected Timer m_timer = new Timer();
-  final double m_duration;
+  private final double m_duration;
 
   /**
    * Creates a new WaitCommand.  This command will do nothing, and end after the specified duration.
