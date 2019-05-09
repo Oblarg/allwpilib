@@ -25,10 +25,9 @@ public class InstantCommand extends SendableCommandBase {
 
   /**
    * Creates a new InstantCommand with a Runnable that does nothing.  Useful only as a no-arg
-   * constructor to call from subclass constructors.
+   * constructor to call implicitly from subclass constructors.
    */
   public InstantCommand() {
-    //let's all laugh really hard at the style checker...
     m_toRun = () -> {
     };
   }
