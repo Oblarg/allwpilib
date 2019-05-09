@@ -16,7 +16,7 @@ public class ScheduleCommandTest extends CommandTestBase {
 
     ScheduleCommand scheduleCommand = new ScheduleCommand(command1, command2);
 
-    scheduler.scheduleCommand(scheduleCommand, true);
+    scheduler.schedule(scheduleCommand);
 
     verify(command1).schedule();
     verify(command2).schedule();

@@ -28,7 +28,7 @@ public class SelectCommandTest extends CommandTestBase {
             Map.entry("three", command3)),
             () -> "one");
 
-    scheduler.scheduleCommand(selectCommand, true);
+    scheduler.schedule(selectCommand);
     scheduler.run();
 
     verify(command1).initialize();
@@ -56,7 +56,7 @@ public class SelectCommandTest extends CommandTestBase {
 
     ConditionalCommand conditionalCommand = new ConditionalCommand(command1, command2, () -> true);
 
-    scheduler.scheduleCommand(conditionalCommand, true);
+    scheduler.schedule(conditionalCommand);
     scheduler.run();
 
     verify(command1).initialize();
@@ -87,6 +87,6 @@ public class SelectCommandTest extends CommandTestBase {
             Map.entry("three", command3)),
             () -> "four");
 
-    assertDoesNotThrow(() -> scheduler.scheduleCommand(selectCommand, true));
+    assertDoesNotThrow(() -> scheduler.schedule(selectCommand));
   }
 }

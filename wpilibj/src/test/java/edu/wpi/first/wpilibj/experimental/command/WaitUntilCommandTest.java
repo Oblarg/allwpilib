@@ -14,7 +14,7 @@ class WaitUntilCommandTest extends CommandTestBase {
 
     Command command = new WaitUntilCommand(condition::getCondition);
 
-    scheduler.scheduleCommand(command, true);
+    scheduler.schedule(command);
     scheduler.run();
     assertTrue(scheduler.isScheduled(command));
     condition.setCondition(true);

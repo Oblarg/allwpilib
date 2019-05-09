@@ -16,7 +16,7 @@ class SchedulerTest extends CommandTestBase {
     scheduler.onCommandExecute(command -> counter.increment());
     scheduler.onCommandFinish(command -> counter.increment());
 
-    scheduler.scheduleCommand(new InstantCommand(), true);
+    scheduler.schedule(new InstantCommand());
     scheduler.run();
 
     assertEquals(counter.m_counter, 3);
@@ -32,8 +32,8 @@ class SchedulerTest extends CommandTestBase {
 
     Command command = new WaitCommand(10);
 
-    scheduler.scheduleCommand(command, true);
-    scheduler.cancelCommands(command);
+    scheduler.schedule(command);
+    scheduler.cancel(command);
 
     assertEquals(counter.m_counter, 1);
   }

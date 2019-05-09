@@ -25,9 +25,9 @@ public class CommandRequirementsTest extends CommandTestBase {
     MockCommandHolder interrupterHolder = new MockCommandHolder(true, requirement);
     Command interrupter = interrupterHolder.getMock();
 
-    scheduler.scheduleCommand(interrupted, true);
+    scheduler.schedule(interrupted);
     scheduler.run();
-    scheduler.scheduleCommand(interrupter, true);
+    scheduler.schedule(interrupter);
     scheduler.run();
 
     verify(interrupted).initialize();
@@ -52,8 +52,8 @@ public class CommandRequirementsTest extends CommandTestBase {
     MockCommandHolder interrupterHolder = new MockCommandHolder(true, requirement);
     Command interrupter = interrupterHolder.getMock();
 
-    scheduler.scheduleCommand(notInterrupted, false);
-    scheduler.scheduleCommand(interrupter, true);
+    scheduler.schedule(false, notInterrupted);
+    scheduler.schedule(interrupter);
 
     assertTrue(scheduler.isScheduled(notInterrupted));
     assertFalse(scheduler.isScheduled(interrupter));
@@ -77,8 +77,8 @@ public class CommandRequirementsTest extends CommandTestBase {
 
     Command group = new ParallelCommandGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
-    scheduler.scheduleCommand(command3, true);
+    scheduler.schedule(group);
+    scheduler.schedule(command3);
 
     assertFalse(scheduler.isScheduled(group));
     assertTrue(scheduler.isScheduled(command3));
@@ -102,8 +102,8 @@ public class CommandRequirementsTest extends CommandTestBase {
 
     Command group = new ParallelRaceGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
-    scheduler.scheduleCommand(command3, true);
+    scheduler.schedule(group);
+    scheduler.schedule(command3);
 
     assertFalse(scheduler.isScheduled(group));
     assertTrue(scheduler.isScheduled(command3));
@@ -127,8 +127,8 @@ public class CommandRequirementsTest extends CommandTestBase {
 
     Command group = new ParallelDeadlineGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
-    scheduler.scheduleCommand(command3, true);
+    scheduler.schedule(group);
+    scheduler.schedule(command3);
 
     assertFalse(scheduler.isScheduled(group));
     assertTrue(scheduler.isScheduled(command3));
@@ -197,8 +197,8 @@ public class CommandRequirementsTest extends CommandTestBase {
 
     Command group = new SequentialCommandGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
-    scheduler.scheduleCommand(command3, true);
+    scheduler.schedule(group);
+    scheduler.schedule(command3);
 
     assertFalse(scheduler.isScheduled(group));
     assertTrue(scheduler.isScheduled(command3));
@@ -227,8 +227,8 @@ public class CommandRequirementsTest extends CommandTestBase {
             Map.entry("three", command3)),
             () -> "one");
 
-    scheduler.scheduleCommand(selectCommand, true);
-    scheduler.scheduleCommand(new InstantCommand(() -> { }, system3), true);
+    scheduler.schedule(selectCommand);
+    scheduler.schedule(new InstantCommand(() -> { }, system3));
 
     assertFalse(scheduler.isScheduled(selectCommand));
 
@@ -252,8 +252,8 @@ public class CommandRequirementsTest extends CommandTestBase {
 
     ConditionalCommand conditionalCommand = new ConditionalCommand(command1, command2, () -> true);
 
-    scheduler.scheduleCommand(conditionalCommand, true);
-    scheduler.scheduleCommand(new InstantCommand(() -> { }, system3), true);
+    scheduler.schedule(conditionalCommand);
+    scheduler.schedule(new InstantCommand(() -> { }, system3));
 
     assertFalse(scheduler.isScheduled(conditionalCommand));
 

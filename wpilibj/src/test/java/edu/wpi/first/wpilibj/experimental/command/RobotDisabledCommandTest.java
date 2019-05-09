@@ -19,7 +19,7 @@ public class RobotDisabledCommandTest extends CommandTestBase {
     MockCommandHolder holder = new MockCommandHolder(false);
     Command mockCommand = holder.getMock();
 
-    scheduler.scheduleCommand(mockCommand, true);
+    scheduler.schedule(mockCommand);
 
     assertTrue(scheduler.isScheduled(mockCommand));
 
@@ -60,7 +60,7 @@ public class RobotDisabledCommandTest extends CommandTestBase {
     MockCommandHolder holder = new MockCommandHolder(true);
     Command mockCommand = holder.getMock();
 
-    scheduler.scheduleCommand(mockCommand, true);
+    scheduler.schedule(mockCommand);
 
     assertTrue(scheduler.isScheduled(mockCommand));
 
@@ -110,8 +110,8 @@ public class RobotDisabledCommandTest extends CommandTestBase {
     Command runWhenDisabled = new SequentialCommandGroup(command1, command2);
     Command dontRunWhenDisabled = new SequentialCommandGroup(command3, command4);
 
-    scheduler.scheduleCommand(runWhenDisabled, true);
-    scheduler.scheduleCommand(dontRunWhenDisabled, true);
+    scheduler.schedule(runWhenDisabled);
+    scheduler.schedule(dontRunWhenDisabled);
 
     sim.setEnabled(false);
     sim.notifyNewData();
@@ -160,8 +160,8 @@ public class RobotDisabledCommandTest extends CommandTestBase {
     Command runWhenDisabled = new ParallelCommandGroup(command1, command2);
     Command dontRunWhenDisabled = new ParallelCommandGroup(command3, command4);
 
-    scheduler.scheduleCommand(runWhenDisabled, true);
-    scheduler.scheduleCommand(dontRunWhenDisabled, true);
+    scheduler.schedule(runWhenDisabled);
+    scheduler.schedule(dontRunWhenDisabled);
 
     sim.setEnabled(false);
     sim.notifyNewData();

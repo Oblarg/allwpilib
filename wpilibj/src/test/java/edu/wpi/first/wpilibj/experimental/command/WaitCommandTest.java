@@ -18,7 +18,7 @@ public class WaitCommandTest extends CommandTestBase {
 
     WaitCommand waitCommand = new WaitCommand(2);
 
-    scheduler.scheduleCommand(waitCommand, true);
+    scheduler.schedule(waitCommand);
     scheduler.run();
     Timer.delay(1);
     scheduler.run();
@@ -42,7 +42,7 @@ public class WaitCommandTest extends CommandTestBase {
 
     Command timeout = command1.withTimeout(2);
 
-    scheduler.scheduleCommand(timeout, true);
+    scheduler.schedule(timeout);
     scheduler.run();
 
     verify(command1).initialize();

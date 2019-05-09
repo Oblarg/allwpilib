@@ -34,12 +34,12 @@ public class DefaultCommandTest extends CommandTestBase {
 
     scheduler.setDefaultCommand(hasDefaultCommand, defaultCommand);
     scheduler.run();
-    scheduler.scheduleCommand(interrupter, true);
+    scheduler.schedule(interrupter);
 
     assertFalse(scheduler.isScheduled(defaultCommand));
     assertTrue(scheduler.isScheduled(interrupter));
 
-    scheduler.cancelCommands(interrupter);
+    scheduler.cancel(interrupter);
     scheduler.run();
 
     assertTrue(scheduler.isScheduled(defaultCommand));

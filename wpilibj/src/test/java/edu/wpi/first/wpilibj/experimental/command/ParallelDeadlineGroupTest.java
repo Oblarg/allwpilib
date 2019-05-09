@@ -23,7 +23,7 @@ public class ParallelDeadlineGroupTest extends CommandTestBase {
 
     Command group = new ParallelDeadlineGroup(command1, command2, command3);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
     scheduler.run();
 
     assertTrue(scheduler.isScheduled(group));
@@ -61,11 +61,11 @@ public class ParallelDeadlineGroupTest extends CommandTestBase {
 
     Command group = new ParallelDeadlineGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
 
     scheduler.run();
     scheduler.run();
-    scheduler.cancelCommands(group);
+    scheduler.cancel(group);
 
     verify(command1, times(2)).execute();
     verify(command1, never()).end(false);

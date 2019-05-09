@@ -20,7 +20,7 @@ public class ParallelRaceGroupTest extends CommandTestBase {
 
     Command group = new ParallelRaceGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
 
     verify(command1).initialize();
     verify(command2).initialize();
@@ -50,11 +50,11 @@ public class ParallelRaceGroupTest extends CommandTestBase {
 
     Command group = new ParallelRaceGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
 
     scheduler.run();
     scheduler.run();
-    scheduler.cancelCommands(group);
+    scheduler.cancel(group);
 
     verify(command1, times(2)).execute();
     verify(command1, never()).end(false);
@@ -78,6 +78,6 @@ public class ParallelRaceGroupTest extends CommandTestBase {
 
     Command group = new ParallelRaceGroup(command1, command2);
 
-    assertDoesNotThrow(() -> scheduler.cancelCommands(group));
+    assertDoesNotThrow(() -> scheduler.cancel(group));
   }
 }

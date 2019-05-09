@@ -20,7 +20,7 @@ class CommandScheduleTest extends CommandTestBase {
     holder.setFinished(true);
     Command mockCommand = holder.getMock();
 
-    scheduler.scheduleCommand(mockCommand, true);
+    scheduler.schedule(mockCommand);
     assertTrue(scheduler.isScheduled(mockCommand));
     verify(mockCommand).initialize();
 
@@ -39,7 +39,7 @@ class CommandScheduleTest extends CommandTestBase {
     MockCommandHolder holder = new MockCommandHolder(true);
     Command mockCommand = holder.getMock();
 
-    scheduler.scheduleCommand(mockCommand, true);
+    scheduler.schedule(mockCommand);
 
     assertTrue(scheduler.isScheduled(mockCommand));
 
@@ -65,7 +65,7 @@ class CommandScheduleTest extends CommandTestBase {
     MockCommandHolder command3Holder = new MockCommandHolder(true);
     Command command3 = command3Holder.getMock();
 
-    scheduler.scheduleCommands(true, command1, command2, command3);
+    scheduler.schedule(true, command1, command2, command3);
     assertTrue(scheduler.isScheduled(command1, command2, command3));
     scheduler.run();
     assertTrue(scheduler.isScheduled(command1, command2, command3));
@@ -92,10 +92,10 @@ class CommandScheduleTest extends CommandTestBase {
     MockCommandHolder holder = new MockCommandHolder(true);
     Command mockCommand = holder.getMock();
 
-    scheduler.scheduleCommand(mockCommand, true);
+    scheduler.schedule(mockCommand);
 
     scheduler.run();
-    scheduler.cancelCommands(mockCommand);
+    scheduler.cancel(mockCommand);
     scheduler.run();
 
     verify(mockCommand).execute();
@@ -112,6 +112,6 @@ class CommandScheduleTest extends CommandTestBase {
     MockCommandHolder holder = new MockCommandHolder(true);
     Command mockCommand = holder.getMock();
 
-    assertDoesNotThrow(() -> scheduler.cancelCommands(mockCommand));
+    assertDoesNotThrow(() -> scheduler.cancel(mockCommand));
   }
 }

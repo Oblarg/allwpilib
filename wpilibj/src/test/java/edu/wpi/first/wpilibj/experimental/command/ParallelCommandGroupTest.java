@@ -21,7 +21,7 @@ public class ParallelCommandGroupTest extends CommandTestBase {
 
     Command group = new ParallelCommandGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
 
     verify(command1).initialize();
     verify(command2).initialize();
@@ -49,12 +49,12 @@ public class ParallelCommandGroupTest extends CommandTestBase {
 
     Command group = new ParallelCommandGroup(command1, command2);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
 
     command1Holder.setFinished(true);
     scheduler.run();
     scheduler.run();
-    scheduler.cancelCommands(group);
+    scheduler.cancel(group);
 
     verify(command1).execute();
     verify(command1).end(false);
@@ -78,7 +78,7 @@ public class ParallelCommandGroupTest extends CommandTestBase {
 
     Command group = new ParallelCommandGroup(command1, command2);
 
-    assertDoesNotThrow(() -> scheduler.cancelCommands(group));
+    assertDoesNotThrow(() -> scheduler.cancel(group));
   }
 
 }

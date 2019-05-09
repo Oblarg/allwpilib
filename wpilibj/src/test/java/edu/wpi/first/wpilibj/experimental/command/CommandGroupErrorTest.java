@@ -35,7 +35,7 @@ public class CommandGroupErrorTest extends CommandTestBase {
     Command group = new ParallelCommandGroup(command1, command2);
 
     assertThrows(IllegalUseOfCommandException.class,
-        () -> scheduler.scheduleCommand(command1, true));
+        () -> scheduler.schedule(command1));
   }
 
   @Test

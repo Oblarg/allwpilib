@@ -16,7 +16,7 @@ class CommandDecoratorTest extends CommandTestBase {
 
     Command timeout = command1.withTimeout(2);
 
-    scheduler.scheduleCommand(timeout, true);
+    scheduler.schedule(timeout);
     scheduler.run();
 
     assertFalse(scheduler.isScheduled(command1));
@@ -36,7 +36,7 @@ class CommandDecoratorTest extends CommandTestBase {
 
     Command command = new WaitCommand(10).interruptOn(condition::getCondition);
 
-    scheduler.scheduleCommand(command, true);
+    scheduler.schedule(command);
     scheduler.run();
     assertTrue(scheduler.isScheduled(command));
     condition.setCondition(true);
@@ -53,7 +53,7 @@ class CommandDecoratorTest extends CommandTestBase {
 
     Command command = new InstantCommand();
 
-    scheduler.scheduleCommand(command.beforeStarting(() -> condition.setCondition(true)), true);
+    scheduler.schedule(command.beforeStarting(() -> condition.setCondition(true)));
 
     assertTrue(condition.getCondition());
   }
@@ -67,7 +67,7 @@ class CommandDecoratorTest extends CommandTestBase {
 
     Command command = new InstantCommand();
 
-    scheduler.scheduleCommand(command.whenFinished(() -> condition.setCondition(true)), true);
+    scheduler.schedule(command.whenFinished(() -> condition.setCondition(true)));
 
     assertFalse(condition.getCondition());
 
@@ -86,7 +86,7 @@ class CommandDecoratorTest extends CommandTestBase {
     Command command1 = new InstantCommand();
     Command command2 = new InstantCommand(() -> condition.setCondition(true));
 
-    scheduler.scheduleCommand(command1.andThen(command2), true);
+    scheduler.schedule(command1.andThen(command2));
 
     assertFalse(condition.getCondition());
 
@@ -108,7 +108,7 @@ class CommandDecoratorTest extends CommandTestBase {
 
     Command group = dictator.deadlineWith(endsBefore, endsAfter);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
     scheduler.run();
 
     assertTrue(scheduler.isScheduled(group));
@@ -131,7 +131,7 @@ class CommandDecoratorTest extends CommandTestBase {
 
     Command group = command1.alongWith(command2);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
     scheduler.run();
 
     assertTrue(scheduler.isScheduled(group));
@@ -151,7 +151,7 @@ class CommandDecoratorTest extends CommandTestBase {
 
     Command group = command1.raceWith(command2);
 
-    scheduler.scheduleCommand(group, true);
+    scheduler.schedule(group);
     scheduler.run();
 
     assertFalse(scheduler.isScheduled(group));
@@ -165,7 +165,7 @@ class CommandDecoratorTest extends CommandTestBase {
 
     Command perpetual = command.perpetually();
 
-    scheduler.scheduleCommand(perpetual, true);
+    scheduler.schedule(perpetual);
     scheduler.run();
     scheduler.run();
     scheduler.run();
