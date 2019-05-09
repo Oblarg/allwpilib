@@ -2,7 +2,10 @@ package edu.wpi.first.wpilibj.experimental.command;
 
 import edu.wpi.first.wpilibj.Timer;
 
-
+/**
+ * Class that holds scheduling state for a command.  Used internally by the
+ * {@link CommandScheduler}.
+ */
 class CommandState {
 
   /**
