@@ -3,7 +3,7 @@ package edu.wpi.first.wpilibj.experimental.command;
 import edu.wpi.first.wpilibj.Timer;
 
 
-public class CommandState {
+class CommandState {
 
   /**
    * The time since this command was initialized.
