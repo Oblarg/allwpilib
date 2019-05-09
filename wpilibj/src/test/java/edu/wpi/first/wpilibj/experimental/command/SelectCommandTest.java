@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class SelectCommandTest extends CommandTestBase {
   @Test
@@ -65,5 +66,27 @@ public class SelectCommandTest extends CommandTestBase {
     verify(command2, never()).initialize();
     verify(command2, never()).execute();
     verify(command2, never()).end(false);
+  }
+
+  @Test
+  void selectCommandInvalidKeyTest() {
+    CommandScheduler scheduler = new CommandScheduler();
+
+    MockCommandHolder command1Holder = new MockCommandHolder(true);
+    Command command1 = command1Holder.getMock();
+    command1Holder.setFinished(true);
+    MockCommandHolder command2Holder = new MockCommandHolder(true);
+    Command command2 = command2Holder.getMock();
+    MockCommandHolder command3Holder = new MockCommandHolder(true);
+    Command command3 = command3Holder.getMock();
+
+    SelectCommand selectCommand =
+        new SelectCommand(Map.ofEntries(
+            Map.entry("one", command1),
+            Map.entry("two", command2),
+            Map.entry("three", command3)),
+            () -> "four");
+
+    assertDoesNotThrow(() -> scheduler.scheduleCommand(selectCommand, true));
   }
 }
