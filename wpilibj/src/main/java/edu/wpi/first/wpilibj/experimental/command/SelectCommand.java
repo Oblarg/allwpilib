@@ -43,11 +43,9 @@ public class SelectCommand extends SendableCommandBase {
 
     CommandGroupBase.registerGroupedCommands(commands.values().toArray(new Command[]{}));
 
-    requireNonNull(commands);
-    requireNonNull(selector);
+    m_commands = requireNonNull(commands);
+    m_selector = requireNonNull(selector);
 
-    m_commands = commands;
-    m_selector = selector;
     m_toRun = null;
 
     for (Command command : m_commands.values()) {
@@ -63,7 +61,7 @@ public class SelectCommand extends SendableCommandBase {
   public SelectCommand(Supplier<Command> toRun) {
     m_commands = null;
     m_selector = null;
-    m_toRun = toRun;
+    m_toRun = requireNonNull(toRun);
   }
 
   @Override
