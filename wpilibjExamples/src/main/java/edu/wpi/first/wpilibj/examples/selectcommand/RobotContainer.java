@@ -19,13 +19,13 @@ public class RobotContainer {
 
   // The enum used as keys for selecting the command to run.
   private enum CommandSelector {
-    one, two, three
+    ONE, TWO, THREE
   }
 
   // An example selector method for the selectcommand.  Returns the selector that will select
   // which command to run.  Can base this choice on logical conditions evaluated at runtime.
   private CommandSelector select() {
-    return CommandSelector.one;
+    return CommandSelector.ONE;
   }
 
   // An example selectcommand.  Will select from the three commands based on the value returned
@@ -36,9 +36,9 @@ public class RobotContainer {
       new SelectCommand(
           // Maps selector values to commands
           Map.ofEntries(
-              entry(CommandSelector.one, new PrintCommand("Command one was selected!")),
-              entry(CommandSelector.two, new PrintCommand("Command two was selected!")),
-              entry(CommandSelector.three, new PrintCommand("Command three was selected!"))
+              entry(CommandSelector.ONE, new PrintCommand("Command one was selected!")),
+              entry(CommandSelector.TWO, new PrintCommand("Command two was selected!")),
+              entry(CommandSelector.THREE, new PrintCommand("Command three was selected!"))
           ),
           this::select
       );
@@ -46,15 +46,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
-
   }
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * calling {@link edu.wpi.first.wpilibj.GenericHID#getButton(int)}.
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling {@link
+   * edu.wpi.first.wpilibj.GenericHID#getButton(int)}.
    */
   private void configureButtonBindings() {
   }

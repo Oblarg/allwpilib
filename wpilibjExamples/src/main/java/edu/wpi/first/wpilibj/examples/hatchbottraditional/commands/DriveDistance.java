@@ -23,7 +23,7 @@ public class DriveDistance extends SendableCommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    m_drive.arcadeDrive(0,0);
+    m_drive.arcadeDrive(0, 0);
   }
 
   @Override

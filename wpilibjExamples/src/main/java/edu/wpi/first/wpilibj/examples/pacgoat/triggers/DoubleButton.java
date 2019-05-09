@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
- * A custom button that is triggered when two buttons on a Joystick are
+ * A custom button that is triggered when TWO buttons on a Joystick are
  * simultaneously pressed.
  */
 public class DoubleButton extends Trigger {

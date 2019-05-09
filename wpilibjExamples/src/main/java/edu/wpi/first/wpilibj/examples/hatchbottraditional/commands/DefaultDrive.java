@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.DriveSubsys
 import edu.wpi.first.wpilibj.experimental.command.SendableCommandBase;
 
 /**
- * A command to drive the robot with joystick input (passed in as {@link DoubleSupplier}s).
- * Written explicitly for pedagogical purposes - actual code should inline a command this simple
- * with {@link edu.wpi.first.wpilibj.experimental.command.RunCommand}.
+ * A command to drive the robot with joystick input (passed in as {@link DoubleSupplier}s). Written
+ * explicitly for pedagogical purposes - actual code should inline a command this simple with {@link
+ * edu.wpi.first.wpilibj.experimental.command.RunCommand}.
  */
 public class DefaultDrive extends SendableCommandBase {
 
@@ -16,7 +16,7 @@ public class DefaultDrive extends SendableCommandBase {
   private final DoubleSupplier m_forward;
   private final DoubleSupplier m_rotation;
 
-  public DefaultDrive(DriveSubsystem subsystem, DoubleSupplier forward, DoubleSupplier rotation){
+  public DefaultDrive(DriveSubsystem subsystem, DoubleSupplier forward, DoubleSupplier rotation) {
     m_drive = subsystem;
     m_forward = forward;
     m_rotation = rotation;

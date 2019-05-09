@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.experimental.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.experimental.command.StartEndCommand;
 
 import static edu.wpi.first.wpilibj.examples.hatchbotinlined.Constants.AutoConstants.*;
+
 /**
  * A complex auto command that drives forward, releases a hatch, and then drives backward.
  */
@@ -24,7 +25,8 @@ public class ComplexAutoCommand extends SequentialCommandGroup {
             // Reset the encoders before starting
             .beforeStarting(driveSubsystem::resetEncoders)
             // End the command when the robot's driven distance exceeds the desired value
-            .interruptOn(() -> driveSubsystem.getAverageEncoderDistance() >= kAutoDriveDistanceInches),
+            .interruptOn(
+                () -> driveSubsystem.getAverageEncoderDistance() >= kAutoDriveDistanceInches),
 
         // Release the hatch
         new InstantCommand(hatchSubsystem::releaseHatch),

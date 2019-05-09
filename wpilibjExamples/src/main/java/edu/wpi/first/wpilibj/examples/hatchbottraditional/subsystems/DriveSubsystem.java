@@ -27,7 +27,7 @@ public class DriveSubsystem extends SendableSubsystemBase {
 
   // The right-side drive encoder
   private final Encoder m_rightEncoder =
-      new Encoder(kRightEncoderPorts[0], kRightEncoderPorts[1],kRightEncoderReversed);
+      new Encoder(kRightEncoderPorts[0], kRightEncoderPorts[1], kRightEncoderReversed);
 
   /**
    * Creates a new DriveSubsystem.
@@ -57,9 +57,9 @@ public class DriveSubsystem extends SendableSubsystemBase {
   }
 
   /**
-   * Gets the average distance of the two encoders.
+   * Gets the average distance of the TWO encoders.
    *
-   * @return the average of the two encoder readings
+   * @return the average of the TWO encoder readings
    */
   public double getAverageEncoderDistance() {
     return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.;

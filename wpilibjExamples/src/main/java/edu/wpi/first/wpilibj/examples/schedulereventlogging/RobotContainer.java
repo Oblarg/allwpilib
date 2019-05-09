@@ -45,8 +45,8 @@ public class RobotContainer {
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
-   * calling {@link edu.wpi.first.wpilibj.GenericHID#getButton(int)}.
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling {@link
+   * edu.wpi.first.wpilibj.GenericHID#getButton(int)}.
    */
   private void configureButtonBindings() {
     // Run instant command 1 when the 'A' button is pressed
@@ -55,7 +55,6 @@ public class RobotContainer {
     m_driverController.getButton(Button.kX.value).whenPressed(m_instantCommand2);
     // Run instant command 3 when the 'Y' button is held; release early to interrupt
     m_driverController.getButton(Button.kY.value).whenHeld(m_waitCommand);
-
   }
 
   /**

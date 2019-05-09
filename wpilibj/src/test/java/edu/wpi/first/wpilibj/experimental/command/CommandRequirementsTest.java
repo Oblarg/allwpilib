@@ -228,7 +228,8 @@ public class CommandRequirementsTest extends CommandTestBase {
             () -> "one");
 
     scheduler.schedule(selectCommand);
-    scheduler.schedule(new InstantCommand(() -> { }, system3));
+    scheduler.schedule(new InstantCommand(() -> {
+    }, system3));
 
     assertFalse(scheduler.isScheduled(selectCommand));
 
@@ -253,7 +254,8 @@ public class CommandRequirementsTest extends CommandTestBase {
     ConditionalCommand conditionalCommand = new ConditionalCommand(command1, command2, () -> true);
 
     scheduler.schedule(conditionalCommand);
-    scheduler.schedule(new InstantCommand(() -> { }, system3));
+    scheduler.schedule(new InstantCommand(() -> {
+    }, system3));
 
     assertFalse(scheduler.isScheduled(conditionalCommand));
 

@@ -102,7 +102,7 @@ public class Robot extends SampleRobot {
 
     switch (autoSelected) {
       case kCustomAuto:
-        // Spin at half speed for two seconds
+        // Spin at half speed for TWO seconds
         m_robotDrive.arcadeDrive(0.0, 0.5);
         Timer.delay(2.0);
 
@@ -111,7 +111,7 @@ public class Robot extends SampleRobot {
         break;
       case kDefaultAuto:
       default:
-        // Drive forwards for two seconds
+        // Drive forwards for TWO seconds
         m_robotDrive.arcadeDrive(-0.5, 0.0);
         Timer.delay(2.0);
 

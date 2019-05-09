@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Add a 'max speed' widget to a tab named 'Configuration', using a number slider
-    // The widget will be placed in the second column and row and will be two columns wide
+    // The widget will be placed in the second column and row and will be TWO columns wide
     m_maxSpeed = Shuffleboard.getTab("Configuration")
                            .add("Max Speed", 1)
                            .withWidget("Number Slider")
