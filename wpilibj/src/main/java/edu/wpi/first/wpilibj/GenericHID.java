@@ -288,6 +288,7 @@ public abstract class GenericHID {
 
   /**
    * Returns a {@link Button} object corresponding to the specified button number from this HID.
+   * Note: this returns a Button from the experimental Command API, not from the legacy command API.
    *
    * @param button the number of the button to return (starting at 1)
    * @return the {@link Button} object
