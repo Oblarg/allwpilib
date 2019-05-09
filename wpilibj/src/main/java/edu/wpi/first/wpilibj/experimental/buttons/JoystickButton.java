@@ -9,6 +9,8 @@ package edu.wpi.first.wpilibj.experimental.buttons;
 
 import edu.wpi.first.wpilibj.GenericHID;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * A {@link Button} that gets its state from a {@link GenericHID}.
  */
@@ -24,6 +26,8 @@ public class JoystickButton extends Button {
    * @param buttonNumber The button number (see {@link GenericHID#getRawButton(int) }
    */
   public JoystickButton(GenericHID joystick, int buttonNumber) {
+    requireNonNull(joystick);
+
     m_joystick = joystick;
     m_buttonNumber = buttonNumber;
   }

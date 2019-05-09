@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.experimental.command.CommandScheduler;
 import edu.wpi.first.wpilibj.experimental.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * This class provides an easy way to link commands to inputs.
  *
@@ -77,11 +79,14 @@ public class Trigger extends SendableBase {
    * @return this trigger, so calls can be chained
    */
   public Trigger whenActive(final Command command, boolean interruptible) {
-    new ButtonScheduler() {
+    requireNonNull(command);
+
+    CommandScheduler.getInstance().addButton(
+    new Runnable() {
       private boolean m_pressedLast = grab();
 
       @Override
-      public void execute() {
+      public void run() {
         boolean pressed = grab();
 
         if (!m_pressedLast && pressed) {
@@ -90,7 +95,7 @@ public class Trigger extends SendableBase {
 
         m_pressedLast = pressed;
       }
-    }.start();
+    });
 
     return this;
   }
@@ -127,23 +132,24 @@ public class Trigger extends SendableBase {
    * @return this trigger, so calls can be chained
    */
   public Trigger whileActiveContinuous(final Command command, boolean interruptible) {
-    new ButtonScheduler() {
+    requireNonNull(command);
+
+    CommandScheduler.getInstance().addButton(new Runnable() {
       private boolean m_pressedLast = grab();
 
       @Override
-      public void execute() {
+      public void run() {
         boolean pressed = grab();
 
         if (pressed) {
           command.schedule(interruptible);
-        } else if (m_pressedLast && !pressed) {
+        } else if (m_pressedLast) {
           command.cancel();
         }
 
         m_pressedLast = pressed;
       }
-    }.start();
-
+    });
     return this;
   }
 
@@ -179,23 +185,25 @@ public class Trigger extends SendableBase {
    * @return this trigger, so calls can be chained
    */
   public Trigger whileActiveOnce(final Command command, boolean interruptible) {
-    new ButtonScheduler() {
-      private boolean m_pressedLast = grab();
+    requireNonNull(command);
 
-      @Override
-      public void execute() {
-        boolean pressed = grab();
+    CommandScheduler.getInstance().addButton(
+        new Runnable() {
+          private boolean m_pressedLast = grab();
 
-        if (!m_pressedLast && pressed) {
-          command.schedule(interruptible);
-        } else if (m_pressedLast && !pressed) {
-          command.cancel();
-        }
+          @Override
+          public void run() {
+            boolean pressed = grab();
 
-        m_pressedLast = pressed;
-      }
-    }.start();
+            if (!m_pressedLast && pressed) {
+              command.schedule(interruptible);
+            } else if (m_pressedLast && !pressed) {
+              command.cancel();
+            }
 
+            m_pressedLast = pressed;
+          }
+        });
     return this;
   }
 
@@ -218,21 +226,23 @@ public class Trigger extends SendableBase {
    * @return this trigger, so calls can be chained
    */
   public Trigger whenInactive(final Command command, boolean interruptible) {
-    new ButtonScheduler() {
-      private boolean m_pressedLast = grab();
+    requireNonNull(command);
 
-      @Override
-      public void execute() {
-        boolean pressed = grab();
+    CommandScheduler.getInstance().addButton(
+        new Runnable() {
+          private boolean m_pressedLast = grab();
 
-        if (m_pressedLast && !pressed) {
-          command.schedule(interruptible);
-        }
+          @Override
+          public void run() {
+            boolean pressed = grab();
 
-        m_pressedLast = pressed;
-      }
-    }.start();
+            if (m_pressedLast && !pressed) {
+              command.schedule(interruptible);
+            }
 
+            m_pressedLast = pressed;
+          }
+        });
     return this;
   }
 
@@ -264,25 +274,27 @@ public class Trigger extends SendableBase {
    * @return this trigger, so calls can be chained
    */
   public Trigger toggleWhenActive(final Command command, boolean interruptible) {
-    new ButtonScheduler() {
-      private boolean m_pressedLast = grab();
+    requireNonNull(command);
 
-      @Override
-      public void execute() {
-        boolean pressed = grab();
+    CommandScheduler.getInstance().addButton(
+        new Runnable() {
+          private boolean m_pressedLast = grab();
 
-        if (!m_pressedLast && pressed) {
-          if (command.isScheduled()) {
-            command.cancel();
-          } else {
-            command.schedule(interruptible);
+          @Override
+          public void run() {
+            boolean pressed = grab();
+
+            if (!m_pressedLast && pressed) {
+              if (command.isScheduled()) {
+                command.cancel();
+              } else {
+                command.schedule(interruptible);
+              }
+            }
+
+            m_pressedLast = pressed;
           }
-        }
-
-        m_pressedLast = pressed;
-      }
-    }.start();
-
+        });
     return this;
   }
 
@@ -303,34 +315,24 @@ public class Trigger extends SendableBase {
    * @return this trigger, so calls can be chained
    */
   public Trigger cancelWhenActive(final Command command) {
-    new ButtonScheduler() {
-      private boolean m_pressedLast = grab();
+    requireNonNull(command);
 
-      @Override
-      public void execute() {
-        boolean pressed = grab();
+    CommandScheduler.getInstance().addButton(
+        new Runnable() {
+          private boolean m_pressedLast = grab();
 
-        if (!m_pressedLast && pressed) {
-          command.cancel();
-        }
+          @Override
+          public void run() {
+            boolean pressed = grab();
 
-        m_pressedLast = pressed;
-      }
-    }.start();
+            if (!m_pressedLast && pressed) {
+              command.cancel();
+            }
 
+            m_pressedLast = pressed;
+          }
+        });
     return this;
-  }
-
-  /**
-   * An internal class of {@link Trigger}. The user should ignore this, it is only public to
-   * interface between packages.
-   */
-  public abstract static class ButtonScheduler {
-    public abstract void execute();
-
-    public void start() {
-      CommandScheduler.getInstance().addButton(this);
-    }
   }
 
   /**

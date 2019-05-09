@@ -9,6 +9,8 @@ package edu.wpi.first.wpilibj.experimental.buttons;
 
 import edu.wpi.first.wpilibj.GenericHID;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * A {@link Button} that gets its state from a POV on a {@link GenericHID}.
  */
@@ -25,6 +27,8 @@ public class POVButton extends Button {
    * @param povNumber The POV number (see {@link GenericHID#getPOV(int)})
    */
   public POVButton(GenericHID joystick, int angle, int povNumber) {
+    requireNonNull(joystick);
+
     m_joystick = joystick;
     m_angle = angle;
     m_povNumber = povNumber;

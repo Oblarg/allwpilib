@@ -25,7 +25,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
-import edu.wpi.first.wpilibj.experimental.buttons.Trigger.ButtonScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
@@ -67,7 +66,7 @@ public final class CommandScheduler extends SendableBase {
   private final Map<Subsystem, Command> m_subsystems = new LinkedHashMap<>();
 
   //The set of currently-registered buttons that will be polled every iteration.
-  private final Collection<ButtonScheduler> m_buttons = new LinkedHashSet<>();
+  private final Collection<Runnable> m_buttons = new LinkedHashSet<>();
 
   private boolean m_disabled;
 
@@ -92,7 +91,7 @@ public final class CommandScheduler extends SendableBase {
    *
    * @param button the button to add
    */
-  public void addButton(ButtonScheduler button) {
+  public void addButton(Runnable button) {
     m_buttons.add(button);
   }
 
@@ -217,8 +216,8 @@ public final class CommandScheduler extends SendableBase {
     }
 
     //Poll buttons for new commands to add.
-    for (ButtonScheduler button : m_buttons) {
-      button.execute();
+    for (Runnable button : m_buttons) {
+      button.run();
     }
 
     //Run scheduled commands, remove finished commands.
