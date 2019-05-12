@@ -26,9 +26,29 @@ public abstract class Controller {
   }
 
   /**
-   * Read the input, calculate the output accordingly, and write to the output.
+   * Read the input, calculate the output accordingly, and return to the output.
    *
+   * @param measurement The current measurement of the process variable.
    * @return The controller output.
    */
-  public abstract double update();
+  public abstract double calculate(double measurement);
+
+  /**
+   * Read the input, calculate the output accordingly, and return to the output.
+   *
+   * @param measurement The current measurement of the process variable.
+   * @param reference   The reference (setpoint) of the controller.
+   * @return The controller output.
+   */
+  public void calculate(double measurement, double reference) {
+    setReference(reference);
+    calculate(measurement);
+  }
+
+  /**
+   * Set the reference (setpoint) of the controller.
+   *
+   * @param reference The controller reference.
+   */
+  public abstract void setReference(double reference);
 }

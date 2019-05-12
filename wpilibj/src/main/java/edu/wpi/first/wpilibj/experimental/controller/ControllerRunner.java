@@ -8,13 +8,16 @@
 package edu.wpi.first.wpilibj.experimental.controller;
 
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.Notifier;
 
 public class ControllerRunner {
   private final Notifier m_notifier = new Notifier(this::run);
   private final Controller m_controller;
-  private final ControllerOutput m_controllerOutput;
+  private final DoubleConsumer m_controllerOutput;
+  private final DoubleSupplier m_measurementSource;
   private boolean m_enabled;
 
   private final ReentrantLock m_thisMutex = new ReentrantLock();
@@ -26,13 +29,16 @@ public class ControllerRunner {
   /**
    * Allocate a ControllerRunner.
    *
-   * @param controller       The controller on which to call update().
-   * @param controllerOutput The object which updates the plant using the
-   *                         controller output passed as the argument.
+   * @param controller        The controller on which to call update().
+   * @param measurementSource The function that supplies the current process variable measurement.
+   * @param controllerOutput  The function which updates the plant using the controller output
+   *                          passed as the argument.
    */
-  public ControllerRunner(Controller controller, ControllerOutput controllerOutput) {
+  public ControllerRunner(Controller controller, DoubleSupplier measurementSource,
+                          DoubleConsumer controllerOutput) {
     m_controller = controller;
     m_controllerOutput = controllerOutput;
+    m_measurementSource = measurementSource;
     m_notifier.startPeriodic(m_controller.getPeriod());
   }
 
@@ -65,7 +71,7 @@ public class ControllerRunner {
         m_thisMutex.unlock();
       }
 
-      m_controllerOutput.setOutput(0.0);
+      m_controllerOutput.accept(0.0);
     } finally {
       m_outputMutex.unlock();
     }
@@ -94,7 +100,7 @@ public class ControllerRunner {
           // Don't block other ControllerRunner operations on output
           m_thisMutex.unlock();
 
-          m_controllerOutput.setOutput(m_controller.update());
+          m_controllerOutput.accept(m_controller.calculate(m_measurementSource.getAsDouble()));
         }
       } finally {
         if (m_thisMutex.isHeldByCurrentThread()) {

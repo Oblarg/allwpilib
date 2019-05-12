@@ -111,8 +111,8 @@ public class PIDTest extends AbstractComsSetup {
     m_table = NetworkTableInstance.getDefault().getTable("TEST_PID");
     m_builder = new SendableBuilderImpl();
     m_builder.setTable(m_table);
-    m_controller = new PIDController(k_p, k_i, k_d, me.getEncoder()::getDistance);
-    m_runner = new ControllerRunner(m_controller, me.getMotor()::set);
+    m_controller = new PIDController(k_p, k_i, k_d);
+    m_runner = new ControllerRunner(m_controller, me.getEncoder()::getDistance, me.getMotor()::set);
     m_controller.initSendable(m_builder);
   }
 

@@ -8,7 +8,6 @@
 package edu.wpi.first.wpilibj.experimental.controller;
 
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
@@ -42,12 +41,6 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
   @SuppressWarnings("MemberName")
   private double m_Kd;
 
-  // Arbitrary feedforward function
-  private DoubleSupplier m_feedforward;
-
-  // Function for taking measurements
-  private final MeasurementSource m_measurementSource;
-
   // |maximum output|
   private double m_maximumOutput = 1.0;
 
@@ -66,8 +59,11 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
   // Do the endpoints wrap around? eg. Absolute encoder
   private boolean m_continuous;
 
-  // The prior error (used to compute velocity)
-  private double m_prevError;
+  // The error at the time of the most recent call to calculate()
+  private double m_currError = Double.POSITIVE_INFINITY;
+
+  // The error at the time of the second-most-recent call to calculate() (used to compute velocity)
+  private double m_prevError = Double.POSITIVE_INFINITY;
 
   // The sum of the errors for use in the integral calc
   private double m_totalError;
@@ -86,71 +82,33 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
   private double m_output;
 
   /**
-   * Allocate a PID object with the given constants for Kp, Ki, and Kd and a default period of 5ms.
+   * Allocate a PID object with the given constants for Kp, Ki, and Kd and a default period of
+   * 20ms.
    *
-   * @param Kp                The proportional coefficient.
-   * @param Ki                The integral coefficient.
-   * @param Kd                The derivative coefficient.
-   * @param measurementSource The function used to take measurements.
+   * @param Kp The proportional coefficient.
+   * @param Ki The integral coefficient.
+   * @param Kd The derivative coefficient.
    */
   @SuppressWarnings("ParameterName")
-  public PIDController(double Kp, double Ki, double Kd, MeasurementSource measurementSource) {
-    this(Kp, Ki, Kd, () -> 0.0, measurementSource, 0.05);
+  public PIDController(double Kp, double Ki, double Kd) {
+    this(Kp, Ki, Kd, 0.02);
   }
 
   /**
    * Allocate a PID object with the given constants for Kp, Ki, and Kd.
    *
-   * @param Kp                The proportional coefficient.
-   * @param Ki                The integral coefficient.
-   * @param Kd                The derivative coefficient.
-   * @param measurementSource The function used to take measurements.
-   * @param period            The period between controller updates in seconds. The default is 5ms.
+   * @param Kp     The proportional coefficient.
+   * @param Ki     The integral coefficient.
+   * @param Kd     The derivative coefficient.
+   * @param period The period between controller updates in seconds. The default is 5ms.
    */
   @SuppressWarnings("ParameterName")
-  public PIDController(double Kp, double Ki, double Kd,
-                MeasurementSource measurementSource, double period) {
-    this(Kp, Ki, Kd, () -> 0.0, measurementSource, period);
-  }
-
-  /**
-   * Allocate a PID object with the given constants for Kp, Ki, and Kd and a default period of 5ms.
-   *
-   * @param Kp                The proportional coefficient.
-   * @param Ki                The integral coefficient.
-   * @param Kd                The derivative coefficient.
-   * @param feedforward       The arbitrary feedforward function.
-   * @param measurementSource The function used to take measurements.
-   */
-  @SuppressWarnings("ParameterName")
-  public PIDController(double Kp, double Ki, double Kd,
-                DoubleSupplier feedforward,
-                MeasurementSource measurementSource) {
-    this(Kp, Ki, Kd, feedforward, measurementSource, 0.05);
-  }
-
-  /**
-   * Allocate a PID object with the given constants for Kp, Ki, and Kd.
-   *
-   * @param Kp                The proportional coefficient.
-   * @param Ki                The integral coefficient.
-   * @param Kd                The derivative coefficient.
-   * @param feedforward       The arbitrary feedforward function.
-   * @param measurementSource The function used to take measurements.
-   * @param period            The period between controller updates in seconds.
-   *                          The default is 5ms.
-   */
-  @SuppressWarnings("ParameterName")
-  public PIDController(double Kp, double Ki, double Kd,
-                DoubleSupplier feedforward,
-                MeasurementSource measurementSource, double period) {
+  public PIDController(double Kp, double Ki, double Kd, double period) {
     super(period);
 
     m_Kp = Kp;
     m_Ki = Ki;
     m_Kd = Kd;
-    m_feedforward = feedforward;
-    m_measurementSource = measurementSource;
 
     instances++;
     HAL.report(tResourceType.kResourceType_PIDController, instances);
@@ -286,6 +244,7 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
    *
    * @param reference the desired reference
    */
+  @Override
   public void setReference(double reference) {
     m_thisMutex.lock();
     try {
@@ -314,9 +273,8 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
   }
 
   /**
-   * Return true if the error is within the percentage of the total input range,
-   * determined by SetTolerance. This asssumes that the maximum and minimum
-   * input were set using SetInput.
+   * Return true if the error is within the percentage of the total input range, determined by
+   * SetTolerance. This asssumes that the maximum and minimum input were set using SetInput.
    *
    * <p>Currently this just reports on target as the actual value passes through the setpoint.
    * Ideally it should be based on being within the tolerance for some period of time.
@@ -331,10 +289,10 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
       double deltaError = (error - m_prevError) / getPeriod();
       if (m_toleranceType == Tolerance.kPercent) {
         return Math.abs(error) < m_tolerance / 100 * m_inputRange
-               && Math.abs(deltaError) < m_deltaTolerance / 100 * m_inputRange;
+            && Math.abs(deltaError) < m_deltaTolerance / 100 * m_inputRange;
       } else {
         return Math.abs(error) < m_tolerance
-               && Math.abs(deltaError) < m_deltaTolerance;
+            && Math.abs(deltaError) < m_deltaTolerance;
       }
     } finally {
       m_thisMutex.unlock();
@@ -461,12 +419,7 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
    * @return The error.
    */
   public double getError() {
-    m_thisMutex.lock();
-    try {
-      return getContinuousError(m_reference - m_measurementSource.getMeasurement());
-    } finally {
-      m_thisMutex.unlock();
-    }
+    return m_currError;
   }
 
   /**
@@ -485,19 +438,15 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
 
   @Override
   @SuppressWarnings("LocalVariableName")
-  public double update() {
+  public double calculate(double measurement) {
     // Storage for function inputs
     final double Kp;
     final double Ki;
     final double Kd;
-    final double feedforward = m_feedforward.getAsDouble();
-    final double measurement = m_measurementSource.getMeasurement();
     final double minimumOutput;
     final double maximumOutput;
 
     // Storage for function input-outputs
-    final double prevError;
-    final double error;
     double totalError;
 
     m_thisMutex.lock();
@@ -508,25 +457,24 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
       minimumOutput = m_minimumOutput;
       maximumOutput = m_maximumOutput;
 
-      prevError = m_prevError;
-      error = getContinuousError(m_reference - measurement);
+      m_prevError = m_currError;
+      m_currError = getContinuousError(m_reference - measurement);
       totalError = m_totalError;
     } finally {
       m_thisMutex.unlock();
     }
 
     if (Ki != 0) {
-      totalError = clamp(totalError + error * getPeriod(), minimumOutput / Ki,
-                         maximumOutput / Ki);
+      totalError = clamp(totalError + m_currError * getPeriod(), minimumOutput / Ki,
+          maximumOutput / Ki);
     }
 
     double output =
-        clamp(Kp * error + Ki * totalError + Kd * (error - prevError) / getPeriod() + feedforward,
-              minimumOutput, maximumOutput);
+        clamp(Kp * m_currError + Ki * totalError + Kd * (m_currError - m_prevError) / getPeriod(),
+            minimumOutput, maximumOutput);
 
     m_thisMutex.lock();
     try {
-      m_prevError = error;
       m_totalError = totalError;
       m_output = output;
     } finally {
@@ -577,9 +525,6 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
     builder.addDoubleProperty("Kp", this::getP, this::setP);
     builder.addDoubleProperty("Ki", this::getI, this::setI);
     builder.addDoubleProperty("Kd", this::getD, this::setD);
-    builder.addDoubleProperty("feedforward", m_feedforward, (double value) -> {
-      m_feedforward = () -> value;
-    });
     builder.addDoubleProperty("reference", this::getReference, this::setReference);
   }
 
@@ -591,8 +536,8 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
   protected ReentrantLock m_thisMutex = new ReentrantLock();
 
   /**
-   * Wraps error around for continuous inputs. The original error is returned if
-   * continuous mode is disabled. This is an unsynchronized function.
+   * Wraps error around for continuous inputs. The original error is returned if continuous mode is
+   * disabled. This is an unsynchronized function.
    *
    * @param error The current error of the PID controller.
    * @return Error for continuous inputs.
