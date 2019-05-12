@@ -20,16 +20,12 @@ import edu.wpi.first.wpilibj.PIDSourceType;
  * <p>It provides some convenience methods to run an internal {@link PIDController} . It also
  * allows access to the internal {@link PIDController} in order to give total control to the
  * programmer.
- *
- * @deprecated Use PIDSubsystem class instead.
  */
-@Deprecated
 public abstract class PIDSubsystem extends Subsystem {
   /**
    * The internal {@link PIDController}.
    */
   private final PIDController m_controller;
-
   /**
    * An output which calls {@link PIDCommand#usePIDOutput(double)}.
    */
@@ -82,7 +78,7 @@ public abstract class PIDSubsystem extends Subsystem {
   public PIDSubsystem(String name, double p, double i, double d, double f) {
     super(name);
     m_controller = new PIDController(p, i, d, f, m_source, m_output);
-    addChild("OPIDController", m_controller);
+    addChild("PIDController", m_controller);
   }
 
   /**

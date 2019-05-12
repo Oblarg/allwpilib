@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
@@ -56,6 +57,10 @@ public class DriveTrain extends Subsystem {
     m_drive.setSafetyEnabled(true);
     m_drive.setExpiration(0.1);
     m_drive.setMaxOutput(1.0);
+
+    // Configure encoders
+    m_rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+    m_leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 
     if (Robot.isReal()) { // Converts to feet
       m_rightEncoder.setDistancePerPulse(0.0785398);

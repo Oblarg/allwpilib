@@ -7,9 +7,10 @@
 
 package edu.wpi.first.wpilibj.examples.gearsbot.commands;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.experimental.controller.ControllerRunner;
-import edu.wpi.first.wpilibj.experimental.controller.PIDController;
 
 import edu.wpi.first.wpilibj.examples.gearsbot.Robot;
 
@@ -20,8 +21,7 @@ import edu.wpi.first.wpilibj.examples.gearsbot.Robot;
  * encoders.
  */
 public class DriveStraight extends Command {
-  private final PIDController m_pidController;
-  private final ControllerRunner m_pidRunner;
+  private final PIDController m_pid;
 
   /**
    * Create a new DriveStraight command.
@@ -29,12 +29,27 @@ public class DriveStraight extends Command {
    */
   public DriveStraight(double distance) {
     requires(Robot.m_drivetrain);
-    m_pidController = new PIDController(4, 0, 0, Robot.m_drivetrain::getDistance);
-    m_pidRunner = new ControllerRunner(m_pidController,
-        output -> Robot.m_drivetrain.drive(output, output));
+    m_pid = new PIDController(4, 0, 0, new PIDSource() {
+      PIDSourceType m_sourceType = PIDSourceType.kDisplacement;
 
-    m_pidController.setAbsoluteTolerance(0.01);
-    m_pidController.setReference(distance);
+      @Override
+      public double pidGet() {
+        return Robot.m_drivetrain.getDistance();
+      }
+
+      @Override
+      public void setPIDSourceType(PIDSourceType pidSource) {
+        m_sourceType = pidSource;
+      }
+
+      @Override
+      public PIDSourceType getPIDSourceType() {
+        return m_sourceType;
+      }
+    }, d -> Robot.m_drivetrain.drive(d, d));
+
+    m_pid.setAbsoluteTolerance(0.01);
+    m_pid.setSetpoint(distance);
   }
 
   // Called just before this Command runs the first time
@@ -42,21 +57,21 @@ public class DriveStraight extends Command {
   protected void initialize() {
     // Get everything in a safe starting state.
     Robot.m_drivetrain.reset();
-    m_pidController.reset();
-    m_pidRunner.enable();
+    m_pid.reset();
+    m_pid.enable();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return m_pidController.atReference();
+    return m_pid.onTarget();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
     // Stop PID and the wheels
-    m_pidRunner.disable();
+    m_pid.disable();
     Robot.m_drivetrain.drive(0, 0);
   }
 }
