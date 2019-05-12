@@ -273,26 +273,42 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
   }
 
   /**
-   * Return true if the error is within the percentage of the total input range, determined by
-   * SetTolerance. This asssumes that the maximum and minimum input were set using SetInput.
+   * Return true if the error is within the percentage of the total input range,
+   * determined by SetTolerance. This asssumes that the maximum and minimum
+   * input were set using SetInput.
    *
    * <p>Currently this just reports on target as the actual value passes through the setpoint.
    * Ideally it should be based on being within the tolerance for some period of time.
    *
    * <p>This will return false until at least one input value has been computed.
+   *
+   * @return Whether the error is within the acceptable bounds.
    */
   public boolean atReference() {
+    return atReference(m_tolerance, m_deltaTolerance, m_toleranceType);
+  }
+
+  /**
+   * Return true if the error and change in error are below the specified tolerances.
+   *
+   * @param tolerance The maximum allowable error.
+   * @param deltaTolerance The maximum allowable change in error from the previous iteration.
+   * @param toleranceType Whether the given tolerance values are absolute, or percentages of the
+   *                      total input range.
+   * @return Whether the error is within the acceptable bounds.
+   */
+  public boolean atReference(double tolerance, double deltaTolerance, Tolerance toleranceType) {
     double error = getError();
 
     m_thisMutex.lock();
     try {
       double deltaError = (error - m_prevError) / getPeriod();
-      if (m_toleranceType == Tolerance.kPercent) {
-        return Math.abs(error) < m_tolerance / 100 * m_inputRange
-            && Math.abs(deltaError) < m_deltaTolerance / 100 * m_inputRange;
+      if (toleranceType == Tolerance.kPercent) {
+        return Math.abs(error) < tolerance / 100 * m_inputRange
+            && Math.abs(deltaError) < deltaTolerance / 100 * m_inputRange;
       } else {
-        return Math.abs(error) < m_tolerance
-            && Math.abs(deltaError) < m_deltaTolerance;
+        return Math.abs(error) < tolerance
+            && Math.abs(deltaError) < deltaTolerance;
       }
     } finally {
       m_thisMutex.unlock();
