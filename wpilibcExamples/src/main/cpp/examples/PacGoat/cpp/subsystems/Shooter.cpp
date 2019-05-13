@@ -7,7 +7,7 @@
 
 #include "subsystems/Shooter.h"
 
-Shooter::Shooter() : frc::Subsystem("Shooter") {
+Shooter::Shooter() : Subsystem("Shooter") {
   // Put everything to the LiveWindow for testing.
   AddChild("Hot Goal Sensor", m_hotGoalSensor);
   AddChild("Piston1 Reed Switch Front ", m_piston1ReedSwitchFront);

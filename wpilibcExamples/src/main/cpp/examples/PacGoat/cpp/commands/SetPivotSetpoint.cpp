@@ -5,14 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/PrepareToPickup.h"
+#include "commands/SetPivotSetpoint.h"
 
-#include "commands/OpenClaw.h"
-#include "commands/SetElevatorSetpoint.h"
-#include "commands/SetWristSetpoint.h"
+#include "Robot.h"
 
-PrepareToPickup::PrepareToPickup() : frc::CommandGroup("PrepareToPickup") {
-  AddParallel(new OpenClaw());
-  AddParallel(new SetWristSetpoint(0));
-  AddSequential(new SetElevatorSetpoint(0));
+SetPivotSetpoint::SetPivotSetpoint(double setpoint) {
+  m_setpoint = setpoint;
+  Requires(&Robot::pivot);
 }
+
+// Called just before this Command runs the first time
+void SetPivotSetpoint::Initialize() {
+  Robot::pivot.Enable();
+  Robot::pivot.SetSetpoint(m_setpoint);
+}
+
+// Make this return true when this Command no longer needs to run execute()
+bool SetPivotSetpoint::IsFinished() { return Robot::pivot.OnTarget(); }

@@ -5,14 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/PrepareToPickup.h"
+#pragma once
 
-#include "commands/OpenClaw.h"
-#include "commands/SetElevatorSetpoint.h"
-#include "commands/SetWristSetpoint.h"
+#include <frc/commands/Command.h>
 
-PrepareToPickup::PrepareToPickup() : frc::CommandGroup("PrepareToPickup") {
-  AddParallel(new OpenClaw());
-  AddParallel(new SetWristSetpoint(0));
-  AddSequential(new SetElevatorSetpoint(0));
-}
+/**
+ * Moves the  pivot to a given angle. This command finishes when it is within
+ * the tolerance, but leaves the PID loop running to maintain the position.
+ * Other commands using the pivot should make sure they disable PID!
+ */
+class SetPivotSetpoint : public frc::Command {
+ public:
+  explicit SetPivotSetpoint(double setpoint);
+  void Initialize() override;
+  bool IsFinished() override;
+
+ private:
+  double m_setpoint;
+};

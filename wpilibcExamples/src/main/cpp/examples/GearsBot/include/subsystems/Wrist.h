@@ -9,13 +9,13 @@
 
 #include <frc/AnalogPotentiometer.h>
 #include <frc/PWMVictorSPX.h>
-#include <frc/experimental/commands/PIDSubsystem.h>
+#include <frc/commands/PIDSubsystem.h>
 
 /**
  * The wrist subsystem is like the elevator, but with a rotational joint instead
  * of a linear joint.
  */
-class Wrist : public frc::experimental::PIDSubsystem {
+class Wrist : public frc::PIDSubsystem {
  public:
   Wrist();
 
@@ -30,14 +30,14 @@ class Wrist : public frc::experimental::PIDSubsystem {
    * Use the potentiometer as the PID sensor. This method is automatically
    * called by the subsystem.
    */
-  double GetMeasurement() const override;
+  double ReturnPIDInput() override;
 
   /**
    * Use the motor as the PID output. This method is automatically called
    * by
    * the subsystem.
    */
-  void SetOutput(double output) override;
+  void UsePIDOutput(double d) override;
 
  private:
   frc::PWMVictorSPX m_motor{6};

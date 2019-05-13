@@ -5,14 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commands/PrepareToPickup.h"
-
-#include "commands/OpenClaw.h"
-#include "commands/SetElevatorSetpoint.h"
 #include "commands/SetWristSetpoint.h"
 
-PrepareToPickup::PrepareToPickup() : frc::CommandGroup("PrepareToPickup") {
-  AddParallel(new OpenClaw());
-  AddParallel(new SetWristSetpoint(0));
-  AddSequential(new SetElevatorSetpoint(0));
+#include "Robot.h"
+
+SetWristSetpoint::SetWristSetpoint(double setpoint)
+    : frc::Command("SetWristSetpoint") {
+  m_setpoint = setpoint;
+  Requires(&Robot::wrist);
 }
+
+// Called just before this Command runs the first time
+void SetWristSetpoint::Initialize() {
+  Robot::wrist.SetSetpoint(m_setpoint);
+  Robot::wrist.Enable();
+}
+
+// Make this return true when this Command no longer needs to run execute()
+bool SetWristSetpoint::IsFinished() { return Robot::wrist.OnTarget(); }
