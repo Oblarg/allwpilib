@@ -435,7 +435,12 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
    * @return The error.
    */
   public double getError() {
-    return m_currError;
+    m_thisMutex.lock();
+    try {
+      return m_currError;
+    } finally {
+      m_thisMutex.unlock();
+    }
   }
 
   /**
