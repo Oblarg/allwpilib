@@ -5,7 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "TestBench.h"
 #include "frc/Timer.h"
 #include "frc/experimental/controller/ControllerRunner.h"
 #include "frc/experimental/controller/PIDController.h"
