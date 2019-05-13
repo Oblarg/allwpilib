@@ -10,16 +10,12 @@
 using namespace frc::experimental;
 
 ControllerRunner::ControllerRunner(Controller& controller,
+                                   std::function<double(void)> measurementSource,
                                    std::function<void(double)> controllerOutput)
-    : m_controller(controller), m_controllerOutput(controllerOutput) {
+    : m_controller(controller), m_measurementSource (measurementSource), 
+    m_controllerOutput(controllerOutput) {
   m_notifier.StartPeriodic(m_controller.GetPeriod());
 }
-
-ControllerRunner::ControllerRunner(Controller& controller,
-                                   ControllerOutput& controllerOutput)
-    : ControllerRunner(controller, [&](double output) {
-        controllerOutput.SetOutput(output);
-      }) {}
 
 void ControllerRunner::Enable() {
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
@@ -51,6 +47,6 @@ void ControllerRunner::Run() {
     // Don't block other ControllerRunner operations on output
     mainLock.unlock();
 
-    m_controllerOutput(m_controller.Update());
+    m_controllerOutput(m_controller.Calculate(m_measurementSource()));
   }
 }

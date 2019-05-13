@@ -13,7 +13,6 @@
 #include <wpi/mutex.h>
 
 #include "frc/experimental/controller/Controller.h"
-#include "frc/experimental/controller/MeasurementSource.h"
 #include "frc/smartdashboard/SendableBase.h"
 
 namespace frc {
@@ -35,31 +34,8 @@ using frc::SendableBuilder;
  */
 class PIDController : public Controller, public SendableBase {
  public:
-  /**
-   * Allocate a PID object with the given constants for Kp, Ki, and Kd.
-   *
-   * @param Kp          The proportional coefficient.
-   * @param Ki          The integral coefficient.
-   * @param Kd          The derivative coefficient.
-   * @param measurement The function used to take measurements.
-   * @param period      The period between controller updates in seconds. The
-   *                    default is 5ms.
-   */
-  PIDController(double Kp, double Ki, double Kd,
-                std::function<double()> measurement, double period = 0.005);
 
-  /**
-   * Allocate a PID object with the given constants for Kp, Ki, and Kd.
-   *
-   * @param Kp                The proportional coefficient.
-   * @param Ki                The integral coefficient.
-   * @param Kd                The derivative coefficient.
-   * @param measurementSource The function used to take measurements.
-   * @param period            The period between controller updates in seconds.
-   *                          The default is 5ms.
-   */
-  PIDController(double Kp, double Ki, double Kd,
-                MeasurementSource& measurementSource, double period = 0.005);
+  enum class Tolerance { kAbsolute, kPercent };
 
   /**
    * Allocate a PID object with the given constants for Kp, Ki, and Kd.
@@ -67,29 +43,10 @@ class PIDController : public Controller, public SendableBase {
    * @param Kp          The proportional coefficient.
    * @param Ki          The integral coefficient.
    * @param Kd          The derivative coefficient.
-   * @param feedforward The arbitrary feedforward function.
-   * @param measurement The function used to take measurements.
    * @param period      The period between controller updates in seconds. The
-   *                    default is 5ms.
+   *                    default is 20ms.
    */
-  PIDController(double Kp, double Ki, double Kd,
-                std::function<double()> feedforward,
-                std::function<double()> measurement, double period = 0.005);
-
-  /**
-   * Allocate a PID object with the given constants for Kp, Ki, and Kd.
-   *
-   * @param Kp                The proportional coefficient.
-   * @param Ki                The integral coefficient.
-   * @param Kd                The derivative coefficient.
-   * @param feedforward       The arbitrary feedforward function.
-   * @param measurementSource The function used to take measurements.
-   * @param period            The period between controller updates in seconds.
-   *                          The default is 5ms.
-   */
-  PIDController(double Kp, double Ki, double Kd,
-                std::function<double()> feedforward,
-                MeasurementSource& measurementSource, double period = 0.005);
+  PIDController(double Kp, double Ki, double Kd, double period = 0.02);
 
   ~PIDController() override = default;
 
@@ -174,9 +131,22 @@ class PIDController : public Controller, public SendableBase {
   double GetReference() const;
 
   /**
-   * Return true if the error is within the percentage of the total input range,
-   * determined by SetTolerance. This asssumes that the maximum and minimum
-   * input were set using SetInput.
+   * Return true if the error is within tolerance of the reference.
+   *
+   * Currently this just reports on target as the actual value passes through
+   * the setpoint. Ideally it should be based on being within the tolerance for
+   * some period of time.
+   *
+   * This will return false until at least one input value has been computed.
+   * 
+   * @param tolerance The maximum allowable error.
+   * @param deltaTolerance The maximum allowable change in error.
+   * @param toleranceType The type of tolerances specified.
+   */
+  bool AtReference(double tolerance, double deltaTolerance, Tolerance toleranceType) const;
+
+  /**
+   * Return true if the error is within the tolerance of the error.
    *
    * Currently this just reports on target as the actual value passes through
    * the setpoint. Ideally it should be based on being within the tolerance for
@@ -248,7 +218,9 @@ class PIDController : public Controller, public SendableBase {
    */
   double GetDeltaError() const;
 
-  double Update() override;
+  double Calculate(double measurement) override;
+
+  double Calculate(double measurement, double reference) override;
 
   /**
    * Reset the previous error, the integral term, and disable the controller.
@@ -279,12 +251,6 @@ class PIDController : public Controller, public SendableBase {
   // Factor for "derivative" control
   double m_Kd;
 
-  // Arbitrary feedforward function
-  std::function<double()> m_feedforward;
-
-  // Function for taking measurements
-  std::function<double()> m_measurementSource;
-
   // |maximum output|
   double m_maximumOutput = 1.0;
 
@@ -303,13 +269,14 @@ class PIDController : public Controller, public SendableBase {
   // Do the endpoints wrap around? eg. Absolute encoder
   bool m_continuous = false;
 
-  // The prior error (used to compute velocity)
-  double m_prevError = 0;
+  // The error at the time of the most recent call to calculate()
+  double m_currError = std::numeric_limits<double>::infinity();
+
+  // The error at the time of the second-most-recent call to calculate() (used to compute velocity)
+  double m_prevError = std::numeric_limits<double>::infinity();
 
   // The sum of the errors for use in the integral calc
   double m_totalError = 0;
-
-  enum class Tolerance { kAbsolute, kPercent };
 
   Tolerance m_toleranceType = Tolerance::kAbsolute;
 

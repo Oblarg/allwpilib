@@ -21,49 +21,16 @@ constexpr const T& clamp(const T& value, const T& low, const T& high) {
   return std::max(low, std::min(value, high));
 }
 
-PIDController::PIDController(double Kp, double Ki, double Kd,
-                             std::function<double()> measurementSource,
-                             double period)
-    : PIDController(Kp, Ki, Kd, [] { return 0.0; }, measurementSource, period) {
-}
-
-PIDController::PIDController(double Kp, double Ki, double Kd,
-                             MeasurementSource& measurementSource,
-                             double period)
-    : PIDController(Kp, Ki, Kd, [] { return 0.0; },
-                    [&] { return measurementSource.GetMeasurement(); },
-                    period) {}
-
-PIDController::PIDController(double Kp, double Ki, double Kd,
-                             std::function<double()> feedforward,
-                             std::function<double()> measurementSource,
-                             double period)
+PIDController::PIDController(double Kp, double Ki, double Kd, double period)
     : Controller(period), SendableBase(false) {
   m_Kp = Kp;
   m_Ki = Ki;
   m_Kd = Kd;
-  m_feedforward = feedforward;
-  m_measurementSource = measurementSource;
 
   static int instances = 0;
   instances++;
   HAL_Report(HALUsageReporting::kResourceType_PIDController, instances);
   SetName("PIDController", instances);
-}
-
-PIDController::PIDController(double Kp, double Ki, double Kd,
-                             std::function<double()> feedforward,
-                             MeasurementSource& measurementSource,
-                             double period)
-    : PIDController(Kp, Ki, Kd, feedforward,
-                    [&] { return measurementSource.GetMeasurement(); },
-                    period) {}
-
-void PIDController::SetPID(double Kp, double Ki, double Kd) {
-  std::lock_guard<wpi::mutex> lock(m_thisMutex);
-  m_Kp = Kp;
-  m_Ki = Ki;
-  m_Kd = Kd;
 }
 
 void PIDController::SetP(double Kp) {
@@ -116,18 +83,23 @@ double PIDController::GetReference() const {
   return m_reference;
 }
 
-bool PIDController::AtReference() const {
+bool PIDController::AtReference(double tolerance, double deltaTolerance, 
+    Tolerance toleranceType) const {
   double error = GetError();
 
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
   double deltaError = (error - m_prevError) / GetPeriod();
-  if (m_toleranceType == Tolerance::kPercent) {
-    return std::abs(error) < m_tolerance / 100 * m_inputRange &&
-           std::abs(deltaError) < m_deltaTolerance / 100 * m_inputRange;
+  if (toleranceType == Tolerance::kPercent) {
+    return std::abs(error) < tolerance / 100 * m_inputRange &&
+           std::abs(deltaError) < deltaTolerance / 100 * m_inputRange;
   } else {
-    return std::abs(error) < m_tolerance &&
-           std::abs(deltaError) < m_deltaTolerance;
+    return std::abs(error) < tolerance &&
+           std::abs(deltaError) < deltaTolerance;
   }
+}
+
+bool PIDController::AtReference() const {
+  return AtReference(m_tolerance, m_deltaTolerance, m_toleranceType);
 }
 
 void PIDController::SetContinuous(bool continuous) {
@@ -170,7 +142,7 @@ void PIDController::SetPercentTolerance(double tolerance,
 
 double PIDController::GetError() const {
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
-  return GetContinuousError(m_reference - m_measurementSource());
+  return GetContinuousError(m_currError);
 }
 
 /**
@@ -185,19 +157,15 @@ double PIDController::GetDeltaError() const {
   return (error - m_prevError) / GetPeriod();
 }
 
-double PIDController::Update() {
+double PIDController::Calculate(double measurement) {
   // Storage for function inputs
   double Kp;
   double Ki;
   double Kd;
-  double feedforward = m_feedforward();
-  double measurement = m_measurementSource();
   double minimumOutput;
   double maximumOutput;
 
   // Storage for function input-outputs
-  double prevError;
-  double error;
   double totalError;
 
   {
@@ -209,29 +177,33 @@ double PIDController::Update() {
     minimumOutput = m_minimumOutput;
     maximumOutput = m_maximumOutput;
 
-    prevError = m_prevError;
-    error = GetContinuousError(m_reference - measurement);
+    m_prevError = m_currError;
+    m_currError = GetContinuousError(m_reference - measurement);
     totalError = m_totalError;
   }
 
   if (Ki != 0) {
-    totalError = clamp(totalError + error * GetPeriod(), minimumOutput / Ki,
+    totalError = clamp(totalError + m_currError * GetPeriod(), minimumOutput / Ki,
                        maximumOutput / Ki);
   }
 
   double output =
-      clamp(Kp * error + Ki * totalError +
-                Kd * (error - prevError) / GetPeriod() + feedforward,
+      clamp(Kp * m_currError + Ki * totalError +
+                Kd * (m_currError - m_prevError) / GetPeriod(),
             minimumOutput, maximumOutput);
 
   {
     std::lock_guard<wpi::mutex> lock(m_thisMutex);
-    m_prevError = error;
     m_totalError = totalError;
     m_output = output;
   }
 
   return output;
+}
+
+double PIDController::Calculate(double measurement, double reference) {
+  SetReference(reference);
+  return Calculate(measurement);
 }
 
 void PIDController::Reset() {
@@ -250,9 +222,6 @@ void PIDController::InitSendable(SendableBuilder& builder) {
                             [=](double value) { SetI(value); });
   builder.AddDoubleProperty("Kd", [=] { return GetD(); },
                             [=](double value) { SetD(value); });
-  builder.AddDoubleProperty(
-      "feedforward", [=] { return m_feedforward(); },
-      [=](double value) { m_feedforward = [=] { return value; }; });
   builder.AddDoubleProperty("reference", [=] { return GetReference(); },
                             [=](double value) { SetReference(value); });
 }

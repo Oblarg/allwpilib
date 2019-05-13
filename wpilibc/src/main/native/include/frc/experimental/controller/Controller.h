@@ -31,9 +31,12 @@ class Controller {
   /**
    * Read the input, calculate the output accordingly, and write to the output.
    *
+   * @param measurement The current measurement of the process variable.
    * @return The controller output.
    */
-  virtual double Update() = 0;
+  virtual double Calculate(double measurement) = 0;
+
+  virtual double Calculate(double measurement, double reference) = 0;
 
  private:
   double m_period;

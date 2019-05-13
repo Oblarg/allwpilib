@@ -13,7 +13,6 @@
 
 #include "frc/Notifier.h"
 #include "frc/experimental/controller/Controller.h"
-#include "frc/experimental/controller/ControllerOutput.h"
 
 namespace frc {
 namespace experimental {
@@ -31,16 +30,8 @@ class ControllerRunner {
    *                         controller output passed as the argument.
    */
   ControllerRunner(Controller& controller,
+                   std::function<double(void)> measurementSource,
                    std::function<void(double)> controllerOutput);
-
-  /**
-   * Allocate a ControllerRunner.
-   *
-   * @param controller       The controller on which to call Update().
-   * @param controllerOutput The object which updates the plant using the
-   *                         controller output passed as the argument.
-   */
-  ControllerRunner(Controller& controller, ControllerOutput& controllerOutput);
 
   ControllerRunner(ControllerRunner&&) = default;
   ControllerRunner& operator=(ControllerRunner&&) = default;
@@ -65,6 +56,7 @@ class ControllerRunner {
  private:
   Notifier m_notifier{&ControllerRunner::Run, this};
   Controller& m_controller;
+  std::function<double(void)> m_measurementSource;
   std::function<void(double)> m_controllerOutput;
   bool m_enabled = false;
 
