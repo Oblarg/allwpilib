@@ -244,7 +244,6 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
    *
    * @param reference the desired reference
    */
-  @Override
   public void setReference(double reference) {
     m_thisMutex.lock();
     try {
@@ -503,6 +502,18 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
     }
 
     return output;
+  }
+
+  /**
+   * Read the input, calculate the output accordingly, and return to the output.
+   *
+   * @param measurement The current measurement of the process variable.
+   * @param reference   The reference (setpoint) of the controller.
+   * @return The controller output.
+   */
+  public void calculate(double measurement, double reference) {
+    setReference(reference);
+    calculate(measurement);
   }
 
   /**
