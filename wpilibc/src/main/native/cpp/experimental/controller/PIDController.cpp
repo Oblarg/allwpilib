@@ -85,15 +85,14 @@ double PIDController::GetReference() const {
 
 bool PIDController::AtReference(double tolerance, double deltaTolerance, 
     Tolerance toleranceType) const {
-  double error = GetError();
+  double deltaError = GetDeltaError();
 
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
-  double deltaError = (error - m_prevError) / GetPeriod();
   if (toleranceType == Tolerance::kPercent) {
-    return std::abs(error) < tolerance / 100 * m_inputRange &&
+    return std::abs(m_currError) < tolerance / 100 * m_inputRange &&
            std::abs(deltaError) < deltaTolerance / 100 * m_inputRange;
   } else {
-    return std::abs(error) < tolerance &&
+    return std::abs(m_currError) < tolerance &&
            std::abs(deltaError) < deltaTolerance;
   }
 }
@@ -151,10 +150,9 @@ double PIDController::GetError() const {
  * @return The change in error per second.
  */
 double PIDController::GetDeltaError() const {
-  double error = GetError();
 
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
-  return (error - m_prevError) / GetPeriod();
+  return (m_currError - m_prevError) / GetPeriod();
 }
 
 double PIDController::Calculate(double measurement) {

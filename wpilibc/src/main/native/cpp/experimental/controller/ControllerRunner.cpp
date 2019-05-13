@@ -17,6 +17,10 @@ ControllerRunner::ControllerRunner(Controller& controller,
   m_notifier.StartPeriodic(m_controller.GetPeriod());
 }
 
+ControllerRunner::~ControllerRunner() {
+  Disable();
+}
+
 void ControllerRunner::Enable() {
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
   m_enabled = true;

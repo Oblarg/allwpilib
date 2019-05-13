@@ -33,6 +33,8 @@ class ControllerRunner {
                    std::function<double(void)> measurementSource,
                    std::function<void(double)> controllerOutput);
 
+  ~ControllerRunner();
+
   ControllerRunner(ControllerRunner&&) = default;
   ControllerRunner& operator=(ControllerRunner&&) = default;
 
