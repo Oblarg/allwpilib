@@ -5,11 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+#include "frc/experimental/controller/PIDController.h"
 #include "frc/experimental/controller/ControllerRunner.h"
 
 using namespace frc::experimental;
 
-ControllerRunner::ControllerRunner(Controller& controller,
+ControllerRunner::ControllerRunner(PIDController& controller,
                                    std::function<double(void)> measurementSource,
                                    std::function<void(double)> controllerOutput)
     : m_controller(controller), m_measurementSource (measurementSource), 

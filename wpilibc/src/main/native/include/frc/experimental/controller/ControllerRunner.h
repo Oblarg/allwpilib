@@ -12,7 +12,7 @@
 #include <wpi/mutex.h>
 
 #include "frc/Notifier.h"
-#include "frc/experimental/controller/Controller.h"
+#include "frc/experimental/controller/PIDController.h"
 
 namespace frc {
 namespace experimental {
@@ -29,7 +29,7 @@ class ControllerRunner {
    * @param controllerOutput The function which updates the plant using the
    *                         controller output passed as the argument.
    */
-  ControllerRunner(Controller& controller,
+  ControllerRunner(PIDController& controller,
                    std::function<double(void)> measurementSource,
                    std::function<void(double)> controllerOutput);
 
@@ -57,7 +57,7 @@ class ControllerRunner {
 
  private:
   Notifier m_notifier{&ControllerRunner::Run, this};
-  Controller& m_controller;
+  PIDController& m_controller;
   std::function<double(void)> m_measurementSource;
   std::function<void(double)> m_controllerOutput;
   bool m_enabled = false;

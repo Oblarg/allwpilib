@@ -22,10 +22,7 @@ constexpr const T& clamp(const T& value, const T& low, const T& high) {
 }
 
 PIDController::PIDController(double Kp, double Ki, double Kd, double period)
-    : Controller(period), SendableBase(false) {
-  m_Kp = Kp;
-  m_Ki = Ki;
-  m_Kd = Kd;
+    : m_Kp(Kp), m_Ki(Ki), m_Kd(Kd), m_period(period), SendableBase(false) {
 
   static int instances = 0;
   instances++;
@@ -61,6 +58,10 @@ double PIDController::GetI() const {
 double PIDController::GetD() const {
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
   return m_Kd;
+}
+
+double PIDController::GetPeriod() const {
+  return m_period;
 }
 
 double PIDController::GetOutput() const {

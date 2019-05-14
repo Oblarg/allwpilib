@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Notifier;
 
 public class ControllerRunner {
   private final Notifier m_notifier = new Notifier(this::run);
-  private final Controller m_controller;
+  private final PIDController m_controller;
   private final DoubleConsumer m_controllerOutput;
   private final DoubleSupplier m_measurementSource;
   private boolean m_enabled;
@@ -34,7 +34,7 @@ public class ControllerRunner {
    * @param controllerOutput  The function which updates the plant using the controller output
    *                          passed as the argument.
    */
-  public ControllerRunner(Controller controller, DoubleSupplier measurementSource,
+  public ControllerRunner(PIDController controller, DoubleSupplier measurementSource,
                           DoubleConsumer controllerOutput) {
     m_controller = controller;
     m_controllerOutput = controllerOutput;

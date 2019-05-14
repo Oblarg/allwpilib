@@ -12,7 +12,6 @@
 
 #include <wpi/mutex.h>
 
-#include "frc/experimental/controller/Controller.h"
 #include "frc/smartdashboard/SendableBase.h"
 
 namespace frc {
@@ -32,7 +31,7 @@ using frc::SendableBuilder;
  * in the integral and derivative calculations. Therefore, the sample rate
  * affects the controller's behavior for a given set of PID constants.
  */
-class PIDController : public Controller, public SendableBase {
+class PIDController : public SendableBase {
  public:
 
   enum class Tolerance { kAbsolute, kPercent };
@@ -105,6 +104,13 @@ class PIDController : public Controller, public SendableBase {
    * @return differential coefficient
    */
   double GetD() const;
+
+  /**
+   * Get the period of this controller.
+   * 
+   * @return The period of the controller.
+   */
+  double GetPeriod() const;
 
   /**
    * Return the current controller output.
@@ -219,9 +225,9 @@ class PIDController : public Controller, public SendableBase {
    */
   double GetDeltaError() const;
 
-  double Calculate(double measurement) override;
+  double Calculate(double measurement);
 
-  double Calculate(double measurement, double reference) override;
+  double Calculate(double measurement, double reference);
 
   /**
    * Reset the previous error, the integral term, and disable the controller.
@@ -251,6 +257,9 @@ class PIDController : public Controller, public SendableBase {
 
   // Factor for "derivative" control
   double m_Kd;
+
+  // The period (in seconds) of the control loop running this controller
+  double m_period;
 
   // |maximum output|
   double m_maximumOutput = 1.0;

@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * given set of PID constants.
  */
 @SuppressWarnings("PMD.TooManyFields")
-public class PIDController extends Controller implements Sendable, AutoCloseable {
+public class PIDController implements Sendable, AutoCloseable {
   private String m_name = "";
   private String m_subsystem = "Ungrouped";
 
@@ -40,6 +40,9 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
   // Factor for "derivative" control
   @SuppressWarnings("MemberName")
   private double m_Kd;
+
+  // The period (in seconds) of the loop that calls the controller
+  private final double m_period;
 
   // |maximum output|
   private double m_maximumOutput = 1.0;
@@ -104,11 +107,11 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
    */
   @SuppressWarnings("ParameterName")
   public PIDController(double Kp, double Ki, double Kd, double period) {
-    super(period);
-
     m_Kp = Kp;
     m_Ki = Ki;
     m_Kd = Kd;
+
+    m_period = period;
 
     instances++;
     HAL.report(tResourceType.kResourceType_PIDController, instances);
@@ -221,6 +224,15 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
     } finally {
       m_thisMutex.unlock();
     }
+  }
+
+  /**
+   * Returns the period of this controller.
+   * 
+   * @return the period of the controller.
+   */
+  public double getPeriod() {
+    return m_period;
   }
 
   /**
@@ -456,7 +468,6 @@ public class PIDController extends Controller implements Sendable, AutoCloseable
     }
   }
 
-  @Override
   @SuppressWarnings("LocalVariableName")
   public double calculate(double measurement) {
     // Storage for function inputs
