@@ -177,13 +177,13 @@ public class MotorEncoderTest extends AbstractComsSetup {
 
   @Test
   public void testPositionPIDController() {
-    PIDController pidController = new PIDController(0.001, 0.0005, 0, me.getEncoder()::getDistance);
+    PIDController pidController = new PIDController(0.001, 0.0005, 0);
     pidController.setAbsoluteTolerance(50.0);
     pidController.setOutputRange(-0.2, 0.2);
     pidController.setReference(1000);
 
     ControllerRunner pidRunner = new ControllerRunner(pidController,
-        output -> me.getMotor().set(output));
+        me.getEncoder()::getDistance, output -> me.getMotor().set(output));
     pidRunner.enable();
     Timer.delay(10.0);
     pidRunner.disable();
@@ -199,13 +199,13 @@ public class MotorEncoderTest extends AbstractComsSetup {
   public void testVelocityPIDController() {
     me.getEncoder().setPIDSourceType(PIDSourceType.kRate);
     LinearDigitalFilter filter = LinearDigitalFilter.movingAverage(me.getEncoder(), 50);
-    PIDController pidController = new PIDController(1e-5, 0.0, 0.0006, () -> 8e-5, filter::pidGet);
+    PIDController pidController = new PIDController(1e-5, 0.0, 0.0006);
     pidController.setAbsoluteTolerance(200);
     pidController.setOutputRange(-0.3, 0.3);
     pidController.setReference(600);
 
-    ControllerRunner pidRunner = new ControllerRunner(pidController,
-        output -> me.getMotor().set(output));
+    ControllerRunner pidRunner = new ControllerRunner(pidController, filter::pidGet,
+        output -> me.getMotor().set(output + 8e-5));
     pidRunner.enable();
     Timer.delay(10.0);
     pidRunner.disable();

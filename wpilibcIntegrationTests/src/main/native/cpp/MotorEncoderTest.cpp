@@ -141,14 +141,15 @@ TEST_P(MotorEncoderTest, PositionPIDController) {
   Reset();
   double goal = 1000;
   frc::experimental::PIDController pidController(
-      0.001, 0.01, 0.0, [&] { return m_encoder->GetDistance(); });
+      0.001, 0.01, 0.0);
   pidController.SetAbsoluteTolerance(50.0);
   pidController.SetOutputRange(-0.2, 0.2);
   pidController.SetReference(goal);
 
   /* 10 seconds should be plenty time to get to the reference */
   frc::experimental::ControllerRunner pidRunner(
-      pidController, [&](double output) { m_speedController->Set(output); });
+      pidController, [&] { return m_encoder->GetDistance(); }, 
+      [&](double output) { m_speedController->Set(output); });
   pidRunner.Enable();
   Wait(10.0);
   pidRunner.Disable();
@@ -168,15 +169,15 @@ TEST_P(MotorEncoderTest, VelocityPIDController) {
 
   m_encoder->SetPIDSourceType(PIDSourceType::kRate);
   frc::experimental::PIDController pidController(
-      1e-5, 0.0, 0.0006, [] { return 8e-5; },
-      [&] { return m_filter->PIDGet(); });
+      1e-5, 0.0, 0.0006);
   pidController.SetAbsoluteTolerance(200.0);
   pidController.SetOutputRange(-0.3, 0.3);
   pidController.SetReference(600);
 
   /* 10 seconds should be plenty time to get to the reference */
   frc::experimental::ControllerRunner pidRunner(
-      pidController, [&](double output) { m_speedController->Set(output); });
+      pidController, [&] { return m_filter->PIDGet(); }, 
+      [&](double output) { m_speedController->Set(output + 8e-5); });
   pidRunner.Enable();
   Wait(10.0);
   pidRunner.Disable();
