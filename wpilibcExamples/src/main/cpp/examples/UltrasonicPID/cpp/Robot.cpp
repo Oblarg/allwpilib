@@ -9,7 +9,7 @@
 #include <frc/PWMVictorSPX.h>
 #include <frc/TimedRobot.h>
 #include <frc/drive/DifferentialDrive.h>
-#include <frc/experimental/controller/ControllerRunner.h>
+#include <frc/experimental/controller/PIDControllerRunner.h>
 #include <frc/experimental/controller/PIDController.h>
 
 /**
@@ -63,7 +63,7 @@ class Robot : public frc::TimedRobot {
 
   frc::experimental::PIDController m_pidController{
       kP, kI, kD, [&] { return m_ultrasonic.GetAverageVoltage(); }};
-  frc::experimental::ControllerRunner m_pidRunner{
+  frc::experimental::PIDControllerRunner m_pidRunner{
       m_pidController,
       [&](double output) { m_robotDrive.ArcadeDrive(output, 0); }};
 };

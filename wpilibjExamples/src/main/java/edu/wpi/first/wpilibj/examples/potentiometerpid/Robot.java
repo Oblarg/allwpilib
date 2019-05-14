@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.experimental.controller.ControllerRunner;
+import edu.wpi.first.wpilibj.experimental.controller.PIDControllerRunner;
 import edu.wpi.first.wpilibj.experimental.controller.PIDController;
 
 /**
@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   private static final double kD = -2.0;
 
   private PIDController m_pidController;
-  private ControllerRunner m_pidRunner;
+  private PIDControllerRunner m_pidRunner;
   @SuppressWarnings("PMD.SingularField")
   private AnalogInput m_potentiometer;
   @SuppressWarnings("PMD.SingularField")
@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
 
     m_pidController = new PIDController(kP, kI, kD, m_potentiometer::getAverageVoltage);
     m_pidController.setInputRange(0, 5);
-    m_pidRunner = new ControllerRunner(m_pidController, m_elevatorMotor::set);
+    m_pidRunner = new PIDControllerRunner(m_pidController, m_elevatorMotor::set);
   }
 
   @Override

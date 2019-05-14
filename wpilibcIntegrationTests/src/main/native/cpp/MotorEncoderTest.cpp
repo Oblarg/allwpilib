@@ -11,7 +11,7 @@
 #include "frc/Talon.h"
 #include "frc/Timer.h"
 #include "frc/Victor.h"
-#include "frc/experimental/controller/ControllerRunner.h"
+#include "frc/experimental/controller/PIDControllerRunner.h"
 #include "frc/experimental/controller/PIDController.h"
 #include "frc/filters/LinearDigitalFilter.h"
 #include "gtest/gtest.h"
@@ -147,7 +147,7 @@ TEST_P(MotorEncoderTest, PositionPIDController) {
   pidController.SetReference(goal);
 
   /* 10 seconds should be plenty time to get to the reference */
-  frc::experimental::ControllerRunner pidRunner(
+  frc::experimental::PIDControllerRunner pidRunner(
       pidController, [&] { return m_encoder->GetDistance(); }, 
       [&](double output) { m_speedController->Set(output); });
   pidRunner.Enable();
@@ -175,7 +175,7 @@ TEST_P(MotorEncoderTest, VelocityPIDController) {
   pidController.SetReference(600);
 
   /* 10 seconds should be plenty time to get to the reference */
-  frc::experimental::ControllerRunner pidRunner(
+  frc::experimental::PIDControllerRunner pidRunner(
       pidController, [&] { return m_filter->PIDGet(); }, 
       [&](double output) { m_speedController->Set(output + 8e-5); });
   pidRunner.Enable();

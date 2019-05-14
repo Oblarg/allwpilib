@@ -13,7 +13,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.Notifier;
 
-public class ControllerRunner {
+public class PIDControllerRunner {
   private final Notifier m_notifier = new Notifier(this::run);
   private final PIDController m_controller;
   private final DoubleConsumer m_controllerOutput;
@@ -27,14 +27,14 @@ public class ControllerRunner {
   private final ReentrantLock m_outputMutex = new ReentrantLock();
 
   /**
-   * Allocate a ControllerRunner.
+   * Allocate a PIDControllerRunner.
    *
    * @param controller        The controller on which to call update().
    * @param measurementSource The function that supplies the current process variable measurement.
    * @param controllerOutput  The function which updates the plant using the controller output
    *                          passed as the argument.
    */
-  public ControllerRunner(PIDController controller, DoubleSupplier measurementSource,
+  public PIDControllerRunner(PIDController controller, DoubleSupplier measurementSource,
                           DoubleConsumer controllerOutput) {
     m_controller = controller;
     m_controllerOutput = controllerOutput;
@@ -97,7 +97,7 @@ public class ControllerRunner {
       m_thisMutex.lock();
       try {
         if (m_enabled) {
-          // Don't block other ControllerRunner operations on output
+          // Don't block other PIDControllerRunner operations on output
           m_thisMutex.unlock();
 
           m_controllerOutput.accept(m_controller.calculate(m_measurementSource.getAsDouble()));

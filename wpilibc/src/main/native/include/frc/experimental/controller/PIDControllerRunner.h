@@ -20,23 +20,23 @@ namespace experimental {
 // TODO: remove when this class is moved into frc namespace
 using frc::Notifier;
 
-class ControllerRunner {
+class PIDControllerRunner {
  public:
   /**
-   * Allocate a ControllerRunner.
+   * Allocate a PIDControllerRunner.
    *
    * @param controller       The controller on which to call Update().
    * @param controllerOutput The function which updates the plant using the
    *                         controller output passed as the argument.
    */
-  ControllerRunner(PIDController& controller,
+  PIDControllerRunner(PIDController& controller,
                    std::function<double(void)> measurementSource,
                    std::function<void(double)> controllerOutput);
 
-  ~ControllerRunner();
+  ~PIDControllerRunner();
 
-  ControllerRunner(ControllerRunner&&) = default;
-  ControllerRunner& operator=(ControllerRunner&&) = default;
+  PIDControllerRunner(PIDControllerRunner&&) = default;
+  PIDControllerRunner& operator=(PIDControllerRunner&&) = default;
 
   /**
    * Begin running the controller.
@@ -56,7 +56,7 @@ class ControllerRunner {
   bool IsEnabled() const;
 
  private:
-  Notifier m_notifier{&ControllerRunner::Run, this};
+  Notifier m_notifier{&PIDControllerRunner::Run, this};
   PIDController& m_controller;
   std::function<double(void)> m_measurementSource;
   std::function<void(double)> m_controllerOutput;

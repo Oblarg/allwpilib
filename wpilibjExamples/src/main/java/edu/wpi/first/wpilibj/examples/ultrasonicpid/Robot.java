@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.experimental.controller.ControllerRunner;
+import edu.wpi.first.wpilibj.experimental.controller.PIDControllerRunner;
 import edu.wpi.first.wpilibj.experimental.controller.PIDController;
 
 /**
@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
       new PWMVictorSPX(kRightMotorPort));
   private final PIDController m_pidController
       = new PIDController(kP, kI, kD, m_ultrasonic::getAverageVoltage);
-  private final ControllerRunner m_pidRunner = new ControllerRunner(m_pidController,
+  private final PIDControllerRunner m_pidRunner = new PIDControllerRunner(m_pidController,
       output -> m_robotDrive.arcadeDrive(output, 0));
 
   /**

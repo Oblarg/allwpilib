@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import edu.wpi.first.wpilibj.experimental.controller.ControllerRunner;
+import edu.wpi.first.wpilibj.experimental.controller.PIDControllerRunner;
 import edu.wpi.first.wpilibj.experimental.controller.PIDController;
 import edu.wpi.first.wpilibj.filters.LinearDigitalFilter;
 import edu.wpi.first.wpilibj.fixtures.MotorEncoderFixture;
@@ -182,7 +182,7 @@ public class MotorEncoderTest extends AbstractComsSetup {
     pidController.setOutputRange(-0.2, 0.2);
     pidController.setReference(1000);
 
-    ControllerRunner pidRunner = new ControllerRunner(pidController,
+    PIDControllerRunner pidRunner = new PIDControllerRunner(pidController,
         me.getEncoder()::getDistance, output -> me.getMotor().set(output));
     pidRunner.enable();
     Timer.delay(10.0);
@@ -204,7 +204,7 @@ public class MotorEncoderTest extends AbstractComsSetup {
     pidController.setOutputRange(-0.3, 0.3);
     pidController.setReference(600);
 
-    ControllerRunner pidRunner = new ControllerRunner(pidController, filter::pidGet,
+    PIDControllerRunner pidRunner = new PIDControllerRunner(pidController, filter::pidGet,
         output -> me.getMotor().set(output + 8e-5));
     pidRunner.enable();
     Timer.delay(10.0);

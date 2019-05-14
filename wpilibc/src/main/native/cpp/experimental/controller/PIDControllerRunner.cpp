@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "frc/experimental/controller/ControllerRunner.h"
+#include "frc/experimental/controller/PIDControllerRunner.h"
 
 #include "frc/experimental/controller/PIDController.h"
 
 using namespace frc::experimental;
 
-ControllerRunner::ControllerRunner(
+PIDControllerRunner::PIDControllerRunner(
     PIDController& controller, std::function<double(void)> measurementSource,
     std::function<void(double)> controllerOutput)
     : m_controller(controller),
@@ -20,14 +20,14 @@ ControllerRunner::ControllerRunner(
   m_notifier.StartPeriodic(m_controller.GetPeriod());
 }
 
-ControllerRunner::~ControllerRunner() { Disable(); }
+PIDControllerRunner::~PIDControllerRunner() { Disable(); }
 
-void ControllerRunner::Enable() {
+void PIDControllerRunner::Enable() {
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
   m_enabled = true;
 }
 
-void ControllerRunner::Disable() {
+void PIDControllerRunner::Disable() {
   // Ensures m_enabled modification and m_controllerOutput() call occur
   // atomically
   std::lock_guard<wpi::mutex> outputLock(m_outputMutex);
@@ -39,17 +39,17 @@ void ControllerRunner::Disable() {
   m_controllerOutput(0.0);
 }
 
-bool ControllerRunner::IsEnabled() const {
+bool PIDControllerRunner::IsEnabled() const {
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
   return m_enabled;
 }
 
-void ControllerRunner::Run() {
+void PIDControllerRunner::Run() {
   // Ensures m_enabled check and m_controllerOutput() call occur atomically
   std::lock_guard<wpi::mutex> outputLock(m_outputMutex);
   std::unique_lock<wpi::mutex> mainLock(m_thisMutex);
   if (m_enabled) {
-    // Don't block other ControllerRunner operations on output
+    // Don't block other PIDControllerRunner operations on output
     mainLock.unlock();
 
     m_controllerOutput(m_controller.Calculate(m_measurementSource()));

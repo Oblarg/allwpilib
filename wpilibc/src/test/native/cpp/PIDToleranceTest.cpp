@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "frc/Timer.h"
-#include "frc/experimental/controller/ControllerRunner.h"
+#include "frc/experimental/controller/PIDControllerRunner.h"
 #include "frc/experimental/controller/PIDController.h"
 #include "gtest/gtest.h"
 
@@ -33,12 +33,12 @@ class PIDToleranceTest : public testing::Test {
   FakeInput inp;
   FakeOutput out;
   frc::experimental::PIDController* pidController;
-  frc::experimental::ControllerRunner* pidRunner;
+  frc::experimental::PIDControllerRunner* pidRunner;
 
   void SetUp() override {
     pidController = new frc::experimental::PIDController(0.5, 0.0, 0.0);
     pidController->SetInputRange(-range / 2, range / 2);
-    pidRunner = new frc::experimental::ControllerRunner(
+    pidRunner = new frc::experimental::PIDControllerRunner(
         *pidController, [&] { return inp.Get(); },
         [&](double output) { out.Set(output); });
   }
