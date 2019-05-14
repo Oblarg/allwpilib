@@ -33,7 +33,6 @@ using frc::SendableBuilder;
  */
 class PIDController : public SendableBase {
  public:
-
   enum class Tolerance { kAbsolute, kPercent };
 
   /**
@@ -107,7 +106,7 @@ class PIDController : public SendableBase {
 
   /**
    * Get the period of this controller.
-   * 
+   *
    * @return The period of the controller.
    */
   double GetPeriod() const;
@@ -144,12 +143,14 @@ class PIDController : public SendableBase {
    * some period of time.
    *
    * This will return false until at least one input value has been computed.
-   * 
+   *
    * @param tolerance The maximum allowable error.
    * @param deltaTolerance The maximum allowable change in error.
    * @param toleranceType The type of tolerances specified.
    */
-  bool AtReference(double tolerance, double deltaTolerance = std::numeric_limits<double>::infinity(), 
+  bool AtReference(
+      double tolerance,
+      double deltaTolerance = std::numeric_limits<double>::infinity(),
       Tolerance toleranceType = Tolerance::kAbsolute) const;
 
   /**
@@ -282,7 +283,8 @@ class PIDController : public SendableBase {
   // The error at the time of the most recent call to calculate()
   double m_currError = std::numeric_limits<double>::infinity();
 
-  // The error at the time of the second-most-recent call to calculate() (used to compute velocity)
+  // The error at the time of the second-most-recent call to calculate() (used
+  // to compute velocity)
   double m_prevError = std::numeric_limits<double>::infinity();
 
   // The sum of the errors for use in the integral calc

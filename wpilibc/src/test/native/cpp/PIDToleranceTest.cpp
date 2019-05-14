@@ -36,11 +36,11 @@ class PIDToleranceTest : public testing::Test {
   frc::experimental::ControllerRunner* pidRunner;
 
   void SetUp() override {
-    pidController = new frc::experimental::PIDController(
-        0.5, 0.0, 0.0);
+    pidController = new frc::experimental::PIDController(0.5, 0.0, 0.0);
     pidController->SetInputRange(-range / 2, range / 2);
     pidRunner = new frc::experimental::ControllerRunner(
-        *pidController, [&] { return inp.Get(); }, [&](double output) { out.Set(output); });
+        *pidController, [&] { return inp.Get(); },
+        [&](double output) { out.Set(output); });
   }
 
   void TearDown() override {

@@ -23,7 +23,6 @@ constexpr const T& clamp(const T& value, const T& low, const T& high) {
 
 PIDController::PIDController(double Kp, double Ki, double Kd, double period)
     : m_Kp(Kp), m_Ki(Ki), m_Kd(Kd), m_period(period), SendableBase(false) {
-
   static int instances = 0;
   instances++;
   HAL_Report(HALUsageReporting::kResourceType_PIDController, instances);
@@ -60,9 +59,7 @@ double PIDController::GetD() const {
   return m_Kd;
 }
 
-double PIDController::GetPeriod() const {
-  return m_period;
-}
+double PIDController::GetPeriod() const { return m_period; }
 
 double PIDController::GetOutput() const {
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
@@ -84,8 +81,8 @@ double PIDController::GetReference() const {
   return m_reference;
 }
 
-bool PIDController::AtReference(double tolerance, double deltaTolerance, 
-    Tolerance toleranceType) const {
+bool PIDController::AtReference(double tolerance, double deltaTolerance,
+                                Tolerance toleranceType) const {
   double deltaError = GetDeltaError();
 
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
@@ -151,7 +148,6 @@ double PIDController::GetError() const {
  * @return The change in error per second.
  */
 double PIDController::GetDeltaError() const {
-
   std::lock_guard<wpi::mutex> lock(m_thisMutex);
   return (m_currError - m_prevError) / GetPeriod();
 }
@@ -182,14 +178,13 @@ double PIDController::Calculate(double measurement) {
   }
 
   if (Ki != 0) {
-    totalError = clamp(totalError + m_currError * GetPeriod(), minimumOutput / Ki,
-                       maximumOutput / Ki);
+    totalError = clamp(totalError + m_currError * GetPeriod(),
+                       minimumOutput / Ki, maximumOutput / Ki);
   }
 
-  double output =
-      clamp(Kp * m_currError + Ki * totalError +
-                Kd * (m_currError - m_prevError) / GetPeriod(),
-            minimumOutput, maximumOutput);
+  double output = clamp(Kp * m_currError + Ki * totalError +
+                            Kd * (m_currError - m_prevError) / GetPeriod(),
+                        minimumOutput, maximumOutput);
 
   {
     std::lock_guard<wpi::mutex> lock(m_thisMutex);

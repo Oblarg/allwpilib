@@ -5,22 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "frc/experimental/controller/PIDController.h"
 #include "frc/experimental/controller/ControllerRunner.h"
+
+#include "frc/experimental/controller/PIDController.h"
 
 using namespace frc::experimental;
 
-ControllerRunner::ControllerRunner(PIDController& controller,
-                                   std::function<double(void)> measurementSource,
-                                   std::function<void(double)> controllerOutput)
-    : m_controller(controller), m_measurementSource (measurementSource), 
-    m_controllerOutput(controllerOutput) {
+ControllerRunner::ControllerRunner(
+    PIDController& controller, std::function<double(void)> measurementSource,
+    std::function<void(double)> controllerOutput)
+    : m_controller(controller),
+      m_measurementSource(measurementSource),
+      m_controllerOutput(controllerOutput) {
   m_notifier.StartPeriodic(m_controller.GetPeriod());
 }
 
-ControllerRunner::~ControllerRunner() {
-  Disable();
-}
+ControllerRunner::~ControllerRunner() { Disable(); }
 
 void ControllerRunner::Enable() {
   std::lock_guard<wpi::mutex> lock(m_thisMutex);

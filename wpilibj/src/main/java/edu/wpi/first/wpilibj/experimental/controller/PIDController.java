@@ -228,7 +228,7 @@ public class PIDController implements Sendable, AutoCloseable {
 
   /**
    * Returns the period of this controller.
-   * 
+   *
    * @return the period of the controller.
    */
   public double getPeriod() {
