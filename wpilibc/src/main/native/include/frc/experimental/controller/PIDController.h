@@ -143,7 +143,8 @@ class PIDController : public Controller, public SendableBase {
    * @param deltaTolerance The maximum allowable change in error.
    * @param toleranceType The type of tolerances specified.
    */
-  bool AtReference(double tolerance, double deltaTolerance, Tolerance toleranceType) const;
+  bool AtReference(double tolerance, double deltaTolerance = std::numeric_limits<double>::infinity(), 
+      Tolerance toleranceType = Tolerance::kAbsolute) const;
 
   /**
    * Return true if the error is within the tolerance of the error.
