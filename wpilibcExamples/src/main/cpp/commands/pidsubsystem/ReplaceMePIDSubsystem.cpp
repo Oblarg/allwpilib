@@ -11,20 +11,21 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 ReplaceMePIDSubsystem::ReplaceMePIDSubsystem()
-    : frc::experimental::PIDSubsystem("ReplaceMePIDSubsystem", 1.0, 0.0, 0.0) {
+    : PIDSubsystem("ReplaceMePIDSubsystem", 1.0, 0.0, 0.0) {
   // Use these to get going:
-  // SetReference() -  Sets where the PID controller should move the system to
+  // SetSetpoint() -  Sets where the PID controller should move the system
+  //                  to
   // Enable() - Enables the PID controller.
 }
 
-double ReplaceMePIDSubsystem::GetMeasurement() const {
+double ReplaceMePIDSubsystem::ReturnPIDInput() {
   // Return your input value for the PID loop
   // e.g. a sensor, like a potentiometer:
   // yourPot->SetAverageVoltage() / kYourMaxVoltage;
   return 0;
 }
 
-void ReplaceMePIDSubsystem::SetOutput(double output) {
+void ReplaceMePIDSubsystem::UsePIDOutput(double output) {
   // Use output to drive your system, like a motor
   // e.g. yourMotor->Set(output);
 }

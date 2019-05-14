@@ -7,7 +7,7 @@
 
 package edu.wpi.first.wpilibj.commands.pidsubsystem;
 
-import edu.wpi.first.wpilibj.experimental.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 /**
  * Add your docs here.
@@ -20,7 +20,8 @@ public class ReplaceMePIDSubsystem extends PIDSubsystem {
     // Intert a subsystem name and PID values here
     super("SubsystemName", 1, 2, 3);
     // Use these to get going:
-    // setReference() - Sets where the PID controller should move the system to
+    // setSetpoint() - Sets where the PID controller should move the system
+    // to
     // enable() - Enables the PID controller.
   }
 
@@ -31,7 +32,7 @@ public class ReplaceMePIDSubsystem extends PIDSubsystem {
   }
 
   @Override
-  public double getMeasurement() {
+  protected double returnPIDInput() {
     // Return your input value for the PID loop
     // e.g. a sensor, like a potentiometer:
     // yourPot.getAverageVoltage() / kYourMaxVoltage;
@@ -39,7 +40,7 @@ public class ReplaceMePIDSubsystem extends PIDSubsystem {
   }
 
   @Override
-  public void setOutput(double output) {
+  protected void usePIDOutput(double output) {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
   }

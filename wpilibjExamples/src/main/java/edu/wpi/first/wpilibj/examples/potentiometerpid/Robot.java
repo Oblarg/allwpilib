@@ -9,11 +9,10 @@ package edu.wpi.first.wpilibj.examples.potentiometerpid;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.experimental.controller.PIDControllerRunner;
-import edu.wpi.first.wpilibj.experimental.controller.PIDController;
 
 /**
  * This is a sample program to demonstrate how to use a soft potentiometer and a
@@ -26,7 +25,7 @@ public class Robot extends TimedRobot {
   private static final int kJoystickChannel = 0;
 
   // bottom, middle, and top elevator setpoints
-  private static final double[] kReferences = {1.0, 2.6, 4.3};
+  private static final double[] kSetPoints = {1.0, 2.6, 4.3};
 
   // proportional, integral, and derivative speed constants; motor inverted
   // DANGER: when tuning PID constants, high/inappropriate values for kP, kI,
@@ -37,7 +36,6 @@ public class Robot extends TimedRobot {
   private static final double kD = -2.0;
 
   private PIDController m_pidController;
-  private PIDControllerRunner m_pidRunner;
   @SuppressWarnings("PMD.SingularField")
   private AnalogInput m_potentiometer;
   @SuppressWarnings("PMD.SingularField")
@@ -53,14 +51,13 @@ public class Robot extends TimedRobot {
     m_elevatorMotor = new PWMVictorSPX(kMotorChannel);
     m_joystick = new Joystick(kJoystickChannel);
 
-    m_pidController = new PIDController(kP, kI, kD, m_potentiometer::getAverageVoltage);
+    m_pidController = new PIDController(kP, kI, kD, m_potentiometer, m_elevatorMotor);
     m_pidController.setInputRange(0, 5);
-    m_pidRunner = new PIDControllerRunner(m_pidController, m_elevatorMotor::set);
   }
 
   @Override
   public void teleopInit() {
-    m_pidRunner.enable();
+    m_pidController.enable();
   }
 
   @Override
@@ -69,11 +66,11 @@ public class Robot extends TimedRobot {
     // is incremented
     boolean currentButtonValue = m_joystick.getTrigger();
     if (currentButtonValue && !m_previousButtonValue) {
-      // index of the elevator reference wraps around.
-      m_index = (m_index + 1) % kReferences.length;
+      // index of the elevator setpoint wraps around.
+      m_index = (m_index + 1) % kSetPoints.length;
     }
     m_previousButtonValue = currentButtonValue;
 
-    m_pidController.setReference(kReferences[m_index]);
+    m_pidController.setSetpoint(kSetPoints[m_index]);
   }
 }
