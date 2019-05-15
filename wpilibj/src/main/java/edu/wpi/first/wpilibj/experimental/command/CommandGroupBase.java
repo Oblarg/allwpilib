@@ -51,7 +51,7 @@ public abstract class CommandGroupBase extends SendableCommandBase implements Co
   /**
    * Requires that the specified commands not have been already allocated to a CommandGroup.
    *   Throws an {@link IllegalUseOfCommandException} if commands have been allocated.
-   * 
+   *
    * @param commands The commands to check
    */
   public static void requireUngrouped(Command... commands) {

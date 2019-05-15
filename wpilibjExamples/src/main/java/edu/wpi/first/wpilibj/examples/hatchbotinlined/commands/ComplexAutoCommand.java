@@ -20,10 +20,9 @@ import static edu.wpi.first.wpilibj.examples.hatchbotinlined.Constants.AutoConst
  * A complex auto command that drives forward, releases a hatch, and then drives backward.
  */
 public class ComplexAutoCommand extends SequentialCommandGroup {
-
   /**
    * Creates a new ComplexAutoCommand.
-   * 
+   *
    * @param driveSubsystem The drive subsystem this command will run on
    * @param hatchSubsystem The hatch subsystem this command will run on
    */
