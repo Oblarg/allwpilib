@@ -11,8 +11,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.wpi.first.wpilibj.experimental.controller.PIDControllerRunner;
 import edu.wpi.first.wpilibj.experimental.controller.PIDController;
+import edu.wpi.first.wpilibj.experimental.controller.PIDControllerRunner;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,7 +42,7 @@ class PIDToleranceTest {
   void setUp() {
     m_inp = new FakeInput();
     m_pidController = new PIDController(0.05, 0.0, 0.0);
-    m_pidRunner = new PIDControllerRunner(m_pidController, m_inp::getMeasurement, (x) -> {});
+    m_pidRunner = new PIDControllerRunner(m_pidController, m_inp::getMeasurement, x -> { });
     m_pidController.setInputRange(-m_range / 2, m_range / 2);
   }
 

@@ -470,7 +470,7 @@ public class PIDController implements Sendable, AutoCloseable {
 
   /**
    * Calculates the output of the PID controller.
-   * 
+   *
    * @param measurement The current measurement of the process variable.
    * @return The controller output.
    */
