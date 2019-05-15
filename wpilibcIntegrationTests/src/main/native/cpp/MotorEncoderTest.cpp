@@ -11,8 +11,8 @@
 #include "frc/Talon.h"
 #include "frc/Timer.h"
 #include "frc/Victor.h"
-#include "frc/experimental/controller/PIDControllerRunner.h"
 #include "frc/experimental/controller/PIDController.h"
+#include "frc/experimental/controller/PIDControllerRunner.h"
 #include "frc/filters/LinearDigitalFilter.h"
 #include "gtest/gtest.h"
 
@@ -140,15 +140,14 @@ TEST_P(MotorEncoderTest, ClampSpeed) {
 TEST_P(MotorEncoderTest, PositionPIDController) {
   Reset();
   double goal = 1000;
-  frc::experimental::PIDController pidController(
-      0.001, 0.01, 0.0);
+  frc::experimental::PIDController pidController(0.001, 0.01, 0.0);
   pidController.SetAbsoluteTolerance(50.0);
   pidController.SetOutputRange(-0.2, 0.2);
   pidController.SetReference(goal);
 
   /* 10 seconds should be plenty time to get to the reference */
   frc::experimental::PIDControllerRunner pidRunner(
-      pidController, [&] { return m_encoder->GetDistance(); }, 
+      pidController, [&] { return m_encoder->GetDistance(); },
       [&](double output) { m_speedController->Set(output); });
   pidRunner.Enable();
   Wait(10.0);
@@ -168,15 +167,14 @@ TEST_P(MotorEncoderTest, VelocityPIDController) {
   Reset();
 
   m_encoder->SetPIDSourceType(PIDSourceType::kRate);
-  frc::experimental::PIDController pidController(
-      1e-5, 0.0, 0.0006);
+  frc::experimental::PIDController pidController(1e-5, 0.0, 0.0006);
   pidController.SetAbsoluteTolerance(200.0);
   pidController.SetOutputRange(-0.3, 0.3);
   pidController.SetReference(600);
 
   /* 10 seconds should be plenty time to get to the reference */
   frc::experimental::PIDControllerRunner pidRunner(
-      pidController, [&] { return m_filter->PIDGet(); }, 
+      pidController, [&] { return m_filter->PIDGet(); },
       [&](double output) { m_speedController->Set(output + 8e-5); });
   pidRunner.Enable();
   Wait(10.0);

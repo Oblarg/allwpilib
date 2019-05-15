@@ -13,12 +13,10 @@ class PIDInputOutputTest : public testing::Test {
   frc::experimental::PIDController* controller;
 
   void SetUp() override {
-      controller = new frc::experimental::PIDController(0, 0, 0);
+    controller = new frc::experimental::PIDController(0, 0, 0);
   }
 
-  void TearDown() override {
-      delete controller;
-  }
+  void TearDown() override { delete controller; }
 };
 
 TEST_F(PIDInputOutputTest, OutputRangeTest) {
@@ -57,17 +55,18 @@ TEST_F(PIDInputOutputTest, IntegralGainOutputTest) {
 
   double out = 0;
 
-  for(int i = 0; i < 5; i++) {
+  for (int i = 0; i < 5; i++) {
     out = controller->Calculate(.025, 0);
   }
 
-  EXPECT_DOUBLE_EQ(-.5*controller->GetPeriod(), out);
+  EXPECT_DOUBLE_EQ(-.5 * controller->GetPeriod(), out);
 }
 
 TEST_F(PIDInputOutputTest, DerivativeGainOutputTest) {
   controller->SetD(4);
 
-  controller->Calculate(0,0);
+  controller->Calculate(0, 0);
 
-  EXPECT_DOUBLE_EQ(-.01/controller->GetPeriod(), controller->Calculate(.0025, 0));
+  EXPECT_DOUBLE_EQ(-.01 / controller->GetPeriod(),
+                   controller->Calculate(.0025, 0));
 }

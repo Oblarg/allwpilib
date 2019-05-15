@@ -6,8 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 #include "frc/Timer.h"
-#include "frc/experimental/controller/PIDControllerRunner.h"
 #include "frc/experimental/controller/PIDController.h"
+#include "frc/experimental/controller/PIDControllerRunner.h"
 #include "gtest/gtest.h"
 
 using namespace frc;

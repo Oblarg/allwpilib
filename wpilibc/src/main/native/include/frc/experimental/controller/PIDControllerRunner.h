@@ -30,8 +30,8 @@ class PIDControllerRunner {
    *                         controller output passed as the argument.
    */
   PIDControllerRunner(PIDController& controller,
-                   std::function<double(void)> measurementSource,
-                   std::function<void(double)> controllerOutput);
+                      std::function<double(void)> measurementSource,
+                      std::function<void(double)> controllerOutput);
 
   ~PIDControllerRunner();
 
