@@ -22,7 +22,7 @@ constexpr const T& clamp(const T& value, const T& low, const T& high) {
 }
 
 PIDController::PIDController(double Kp, double Ki, double Kd, double period)
-    : m_Kp(Kp), m_Ki(Ki), m_Kd(Kd), m_period(period), SendableBase(false) {
+    : SendableBase(false), m_Kp(Kp), m_Ki(Ki), m_Kd(Kd), m_period(period) {
   static int instances = 0;
   instances++;
   HAL_Report(HALUsageReporting::kResourceType_PIDController, instances);
@@ -209,15 +209,15 @@ void PIDController::Reset() {
 
 void PIDController::InitSendable(SendableBuilder& builder) {
   builder.SetSmartDashboardType("PIDController");
-  builder.SetSafeState([=]() { Reset(); });
-  builder.AddDoubleProperty("Kp", [=] { return GetP(); },
-                            [=](double value) { SetP(value); });
-  builder.AddDoubleProperty("Ki", [=] { return GetI(); },
-                            [=](double value) { SetI(value); });
-  builder.AddDoubleProperty("Kd", [=] { return GetD(); },
-                            [=](double value) { SetD(value); });
-  builder.AddDoubleProperty("reference", [=] { return GetReference(); },
-                            [=](double value) { SetReference(value); });
+  builder.SetSafeState([this]() { Reset(); });
+  builder.AddDoubleProperty("Kp", [this] { return GetP(); },
+                            [this](double value) { SetP(value); });
+  builder.AddDoubleProperty("Ki", [this] { return GetI(); },
+                            [this](double value) { SetI(value); });
+  builder.AddDoubleProperty("Kd", [this] { return GetD(); },
+                            [this](double value) { SetD(value); });
+  builder.AddDoubleProperty("reference", [this] { return GetReference(); },
+                            [this](double value) { SetReference(value); });
 }
 
 double PIDController::GetContinuousError(double error) const {
