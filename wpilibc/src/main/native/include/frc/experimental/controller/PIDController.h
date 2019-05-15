@@ -281,7 +281,7 @@ class PIDController : public SendableBase {
   bool m_continuous = false;
 
   // The error at the time of the most recent call to calculate()
-  double m_currError = std::numeric_limits<double>::infinity();
+  double m_currError = 0;
 
   // The error at the time of the second-most-recent call to calculate() (used
   // to compute velocity)

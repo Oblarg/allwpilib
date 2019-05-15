@@ -48,9 +48,7 @@ class PIDInputOutputTest {
   void proportionalGainOutputTest() {
     m_controller.setP(4);
 
-    double out = m_controller.calculate(.025, 0);
-
-    assertEquals(-.1, out, 1e-5);
+    assertEquals(-.1, m_controller.calculate(.025, 0), 1e-5);
   }
 
   @Test
@@ -71,8 +69,7 @@ class PIDInputOutputTest {
     m_controller.setD(4);
 
     m_controller.calculate(0, 0);
-    double out = m_controller.calculate(.0025, 0);
 
-    assertEquals(-.01/m_controller.getPeriod(), out, 1e-5);
+    assertEquals(-.01/m_controller.getPeriod(), m_controller.calculate(.0025, 0), 1e-5);
   }
 }
