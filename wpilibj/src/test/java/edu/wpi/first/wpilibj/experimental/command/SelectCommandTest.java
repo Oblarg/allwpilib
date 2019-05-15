@@ -11,9 +11,9 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class SelectCommandTest extends CommandTestBase {
   @Test
