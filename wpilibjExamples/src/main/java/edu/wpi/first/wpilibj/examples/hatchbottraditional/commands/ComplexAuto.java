@@ -7,9 +7,10 @@
 
 package edu.wpi.first.wpilibj.examples.hatchbottraditional.commands;
 
+import edu.wpi.first.wpilibj.experimental.command.SequentialCommandGroup;
+
 import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.HatchSubsystem;
-import edu.wpi.first.wpilibj.experimental.command.SequentialCommandGroup;
 
 import static edu.wpi.first.wpilibj.examples.hatchbottraditional.Constants.AutoConstants.*;
 
@@ -17,6 +18,13 @@ import static edu.wpi.first.wpilibj.examples.hatchbottraditional.Constants.AutoC
  * A complex auto command that drives forward, releases a hatch, and then drives backward.
  */
 public class ComplexAuto extends SequentialCommandGroup {
+
+  /**
+   * Creates a new ComplexAuto.
+   * 
+   * @param drive The drive subsystem this command will run on
+   * @param hatch The hatch subsystem this command will run on
+   */
   public ComplexAuto(DriveSubsystem drive, HatchSubsystem hatch) {
     addCommands(
         // Drive forward the correct distance

@@ -9,8 +9,9 @@ package edu.wpi.first.wpilibj.examples.hatchbottraditional.commands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.experimental.command.SendableCommandBase;
+
+import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.DriveSubsystem;
 
 /**
  * A command to drive the robot with joystick input (passed in as {@link DoubleSupplier}s). Written
@@ -22,6 +23,13 @@ public class DefaultDrive extends SendableCommandBase {
   private final DoubleSupplier m_forward;
   private final DoubleSupplier m_rotation;
 
+  /**
+   * Creates a new DefaultDrive.
+   * 
+   * @param subsystem The drive subsystem this command wil run on.
+   * @param forward The control input for driving forwards/backwards
+   * @param rotation The control input for turning
+   */
   public DefaultDrive(DriveSubsystem subsystem, DoubleSupplier forward, DoubleSupplier rotation) {
     m_drive = subsystem;
     m_forward = forward;

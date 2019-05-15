@@ -10,8 +10,10 @@ package edu.wpi.first.wpilibj.examples.hatchbotinlined.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.experimental.command.SendableSubsystemBase;
 
-import static edu.wpi.first.wpilibj.examples.hatchbotinlined.Constants.HatchConstants.*;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kForward;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
+import static edu.wpi.first.wpilibj.examples.hatchbotinlined.Constants.HatchConstants.kHatchSolenoidModule;
+import static edu.wpi.first.wpilibj.examples.hatchbotinlined.Constants.HatchConstants.kHatchSolenoidPorts;
 
 /**
  * A hatch mechanism actuated by a single {@link edu.wpi.first.wpilibj.DoubleSolenoid}.

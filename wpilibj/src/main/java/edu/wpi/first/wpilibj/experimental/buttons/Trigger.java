@@ -82,20 +82,20 @@ public class Trigger extends SendableBase {
     requireNonNull(command);
 
     CommandScheduler.getInstance().addButton(
-    new Runnable() {
-      private boolean m_pressedLast = grab();
+        new Runnable() {
+          private boolean m_pressedLast = grab();
 
-      @Override
-      public void run() {
-        boolean pressed = grab();
+          @Override
+          public void run() {
+            boolean pressed = grab();
 
-        if (!m_pressedLast && pressed) {
-          command.schedule(interruptible);
-        }
+            if (!m_pressedLast && pressed) {
+              command.schedule(interruptible);
+            }
 
-        m_pressedLast = pressed;
-      }
-    });
+            m_pressedLast = pressed;
+          }
+        });
 
     return this;
   }

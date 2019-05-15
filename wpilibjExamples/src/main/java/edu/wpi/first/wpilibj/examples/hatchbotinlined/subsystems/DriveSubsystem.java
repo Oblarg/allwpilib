@@ -25,7 +25,7 @@ public class DriveSubsystem extends SendableSubsystemBase {
       new SpeedControllerGroup(new Spark(kRightMotor1Port), new Spark(kRightMotor2Port));
 
   // The robot's drive
-  private DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
   // The left-side drive encoder
   private final Encoder m_leftEncoder =

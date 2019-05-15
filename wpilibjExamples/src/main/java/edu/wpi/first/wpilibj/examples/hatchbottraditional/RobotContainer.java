@@ -9,16 +9,18 @@ package edu.wpi.first.wpilibj.examples.hatchbottraditional;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.examples.hatchbottraditional.commands.*;
-import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.DriveSubsystem;
-import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.HatchSubsystem;
 import edu.wpi.first.wpilibj.experimental.command.Command;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
+import edu.wpi.first.wpilibj.examples.hatchbottraditional.commands.*;
+import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.HatchSubsystem;
+
 import static edu.wpi.first.wpilibj.XboxController.Button;
-import static edu.wpi.first.wpilibj.examples.hatchbottraditional.Constants.AutoConstants.*;
-import static edu.wpi.first.wpilibj.examples.hatchbottraditional.Constants.OIConstants.*;
+import static edu.wpi.first.wpilibj.examples.hatchbottraditional.Constants.AutoConstants.kAutoDriveDistanceInches;
+import static edu.wpi.first.wpilibj.examples.hatchbottraditional.Constants.AutoConstants.kAutoDriveSpeed;
+import static edu.wpi.first.wpilibj.examples.hatchbottraditional.Constants.OIConstants.kDriverControllerPort;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -28,8 +30,8 @@ import static edu.wpi.first.wpilibj.examples.hatchbottraditional.Constants.OICon
  */
 public class RobotContainer {
   // The robot's subsystems
-  private DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private HatchSubsystem m_hatchSubsystem = new HatchSubsystem();
+  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final HatchSubsystem m_hatchSubsystem = new HatchSubsystem();
 
   // The autonomous routines
 
@@ -44,8 +46,11 @@ public class RobotContainer {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // The driver's controller
-  XboxController driverController = new XboxController(kDriverControllerPort);
+  XboxController m_driverController = new XboxController(kDriverControllerPort);
 
+  /**
+   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -57,8 +62,8 @@ public class RobotContainer {
         // hand, and turning controlled by the right.
         new DefaultDrive(
             m_robotDrive,
-            () -> driverController.getY(GenericHID.Hand.kLeft),
-            () -> driverController.getX(GenericHID.Hand.kRight))
+            () -> m_driverController.getY(GenericHID.Hand.kLeft),
+            () -> m_driverController.getX(GenericHID.Hand.kRight))
     );
 
     // Add commands to the autonomous command chooser
@@ -77,13 +82,13 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Grab the hatch when the 'A' button is pressed.
-    driverController.getButton(Button.kA.value)
+    m_driverController.getButton(Button.kA.value)
         .whenPressed(new GrabHatch(m_hatchSubsystem));
     // Release the hatch when the 'B' button is pressed.
-    driverController.getButton(Button.kB.value)
+    m_driverController.getButton(Button.kB.value)
         .whenPressed(new ReleaseHatch(m_hatchSubsystem));
     // While holding the shoulder button, drive at half speed
-    driverController.getButton(Button.kBumperRight.value)
+    m_driverController.getButton(Button.kBumperRight.value)
         .whenHeld(new HalveDriveSpeed(m_robotDrive));
   }
 

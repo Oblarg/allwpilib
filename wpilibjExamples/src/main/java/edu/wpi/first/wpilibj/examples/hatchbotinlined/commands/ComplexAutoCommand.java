@@ -7,11 +7,12 @@
 
 package edu.wpi.first.wpilibj.examples.hatchbotinlined.commands;
 
-import edu.wpi.first.wpilibj.examples.hatchbotinlined.subsystems.DriveSubsystem;
-import edu.wpi.first.wpilibj.examples.hatchbotinlined.subsystems.HatchSubsystem;
 import edu.wpi.first.wpilibj.experimental.command.InstantCommand;
 import edu.wpi.first.wpilibj.experimental.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.experimental.command.StartEndCommand;
+
+import edu.wpi.first.wpilibj.examples.hatchbotinlined.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.examples.hatchbotinlined.subsystems.HatchSubsystem;
 
 import static edu.wpi.first.wpilibj.examples.hatchbotinlined.Constants.AutoConstants.*;
 
@@ -19,6 +20,13 @@ import static edu.wpi.first.wpilibj.examples.hatchbotinlined.Constants.AutoConst
  * A complex auto command that drives forward, releases a hatch, and then drives backward.
  */
 public class ComplexAutoCommand extends SequentialCommandGroup {
+
+  /**
+   * Creates a new ComplexAutoCommand.
+   * 
+   * @param driveSubsystem The drive subsystem this command will run on
+   * @param hatchSubsystem The hatch subsystem this command will run on
+   */
   public ComplexAutoCommand(DriveSubsystem driveSubsystem, HatchSubsystem hatchSubsystem) {
     addCommands(
         // Drive forward up to the front of the cargo ship

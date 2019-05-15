@@ -7,14 +7,22 @@
 
 package edu.wpi.first.wpilibj.examples.hatchbottraditional.commands;
 
-import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.experimental.command.SendableCommandBase;
+
+import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.DriveSubsystem;
 
 public class DriveDistance extends SendableCommandBase {
   private final DriveSubsystem m_drive;
   private final double m_distance;
   private final double m_speed;
 
+  /**
+   * Creates a new DriveDistance.
+   * 
+   * @param inches The number of inches the robot will drive
+   * @param speed The speed at which the robot will drive
+   * @param drive The drive subsystem on which this command will run
+   */
   public DriveDistance(double inches, double speed, DriveSubsystem drive) {
     m_distance = inches;
     m_speed = speed;

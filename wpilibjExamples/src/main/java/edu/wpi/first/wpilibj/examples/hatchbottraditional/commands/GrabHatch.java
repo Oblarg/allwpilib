@@ -7,8 +7,9 @@
 
 package edu.wpi.first.wpilibj.examples.hatchbottraditional.commands;
 
-import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.HatchSubsystem;
 import edu.wpi.first.wpilibj.experimental.command.SendableCommandBase;
+
+import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.HatchSubsystem;
 
 /**
  * A simple command that grabs a hatch with the {@link HatchSubsystem}.  Written explicitly for

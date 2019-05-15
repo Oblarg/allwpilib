@@ -7,8 +7,9 @@
 
 package edu.wpi.first.wpilibj.examples.hatchbottraditional.commands;
 
-import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.HatchSubsystem;
 import edu.wpi.first.wpilibj.experimental.command.InstantCommand;
+
+import edu.wpi.first.wpilibj.examples.hatchbottraditional.subsystems.HatchSubsystem;
 
 /**
  * A command that releases the hatch.
