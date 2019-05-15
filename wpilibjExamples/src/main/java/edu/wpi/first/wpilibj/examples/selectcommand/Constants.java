@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.examples.selectcommand;
 
 /**
@@ -9,7 +16,6 @@ package edu.wpi.first.wpilibj.examples.selectcommand;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
   /**
    * Example of an inner class.  One can "import static [...].Constants.OIConstants.*" to gain
    * access to the constants contained within without having to preface the names with the class,

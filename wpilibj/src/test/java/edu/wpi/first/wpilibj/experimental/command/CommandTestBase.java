@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.experimental.command;
 
 import java.util.Set;
@@ -12,7 +19,6 @@ import static org.mockito.Mockito.when;
  */
 @SuppressWarnings("PMD.AbstractClassWithoutAbstractMethod")
 public abstract class CommandTestBase {
-
   @BeforeEach
   void commandSetup() {
     CommandScheduler.getInstance().cancelAll();
@@ -22,11 +28,9 @@ public abstract class CommandTestBase {
   }
 
   class TestSubsystem extends SendableSubsystemBase {
-
   }
 
   protected class MockCommandHolder {
-
     private final Command m_mockCommand = mock(Command.class);
 
     MockCommandHolder(boolean runWhenDisabled, Subsystem... requirements) {

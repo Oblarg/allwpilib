@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.examples.schedulereventlogging;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -15,7 +22,6 @@ import static edu.wpi.first.wpilibj.XboxController.*;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
   // The driver's controller
   private XboxController m_driverController = new XboxController(kDriverControllerPort);
 

@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.experimental.command;
 
 import java.util.Collections;
@@ -24,7 +31,6 @@ import static java.util.Objects.requireNonNull;
  * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
  */
 public class SelectCommand extends SendableCommandBase {
-
   private final Map<Object, Command> m_commands;
   private final Supplier<Object> m_selector;
   private final Supplier<Command> m_toRun;

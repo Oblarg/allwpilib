@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.experimental.command;
 
 import java.util.HashSet;
@@ -20,7 +27,6 @@ import static edu.wpi.first.wpilibj.experimental.command.CommandGroupBase.requir
  * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
  */
 public class ConditionalCommand extends SendableCommandBase {
-
   private final Command m_onTrue;
   private final Command m_onFalse;
   private final BooleanSupplier m_condition;

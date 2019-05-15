@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.experimental.command;
 
 import static java.util.Objects.requireNonNull;
@@ -8,7 +15,6 @@ import static java.util.Objects.requireNonNull;
  * or else subclass this command if desired.
  */
 public class InstantCommand extends SendableCommandBase {
-
   private final Runnable m_toRun;
 
   /**

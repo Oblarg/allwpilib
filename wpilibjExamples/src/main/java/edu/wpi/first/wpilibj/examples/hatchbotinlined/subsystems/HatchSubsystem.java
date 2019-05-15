@@ -17,7 +17,6 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
  * A hatch mechanism actuated by a single {@link edu.wpi.first.wpilibj.DoubleSolenoid}.
  */
 public class HatchSubsystem extends SendableSubsystemBase {
-
   private final DoubleSolenoid m_hatchSolenoid =
       new DoubleSolenoid(kHatchSolenoidModule, kHatchSolenoidPorts[0], kHatchSolenoidPorts[1]);
 

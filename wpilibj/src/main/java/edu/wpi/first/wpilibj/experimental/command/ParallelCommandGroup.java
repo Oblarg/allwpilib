@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.experimental.command;
 
 import java.util.Collections;
@@ -13,7 +20,6 @@ import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
  * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
  */
 public class ParallelCommandGroup extends CommandGroupBase {
-
   //maps commands in this group to whether they are still running
   private final Map<Command, Boolean> m_commands = new HashMap<>();
   private boolean m_runWhenDisabled = true;

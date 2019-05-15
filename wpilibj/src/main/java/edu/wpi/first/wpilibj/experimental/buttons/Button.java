@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.experimental.command.Command;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public abstract class Button extends Trigger {
-
   /**
    * Starts the given command whenever the button is newly pressed.
    *

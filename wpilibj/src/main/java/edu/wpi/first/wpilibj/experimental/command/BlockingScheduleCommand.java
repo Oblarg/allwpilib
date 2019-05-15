@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package edu.wpi.first.wpilibj.experimental.command;
 
 import java.util.Set;
@@ -8,7 +15,6 @@ import java.util.Set;
  * it will cancel all of the commands.
  */
 public class BlockingScheduleCommand extends SendableCommandBase {
-
   private final Set<Command> m_toSchedule;
   private boolean m_finished;
 
