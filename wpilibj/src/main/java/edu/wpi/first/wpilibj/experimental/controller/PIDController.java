@@ -63,7 +63,7 @@ public class PIDController implements Sendable, AutoCloseable {
   private boolean m_continuous;
 
   // The error at the time of the most recent call to calculate()
-  private double m_currError = 0;
+  private double m_currError;
 
   // The error at the time of the second-most-recent call to calculate() (used to compute velocity)
   private double m_prevError = Double.POSITIVE_INFINITY;
@@ -468,6 +468,12 @@ public class PIDController implements Sendable, AutoCloseable {
     }
   }
 
+  /**
+   * Calculates the output of the PID controller.
+   * 
+   * @param measurement The current measurement of the process variable.
+   * @return The controller output.
+   */
   @SuppressWarnings("LocalVariableName")
   public double calculate(double measurement) {
     // Storage for function inputs
@@ -516,7 +522,7 @@ public class PIDController implements Sendable, AutoCloseable {
   }
 
   /**
-   * Read the input, calculate the output accordingly, and return to the output.
+   * Read the input, calculate the output accordingly, and return the output.
    *
    * @param measurement The current measurement of the process variable.
    * @param reference   The reference (setpoint) of the controller.

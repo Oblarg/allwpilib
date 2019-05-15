@@ -23,8 +23,8 @@ import org.junit.runners.Parameterized.Parameters;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.experimental.controller.PIDControllerRunner;
 import edu.wpi.first.wpilibj.experimental.controller.PIDController;
+import edu.wpi.first.wpilibj.experimental.controller.PIDControllerRunner;
 import edu.wpi.first.wpilibj.fixtures.MotorEncoderFixture;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilderImpl;
 import edu.wpi.first.wpilibj.test.AbstractComsSetup;
@@ -112,7 +112,8 @@ public class PIDTest extends AbstractComsSetup {
     m_builder = new SendableBuilderImpl();
     m_builder.setTable(m_table);
     m_controller = new PIDController(k_p, k_i, k_d);
-    m_runner = new PIDControllerRunner(m_controller, me.getEncoder()::getDistance, me.getMotor()::set);
+    m_runner = new PIDControllerRunner(m_controller, 
+        me.getEncoder()::getDistance, me.getMotor()::set);
     m_controller.initSendable(m_builder);
   }
 
