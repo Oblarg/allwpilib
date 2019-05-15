@@ -63,7 +63,7 @@ public class PIDController implements Sendable, AutoCloseable {
   private boolean m_continuous;
 
   // The error at the time of the most recent call to calculate()
-  private double m_currError = Double.POSITIVE_INFINITY;
+  private double m_currError = 0;
 
   // The error at the time of the second-most-recent call to calculate() (used to compute velocity)
   private double m_prevError = Double.POSITIVE_INFINITY;
@@ -522,9 +522,9 @@ public class PIDController implements Sendable, AutoCloseable {
    * @param reference   The reference (setpoint) of the controller.
    * @return The controller output.
    */
-  public void calculate(double measurement, double reference) {
+  public double calculate(double measurement, double reference) {
     setReference(reference);
-    calculate(measurement);
+    return calculate(measurement);
   }
 
   /**

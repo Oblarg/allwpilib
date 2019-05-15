@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import edu.wpi.first.wpilibj.experimental.controller.PIDController;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PIDInputOutputTest {
   private PIDController m_controller;
@@ -16,12 +17,40 @@ class PIDInputOutputTest {
   }
 
   @Test
+  void outputRangeTest() {
+    m_controller.setP(1);
+    m_controller.setOutputRange(-50, 50);
+
+    assertEquals(-50, m_controller.calculate(100, 0), 1e-5);
+    assertEquals(50, m_controller.calculate(0, 100), 1e-5);
+  }
+
+  @Test
+  void inputRangeTest() {
+    m_controller.setP(1);
+    m_controller.setOutputRange(-1000, 1000);
+    m_controller.setInputRange(-50, 50);
+
+    assertEquals(-100, m_controller.calculate(100, 0), 1e-5);
+    assertEquals(50, m_controller.calculate(0, 100), 1e-5);
+  }
+
+  @Test
+  void continuousInputTest() {
+    m_controller.setP(1);
+    m_controller.setInputRange(-180, 180);
+    m_controller.setContinuous(true);
+
+    assertTrue(m_controller.calculate(-179, 179) < 0.);
+  }
+
+  @Test
   void proportionalGainOutputTest() {
     m_controller.setP(4);
 
-    double out = m_controller.calculate(2.5, 0);
+    double out = m_controller.calculate(.025, 0);
 
-    assertEquals(out, -10., 1e-5);
+    assertEquals(-.1, out, 1e-5);
   }
 
   @Test
@@ -30,20 +59,20 @@ class PIDInputOutputTest {
 
     double out = 0;
 
-    for (int i = 0; i < 10; i++) {
-      out = m_controller.calculate(2.5, 0);
+    for (int i = 0; i < 5; i++) {
+      out = m_controller.calculate(.025, 0);
     }
 
-    assertEquals(out, -100.*m_controller.getPeriod(), 1e-5);
+    assertEquals(-.5*m_controller.getPeriod(), out, 1e-5);
   }
 
   @Test
   void derivativeGainOutputTest() {
-    m_controller.setI(4);
+    m_controller.setD(4);
 
     m_controller.calculate(0, 0);
-    double out = m_controller.calculate(2.5, 0);
+    double out = m_controller.calculate(.0025, 0);
 
-    assertEquals(out, -10./m_controller.getPeriod());
+    assertEquals(-.01/m_controller.getPeriod(), out, 1e-5);
   }
 }
