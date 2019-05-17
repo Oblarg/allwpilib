@@ -28,11 +28,11 @@ import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 /**
- * The scheduler responsible for running {@link Command}s.  A Command-based robot should call
- * {@link CommandScheduler#run()} on the singleton instance in its periodic block in order to
- * run commands synchronously from the main loop.  Subsystems should be registered with the
- * scheduler using {@link CommandScheduler#registerSubsystem(Subsystem...)} in order for their
- * {@link Subsystem#periodic()} methods to be called and for their default commands to be scheduled.
+ * The scheduler responsible for running {@link Command}s.  A Command-based robot should call {@link
+ * CommandScheduler#run()} on the singleton instance in its periodic block in order to run commands
+ * synchronously from the main loop.  Subsystems should be registered with the scheduler using
+ * {@link CommandScheduler#registerSubsystem(Subsystem...)} in order for their {@link
+ * Subsystem#periodic()} methods to be called and for their default commands to be scheduled.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
 public final class CommandScheduler extends SendableBase {
@@ -103,10 +103,10 @@ public final class CommandScheduler extends SendableBase {
   }
 
   /**
-   * Schedules a command for execution.  Does nothing if the command is already scheduled.
-   * If a command's requirements are not available, it will only be started if all the commands
-   * currently using those requirements have been scheduled as interruptible.  If this is
-   * the case, they will be interrupted and the command will be scheduled.
+   * Schedules a command for execution.  Does nothing if the command is already scheduled. If a
+   * command's requirements are not available, it will only be started if all the commands currently
+   * using those requirements have been scheduled as interruptible.  If this is the case, they will
+   * be interrupted and the command will be scheduled.
    *
    * @param interruptible whether this command can be interrupted
    * @param command       the command to schedule
@@ -120,8 +120,7 @@ public final class CommandScheduler extends SendableBase {
 
     //Do nothing if the scheduler is disabled, the robot is disabled and the command doesn't
     //run when disabled, or the command is already scheduled.
-    if (m_disabled
-        || (RobotState.isDisabled() && !command.runsWhenDisabled())
+    if (m_disabled || (RobotState.isDisabled() && !command.runsWhenDisabled())
         || m_scheduledCommands.containsKey(command)) {
       return;
     }
@@ -130,15 +129,7 @@ public final class CommandScheduler extends SendableBase {
 
     //Schedule the command if the requirements are not currently in-use.
     if (Collections.disjoint(m_requirements.keySet(), requirements)) {
-      command.initialize();
-      CommandState scheduledCommand = new CommandState(interruptible);
-      m_scheduledCommands.put(command, scheduledCommand);
-      for (Consumer<Command> action : m_initActions) {
-        action.accept(command);
-      }
-      for (Subsystem requirement : requirements) {
-        m_requirements.put(requirement, command);
-      }
+      initCommand(command, interruptible, requirements);
     } else {
       //Else check if the requirements that are in use have all have interruptible commands,
       //and if so, interrupt those commands and schedule the new command.
@@ -155,21 +146,35 @@ public final class CommandScheduler extends SendableBase {
             cancel(m_requirements.get(requirement));
           }
         }
-        command.initialize();
-        CommandState scheduledCommand = new CommandState(interruptible);
-        m_scheduledCommands.put(command, scheduledCommand);
-        for (Consumer<Command> action : m_initActions) {
-          action.accept(command);
-        }
+        initCommand(command, interruptible, requirements);
       }
+    }
+  }
+
+  /**
+   * Initializes a given command, adds its requirements to the list, and performs the init actions.
+   *
+   * @param command       The command to initialize
+   * @param interruptible Whether the command is interruptible
+   * @param requirements  The command requirements
+   */
+  private void initCommand(Command command, boolean interruptible, Set<Subsystem> requirements) {
+    command.initialize();
+    CommandState scheduledCommand = new CommandState(interruptible);
+    m_scheduledCommands.put(command, scheduledCommand);
+    for (Consumer<Command> action : m_initActions) {
+      action.accept(command);
+    }
+    for (Subsystem requirement : requirements) {
+      m_requirements.put(requirement, command);
     }
   }
 
   /**
    * Schedules multiple commands for execution.  Does nothing if the command is already scheduled.
    * If a command's requirements are not available, it will only be started if all the commands
-   * currently using those requirements have been scheduled as interruptible.  If this is
-   * the case, they will be interrupted and the command will be scheduled.
+   * currently using those requirements have been scheduled as interruptible.  If this is the case,
+   * they will be interrupted and the command will be scheduled.
    *
    * @param interruptible whether the commands should be interruptible
    * @param commands      the commands to schedule
@@ -184,7 +189,7 @@ public final class CommandScheduler extends SendableBase {
    * Schedules multiple commands for execution, with interruptible defaulted to true.  Does nothing
    * if the command is already scheduled.
    *
-   * @param commands      the commands to schedule
+   * @param commands the commands to schedule
    */
   public void schedule(Command... commands) {
     schedule(true, commands);
@@ -282,9 +287,9 @@ public final class CommandScheduler extends SendableBase {
   /**
    * Sets the default command for a subsystem.  Registers that subsystem if it is not already
    * registered.  Default commands will run whenever there is no other command currently scheduled
-   * that requires the subsystem.  Default commands should be written to never end
-   * (i.e. their {@link Command#isFinished()} method should return false), as they would simply
-   * be re-scheduled if they do.  Default commands must also require their subsystem.
+   * that requires the subsystem.  Default commands should be written to never end (i.e. their
+   * {@link Command#isFinished()} method should return false), as they would simply be re-scheduled
+   * if they do.  Default commands must also require their subsystem.
    *
    * @param subsystem      the subsystem whose default command will be set
    * @param defaultCommand the default command to associate with the subsystem
@@ -302,8 +307,8 @@ public final class CommandScheduler extends SendableBase {
   }
 
   /**
-   * Gets the default command associated with this subsystem.  Null if this subsystem has no
-   * default command associated with it.
+   * Gets the default command associated with this subsystem.  Null if this subsystem has no default
+   * command associated with it.
    *
    * @param subsystem the subsystem to inquire about
    * @return the default command associated with the subsystem
