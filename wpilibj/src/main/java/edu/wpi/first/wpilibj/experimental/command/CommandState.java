@@ -43,6 +43,6 @@ class CommandState {
   }
 
   double timeSinceInitialized() {
-    return Timer.getFPGATimestamp() - m_startTime;
+    return m_startTime != -1 ? Timer.getFPGATimestamp() - m_startTime : -1;
   }
 }
