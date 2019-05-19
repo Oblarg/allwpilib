@@ -103,6 +103,25 @@ public final class CommandScheduler extends SendableBase {
   }
 
   /**
+   * Initializes a given command, adds its requirements to the list, and performs the init actions.
+   *
+   * @param command       The command to initialize
+   * @param interruptible Whether the command is interruptible
+   * @param requirements  The command requirements
+   */
+  private void initCommand(Command command, boolean interruptible, Set<Subsystem> requirements) {
+    command.initialize();
+    CommandState scheduledCommand = new CommandState(interruptible);
+    m_scheduledCommands.put(command, scheduledCommand);
+    for (Consumer<Command> action : m_initActions) {
+      action.accept(command);
+    }
+    for (Subsystem requirement : requirements) {
+      m_requirements.put(requirement, command);
+    }
+  }
+
+  /**
    * Schedules a command for execution.  Does nothing if the command is already scheduled. If a
    * command's requirements are not available, it will only be started if all the commands currently
    * using those requirements have been scheduled as interruptible.  If this is the case, they will
@@ -148,25 +167,6 @@ public final class CommandScheduler extends SendableBase {
         }
         initCommand(command, interruptible, requirements);
       }
-    }
-  }
-
-  /**
-   * Initializes a given command, adds its requirements to the list, and performs the init actions.
-   *
-   * @param command       The command to initialize
-   * @param interruptible Whether the command is interruptible
-   * @param requirements  The command requirements
-   */
-  private void initCommand(Command command, boolean interruptible, Set<Subsystem> requirements) {
-    command.initialize();
-    CommandState scheduledCommand = new CommandState(interruptible);
-    m_scheduledCommands.put(command, scheduledCommand);
-    for (Consumer<Command> action : m_initActions) {
-      action.accept(command);
-    }
-    for (Subsystem requirement : requirements) {
-      m_requirements.put(requirement, command);
     }
   }
 
