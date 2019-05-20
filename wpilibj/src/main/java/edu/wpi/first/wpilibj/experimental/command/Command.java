@@ -229,6 +229,17 @@ public interface Command {
   }
 
   /**
+   * Decorates this command to run "by proxy" by wrapping it in a {@link ProxyScheduleCommand}.
+   * This is useful for "forking off" from command groups when the user does not wish to extend
+   * the command's requirements to the entire command group.
+   *
+   * @return the decorated command
+   */
+  default Command asProxy() {
+    return new ProxyScheduleCommand(this);
+  }
+
+  /**
    * Schedules this command.
    *
    * @param interruptible whether this command can be interrupted by another command that

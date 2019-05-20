@@ -10,21 +10,21 @@ package edu.wpi.first.wpilibj.experimental.command;
 import java.util.Set;
 
 /**
- * Schedules the given commands with this command is initialized, and ends when all the commands are
+ * Schedules the given commands when this command is initialized, and ends when all the commands are
  * no longer scheduled.  Useful for forking off from CommandGroups.  If this command is interrupted,
  * it will cancel all of the commands.
  */
-public class BlockingScheduleCommand extends SendableCommandBase {
+public class ProxyScheduleCommand extends SendableCommandBase {
   private final Set<Command> m_toSchedule;
   private boolean m_finished;
 
   /**
-   * Creates a new BlockingScheduleCommand that schedules the given commands when initialized,
+   * Creates a new ProxyScheduleCommand that schedules the given commands when initialized,
    * and ends when they are all no longer scheduled.
    *
    * @param toSchedule the commands to schedule
    */
-  public BlockingScheduleCommand(Command... toSchedule) {
+  public ProxyScheduleCommand(Command... toSchedule) {
     m_toSchedule = Set.of(toSchedule);
   }
 
