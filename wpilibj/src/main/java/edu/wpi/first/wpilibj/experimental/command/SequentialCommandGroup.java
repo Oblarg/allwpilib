@@ -9,7 +9,6 @@ package edu.wpi.first.wpilibj.experimental.command;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
 
@@ -89,11 +88,6 @@ public class SequentialCommandGroup extends CommandGroupBase {
   @Override
   public boolean isFinished() {
     return m_currentCommandIndex == m_commands.size();
-  }
-
-  @Override
-  public Set<Subsystem> getRequirements() {
-    return m_requirements;
   }
 
   @Override

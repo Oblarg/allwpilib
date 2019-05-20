@@ -91,11 +91,6 @@ public class ParallelRaceGroup extends CommandGroupBase {
   }
 
   @Override
-  public Set<Subsystem> getRequirements() {
-    return m_requirements;
-  }
-
-  @Override
   public boolean runsWhenDisabled() {
     return m_runWhenDisabled;
   }

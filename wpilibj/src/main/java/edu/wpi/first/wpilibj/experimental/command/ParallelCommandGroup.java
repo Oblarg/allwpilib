@@ -10,7 +10,6 @@ package edu.wpi.first.wpilibj.experimental.command;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
 
@@ -93,11 +92,6 @@ public class ParallelCommandGroup extends CommandGroupBase {
   @Override
   public boolean isFinished() {
     return !m_commands.values().contains(true);
-  }
-
-  @Override
-  public Set<Subsystem> getRequirements() {
-    return m_requirements;
   }
 
   @Override

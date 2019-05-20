@@ -7,8 +7,6 @@
 
 package edu.wpi.first.wpilibj.experimental.command;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 import static edu.wpi.first.wpilibj.experimental.command.CommandGroupBase.requireUngrouped;
@@ -31,7 +29,6 @@ public class ConditionalCommand extends SendableCommandBase {
   private final Command m_onFalse;
   private final BooleanSupplier m_condition;
   private Command m_selectedCommand;
-  private final Set<Subsystem> m_requirements = new HashSet<>();
 
   /**
    * Creates a new ConditionalCommand.
@@ -75,11 +72,6 @@ public class ConditionalCommand extends SendableCommandBase {
   @Override
   public boolean isFinished() {
     return m_selectedCommand.isFinished();
-  }
-
-  @Override
-  public Set<Subsystem> getRequirements() {
-    return m_requirements;
   }
 
   @Override

@@ -9,7 +9,6 @@ package edu.wpi.first.wpilibj.experimental.command;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
@@ -98,11 +97,6 @@ public class SelectCommand extends SendableCommandBase {
   @Override
   public boolean isFinished() {
     return m_selectedCommand.isFinished();
-  }
-
-  @Override
-  public Set<Subsystem> getRequirements() {
-    return m_requirements;
   }
 
   @Override
