@@ -9,6 +9,9 @@ package edu.wpi.first.wpilibj;
 
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendGyro;
 
 /**
  * GyroBase is the common base class for Gyro implementations such as AnalogGyro.
@@ -52,7 +55,6 @@ public abstract class GyroBase extends SendableBase implements Gyro, PIDSource {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("Gyro");
-    builder.addDoubleProperty("Value", this::getAngle, null);
+    sendGyro(builder, new DoubleProperty(this::getAngle, null));
   }
 }

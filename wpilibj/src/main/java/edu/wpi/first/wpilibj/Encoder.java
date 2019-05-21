@@ -12,7 +12,9 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.hal.util.AllocationException;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleProperty;
 
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendEncoder;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -562,14 +564,9 @@ public class Encoder extends SendableBase implements CounterBase, PIDSource {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    if (EncoderJNI.getEncoderEncodingType(m_encoder) == EncodingType.k4X.value) {
-      builder.setSmartDashboardType("Quadrature Encoder");
-    } else {
-      builder.setSmartDashboardType("Encoder");
-    }
-
-    builder.addDoubleProperty("Speed", this::getRate, null);
-    builder.addDoubleProperty("Distance", this::getDistance, null);
-    builder.addDoubleProperty("Distance per Tick", this::getDistancePerPulse, null);
+    sendEncoder(builder,
+        new DoubleProperty(this::getRate, null),
+        new DoubleProperty(this::getDistance, null),
+        new DoubleProperty(this::getDistancePerPulse, null));
   }
 }

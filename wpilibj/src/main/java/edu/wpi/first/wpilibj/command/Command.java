@@ -13,6 +13,10 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.BooleanProperty;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.StringProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendCommand;
 
 /**
  * The Command class is at the very core of the entire command framework. Every command can be
@@ -296,7 +300,8 @@ public abstract class Command extends SendableBase {
   /**
    * The initialize method is called the first time this Command is run after being started.
    */
-  protected void initialize() {}
+  protected void initialize() {
+  }
 
   /**
    * A shadow method called before {@link Command#initialize() initialize()}.
@@ -309,7 +314,8 @@ public abstract class Command extends SendableBase {
    * The execute method is called repeatedly until this Command either finishes or is canceled.
    */
   @SuppressWarnings("MethodName")
-  protected void execute() {}
+  protected void execute() {
+  }
 
   /**
    * A shadow method called before {@link Command#execute() execute()}.
@@ -326,9 +332,8 @@ public abstract class Command extends SendableBase {
    * method for time-sensitive commands.
    *
    * <p>Returning false will result in the command never ending automatically. It may still be
-   * cancelled manually or interrupted by another command. Returning true will result in the
-   * command executing once and finishing immediately. We recommend using {@link InstantCommand}
-   * for this.
+   * cancelled manually or interrupted by another command. Returning true will result in the command
+   * executing once and finishing immediately. We recommend using {@link InstantCommand} for this.
    *
    * @return whether this command is finished.
    * @see Command#isTimedOut() isTimedOut()
@@ -339,7 +344,8 @@ public abstract class Command extends SendableBase {
    * Called when the command ended peacefully. This is where you may want to wrap up loose ends,
    * like shutting off a motor that was being used in the command.
    */
-  protected void end() {}
+  protected void end() {
+  }
 
   /**
    * A shadow method called after {@link Command#end() end()}.
@@ -366,7 +372,8 @@ public abstract class Command extends SendableBase {
    * A shadow method called after {@link Command#interrupted() interrupted()}.
    */
   @SuppressWarnings("MethodName")
-  void _interrupted() {}
+  void _interrupted() {
+  }
 
   /**
    * Called to indicate that the timer should start. This is called right before {@link
@@ -412,8 +419,8 @@ public abstract class Command extends SendableBase {
    */
   synchronized void validate(String message) {
     if (m_locked) {
-      throw new IllegalUseOfCommandException(message
-          + " after being started or being added to a command group");
+      throw new IllegalUseOfCommandException(
+          message + " after being started or being added to a command group");
     }
   }
 
@@ -442,9 +449,8 @@ public abstract class Command extends SendableBase {
   }
 
   /**
-   * Clears list of subsystem requirements. This is only used by
-   * {@link ConditionalCommand} so cancelling the chosen command works properly
-   * in {@link CommandGroup}.
+   * Clears list of subsystem requirements. This is only used by {@link ConditionalCommand} so
+   * cancelling the chosen command works properly in {@link CommandGroup}.
    */
   protected void clearRequirements() {
     m_requirements.clear();
@@ -473,8 +479,8 @@ public abstract class Command extends SendableBase {
    *
    * <p>startRunning() is called. run() is called (multiple times potentially) removed() is called.
    *
-   * <p>It is very important that startRunning and removed be called in order or some assumptions of
-   * the code will be broken.
+   * <p>It is very important that startRunning and removed be called in order or some assumptions
+   * of the code will be broken.
    */
   synchronized void startRunning() {
     m_running = true;
@@ -502,8 +508,8 @@ public abstract class Command extends SendableBase {
    */
   public synchronized void cancel() {
     if (m_parent != null) {
-      throw new IllegalUseOfCommandException("Can not manually cancel a command in a command "
-          + "group");
+      throw new IllegalUseOfCommandException(
+          "Can not manually cancel a command in a command " + "group");
     }
     _cancel();
   }
@@ -608,19 +614,19 @@ public abstract class Command extends SendableBase {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("Command");
-    builder.addStringProperty(".name", this::getName, null);
-    builder.addBooleanProperty("running", this::isRunning, value -> {
-      if (value) {
-        if (!isRunning()) {
-          start();
-        }
-      } else {
-        if (isRunning()) {
-          cancel();
-        }
-      }
-    });
-    builder.addBooleanProperty(".isParented", this::isParented, null);
+    sendCommand(builder,
+        new StringProperty(this::getName, null),
+        new BooleanProperty(this::isRunning, value -> {
+          if (value) {
+            if (!isRunning()) {
+              start();
+            }
+          } else {
+            if (isRunning()) {
+              cancel();
+            }
+          }
+        }),
+        new BooleanProperty(this::isParented, null));
   }
 }

@@ -15,6 +15,9 @@ import edu.wpi.first.hal.HAL;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleArrayProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendThreeAxisAccelerometer;
 
 /**
  * ADXL362 SPI Accelerometer.
@@ -213,15 +216,9 @@ public class ADXL362 extends SendableBase implements Accelerometer {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("3AxisAccelerometer");
-    NetworkTableEntry entryX = builder.getEntry("X");
-    NetworkTableEntry entryY = builder.getEntry("Y");
-    NetworkTableEntry entryZ = builder.getEntry("Z");
-    builder.setUpdateTable(() -> {
+    sendThreeAxisAccelerometer(builder, new DoubleArrayProperty(() -> {
       AllAxes data = getAccelerations();
-      entryX.setDouble(data.XAxis);
-      entryY.setDouble(data.YAxis);
-      entryZ.setDouble(data.ZAxis);
-    });
+      return new double[]{data.XAxis, data.YAxis, data.ZAxis};
+    }, null));
   }
 }

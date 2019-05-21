@@ -13,6 +13,10 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.BooleanProperty;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.StringProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendSubsystem;
 
 /**
  * This class defines a major component of the robot.
@@ -200,11 +204,10 @@ public abstract class Subsystem extends SendableBase {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("Subsystem");
-
-    builder.addBooleanProperty(".hasDefault", () -> m_defaultCommand != null, null);
-    builder.addStringProperty(".default", this::getDefaultCommandName, null);
-    builder.addBooleanProperty(".hasCommand", () -> m_currentCommand != null, null);
-    builder.addStringProperty(".command", this::getCurrentCommandName, null);
+    sendSubsystem(builder,
+        new BooleanProperty(() -> m_defaultCommand != null, null),
+        new StringProperty(this::getDefaultCommandName, null),
+        new BooleanProperty(() -> m_currentCommand != null, null),
+        new StringProperty(this::getCurrentCommandName, null));
   }
 }

@@ -15,15 +15,18 @@ import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendDifferentialDrive;
 
 /**
  * A class for driving differential drive/skid-steer drive platforms such as the Kit of Parts drive
  * base, "tank drive", or West Coast Drive.
  *
  * <p>These drive bases typically have drop-center / skid-steer with two or more wheels per side
- * (e.g., 6WD or 8WD). This class takes a SpeedController per side. For four and
- * six motor drivetrains, construct and pass in {@link edu.wpi.first.wpilibj.SpeedControllerGroup}
- * instances as follows.
+ * (e.g., 6WD or 8WD). This class takes a SpeedController per side. For four and six motor
+ * drivetrains, construct and pass in {@link edu.wpi.first.wpilibj.SpeedControllerGroup} instances
+ * as follows.
  *
  * <p>Four motor drivetrain:
  * <pre><code>
@@ -80,8 +83,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * positive.
  *
  * <p>Inputs smaller then {@value edu.wpi.first.wpilibj.drive.RobotDriveBase#kDefaultDeadband} will
- * be set to 0, and larger values will be scaled so that the full range is still used. This
- * deadband value can be changed with {@link #setDeadband}.
+ * be set to 0, and larger values will be scaled so that the full range is still used. This deadband
+ * value can be changed with {@link #setDeadband}.
  *
  * <p>RobotDrive porting guide:
  * <br>{@link #tankDrive(double, double)} is equivalent to
@@ -111,7 +114,8 @@ public class DifferentialDrive extends RobotDriveBase {
   /**
    * Construct a DifferentialDrive.
    *
-   * <p>To pass multiple motors per side, use a {@link SpeedControllerGroup}. If a motor needs to be
+   * <p>To pass multiple motors per side, use a {@link SpeedControllerGroup}. If a motor needs to
+   * be
    * inverted, do so before passing it in.
    */
   public DifferentialDrive(SpeedController leftMotor, SpeedController rightMotor) {
@@ -125,10 +129,10 @@ public class DifferentialDrive extends RobotDriveBase {
   }
 
   /**
-   * Verifies that all motors are nonnull, throwing a NullPointerException if any of them are.
-   * The exception's error message will specify all null motors, e.g. {@code
-   * NullPointerException("leftMotor, rightMotor")}, to give as much information as possible to
-   * the programmer.
+   * Verifies that all motors are nonnull, throwing a NullPointerException if any of them are. The
+   * exception's error message will specify all null motors, e.g. {@code
+   * NullPointerException("leftMotor, rightMotor")}, to give as much information as possible to the
+   * programmer.
    *
    * @throws NullPointerException if any of the given motors are null
    */
@@ -148,8 +152,8 @@ public class DifferentialDrive extends RobotDriveBase {
   }
 
   /**
-   * Arcade drive method for differential drive platform.
-   * The calculated values will be squared to decrease sensitivity at low speeds.
+   * Arcade drive method for differential drive platform. The calculated values will be squared to
+   * decrease sensitivity at low speeds.
    *
    * @param xSpeed    The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
    * @param zRotation The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
@@ -163,16 +167,16 @@ public class DifferentialDrive extends RobotDriveBase {
   /**
    * Arcade drive method for differential drive platform.
    *
-   * @param xSpeed        The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
-   * @param zRotation     The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
-   *                      positive.
+   * @param xSpeed       The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+   * @param zRotation    The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
+   *                     positive.
    * @param squareInputs If set, decreases the input sensitivity at low speeds.
    */
   @SuppressWarnings("ParameterName")
   public void arcadeDrive(double xSpeed, double zRotation, boolean squareInputs) {
     if (!m_reported) {
       HAL.report(tResourceType.kResourceType_RobotDrive, 2,
-                 tInstances.kRobotDrive2_DifferentialArcade);
+          tInstances.kRobotDrive2_DifferentialArcade);
       m_reported = true;
     }
 
@@ -224,21 +228,20 @@ public class DifferentialDrive extends RobotDriveBase {
    * Curvature drive method for differential drive platform.
    *
    * <p>The rotation argument controls the curvature of the robot's path rather than its rate of
-   * heading change. This makes the robot more controllable at high speeds. Also handles the
-   * robot's quick turn functionality - "quick turn" overrides constant-curvature turning for
-   * turn-in-place maneuvers.
+   * heading change. This makes the robot more controllable at high speeds. Also handles the robot's
+   * quick turn functionality - "quick turn" overrides constant-curvature turning for turn-in-place
+   * maneuvers.
    *
    * @param xSpeed      The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
    * @param zRotation   The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
    *                    positive.
-   * @param isQuickTurn If set, overrides constant-curvature turning for
-   *                    turn-in-place maneuvers.
+   * @param isQuickTurn If set, overrides constant-curvature turning for turn-in-place maneuvers.
    */
   @SuppressWarnings({"ParameterName", "PMD.CyclomaticComplexity"})
   public void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
     if (!m_reported) {
       HAL.report(tResourceType.kResourceType_RobotDrive, 2,
-                 tInstances.kRobotDrive2_DifferentialCurvature);
+          tInstances.kRobotDrive2_DifferentialCurvature);
       m_reported = true;
     }
 
@@ -253,8 +256,9 @@ public class DifferentialDrive extends RobotDriveBase {
 
     if (isQuickTurn) {
       if (Math.abs(xSpeed) < m_quickStopThreshold) {
-        m_quickStopAccumulator = (1 - m_quickStopAlpha) * m_quickStopAccumulator
-            + m_quickStopAlpha * limit(zRotation) * 2;
+        m_quickStopAccumulator =
+            (1 - m_quickStopAlpha) * m_quickStopAccumulator + m_quickStopAlpha * limit(zRotation)
+                * 2;
       }
       overPower = true;
       angularPower = zRotation;
@@ -305,8 +309,8 @@ public class DifferentialDrive extends RobotDriveBase {
   }
 
   /**
-   * Tank drive method for differential drive platform.
-   * The calculated values will be squared to decrease sensitivity at low speeds.
+   * Tank drive method for differential drive platform. The calculated values will be squared to
+   * decrease sensitivity at low speeds.
    *
    * @param leftSpeed  The robot's left side speed along the X axis [-1.0..1.0]. Forward is
    *                   positive.
@@ -320,16 +324,16 @@ public class DifferentialDrive extends RobotDriveBase {
   /**
    * Tank drive method for differential drive platform.
    *
-   * @param leftSpeed     The robot left side's speed along the X axis [-1.0..1.0]. Forward is
-   *                      positive.
-   * @param rightSpeed    The robot right side's speed along the X axis [-1.0..1.0]. Forward is
-   *                      positive.
+   * @param leftSpeed    The robot left side's speed along the X axis [-1.0..1.0]. Forward is
+   *                     positive.
+   * @param rightSpeed   The robot right side's speed along the X axis [-1.0..1.0]. Forward is
+   *                     positive.
    * @param squareInputs If set, decreases the input sensitivity at low speeds.
    */
   public void tankDrive(double leftSpeed, double rightSpeed, boolean squareInputs) {
     if (!m_reported) {
       HAL.report(tResourceType.kResourceType_RobotDrive, 2,
-                 tInstances.kRobotDrive2_DifferentialTank);
+          tInstances.kRobotDrive2_DifferentialTank);
       m_reported = true;
     }
 
@@ -415,13 +419,9 @@ public class DifferentialDrive extends RobotDriveBase {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("DifferentialDrive");
-    builder.setActuator(true);
-    builder.setSafeState(this::stopMotor);
-    builder.addDoubleProperty("Left Motor Speed", m_leftMotor::get, m_leftMotor::set);
-    builder.addDoubleProperty(
-        "Right Motor Speed",
-        () -> m_rightMotor.get() * m_rightSideInvertMultiplier,
-        x -> m_rightMotor.set(x * m_rightSideInvertMultiplier));
+    sendDifferentialDrive(builder, this::stopMotor,
+        new DoubleProperty(m_leftMotor::get, m_leftMotor::set),
+        new DoubleProperty(() -> m_rightMotor.get() * m_rightSideInvertMultiplier,
+            x -> m_rightMotor.set(x * m_rightSideInvertMultiplier)));
   }
 }

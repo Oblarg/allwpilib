@@ -10,7 +10,9 @@ package edu.wpi.first.wpilibj;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleProperty;
 
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendAccelerometer;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -137,7 +139,6 @@ public class AnalogAccelerometer extends SendableBase implements PIDSource {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("Accelerometer");
-    builder.addDoubleProperty("Value", this::getAcceleration, null);
+    sendAccelerometer(builder, new DoubleProperty(this::getAcceleration, null));
   }
 }

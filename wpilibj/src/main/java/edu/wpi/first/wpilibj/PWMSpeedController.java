@@ -8,6 +8,9 @@
 package edu.wpi.first.wpilibj;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendSpeedController;
 
 /**
  * Common base class for all PWM Speed Controllers.
@@ -81,9 +84,7 @@ public abstract class PWMSpeedController extends PWM implements SpeedController 
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("Speed Controller");
-    builder.setActuator(true);
-    builder.setSafeState(this::setDisabled);
-    builder.addDoubleProperty("Value", this::getSpeed, this::setSpeed);
+    sendSpeedController(builder, this::setDisabled,
+        new DoubleProperty(this::getSpeed, this::setSpeed));
   }
 }

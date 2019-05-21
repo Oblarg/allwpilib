@@ -16,6 +16,9 @@ import edu.wpi.first.hal.HAL;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleArrayProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendThreeAxisAccelerometer;
 
 /**
  * ADXL345 I2C Accelerometer.
@@ -39,9 +42,7 @@ public class ADXL345_I2C extends SendableBase implements Accelerometer {
   private static final byte kDataFormat_Justify = 0x04;
 
   public enum Axes {
-    kX((byte) 0x00),
-    kY((byte) 0x02),
-    kZ((byte) 0x04);
+    kX((byte) 0x00), kY((byte) 0x02), kZ((byte) 0x04);
 
     /**
      * The integer value representing this enumeration.
@@ -173,15 +174,9 @@ public class ADXL345_I2C extends SendableBase implements Accelerometer {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("3AxisAccelerometer");
-    NetworkTableEntry entryX = builder.getEntry("X");
-    NetworkTableEntry entryY = builder.getEntry("Y");
-    NetworkTableEntry entryZ = builder.getEntry("Z");
-    builder.setUpdateTable(() -> {
+    sendThreeAxisAccelerometer(builder, new DoubleArrayProperty(() -> {
       AllAxes data = getAccelerations();
-      entryX.setDouble(data.XAxis);
-      entryY.setDouble(data.YAxis);
-      entryZ.setDouble(data.ZAxis);
-    });
+      return new double[]{data.XAxis, data.YAxis, data.ZAxis};
+    }, null));
   }
 }

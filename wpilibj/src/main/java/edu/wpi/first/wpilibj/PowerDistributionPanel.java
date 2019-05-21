@@ -11,12 +11,15 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.hal.PDPJNI;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendPDP;
 
 /**
  * Class for getting voltage, current, temperature, power and energy from the Power Distribution
  * Panel over CAN.
  */
-public class PowerDistributionPanel extends SendableBase  {
+public class PowerDistributionPanel extends SendableBase {
   private final int m_handle;
 
   /**
@@ -113,12 +116,14 @@ public class PowerDistributionPanel extends SendableBase  {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.setSmartDashboardType("PowerDistributionPanel");
-    for (int i = 0; i < SensorUtil.kPDPChannels; ++i) {
-      final int chan = i;
-      builder.addDoubleProperty("Chan" + i, () -> getCurrent(chan), null);
+    DoubleProperty[] properties = new DoubleProperty[SensorUtil.kPDPChannels];
+
+    for (int i = 0; i < SensorUtil.kPDPChannels; i++) {
+      final int ii = i;
+      properties[ii] = new DoubleProperty(() -> getCurrent(ii), null);
     }
-    builder.addDoubleProperty("Voltage", this::getVoltage, null);
-    builder.addDoubleProperty("TotalCurrent", this::getTotalCurrent, null);
+
+    sendPDP(builder, properties, new DoubleProperty(this::getVoltage, null),
+        new DoubleProperty(this::getTotalCurrent, null));
   }
 }

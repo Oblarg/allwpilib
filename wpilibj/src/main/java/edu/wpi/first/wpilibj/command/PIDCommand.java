@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendPIDCommand;
+
 /**
  * This class defines a {@link Command} which interacts heavily with a PID loop.
  *
@@ -279,6 +281,6 @@ public abstract class PIDCommand extends Command {
   public void initSendable(SendableBuilder builder) {
     m_controller.initSendable(builder);
     super.initSendable(builder);
-    builder.setSmartDashboardType("PIDCommand");
+    sendPIDCommand(builder);
   }
 }

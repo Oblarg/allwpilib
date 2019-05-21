@@ -6,6 +6,8 @@ import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+
 /**
  * Utility class for Sendable widgets.  Each widget type (except those for which it is
  * unfeasible) has a corresponding helper method in this class that serves to formalize and
@@ -24,7 +26,7 @@ public class SendableTypes {
   /**
    * Wrapper class for double properties.
    */
-  public final class DoubleProperty {
+  public static class DoubleProperty {
 
     DoubleConsumer set;
     DoubleSupplier get;
@@ -44,7 +46,7 @@ public class SendableTypes {
   /**
    * Wrapper class for boolean properties.
    */
-  public final class BooleanProperty {
+  public static class BooleanProperty {
 
     SendableBuilder.BooleanConsumer set;
     BooleanSupplier get;
@@ -64,7 +66,7 @@ public class SendableTypes {
   /**
    * Wrapper class for String properties.
    */
-  public final class StringProperty {
+  public static class StringProperty {
 
     Consumer<String> set;
     Supplier<String> get;
@@ -75,7 +77,7 @@ public class SendableTypes {
      * @param get The getter for the string
      * @param set The setter for the string
      */
-    public StringProperty(DoubleSupplier get, DoubleConsumer set) {
+    public StringProperty(Supplier<String> get, Consumer<String> set) {
       set = set;
       get = get;
     }
@@ -84,7 +86,7 @@ public class SendableTypes {
   /**
    * Wrapper class for double array properties.
    */
-  public final class DoubleArrayProperty {
+  public static class DoubleArrayProperty {
 
     Consumer<double[]> set;
     Supplier<double[]> get;
@@ -104,7 +106,7 @@ public class SendableTypes {
   /**
    * Wrapper class for boolean array properties.
    */
-  public final class BooleanArrayProperty {
+  public static class BooleanArrayProperty {
 
     Consumer<boolean[]> set;
     Supplier<boolean[]> get;
@@ -124,7 +126,7 @@ public class SendableTypes {
   /**
    * Wrapper class for String array properties.
    */
-  public final class StringArrayProperty {
+  public static class StringArrayProperty {
 
     Consumer<String[]> set;
     Supplier<String[]> get;
@@ -156,7 +158,7 @@ public class SendableTypes {
    * Sends an AnalogInput widget to the dashboard.
    *
    * @param builder The SendableBuilder to use
-   * @param value The current value of the AnalogInput
+   * @param value The current voltage of the AnalogInput
    */
   public static void sendAnalogInput(SendableBuilder builder, DoubleProperty value) {
     builder.setSmartDashboardType("AnalogInput");
@@ -389,5 +391,24 @@ public class SendableTypes {
     builder.addDoubleProperty("X", x.get, x.set);
     builder.addDoubleProperty("Y", y.get, y.set);
     builder.addDoubleProperty("Z", z.get, z.set);
+  }
+
+  /**
+   * Sends a Three-Axis Accelerometer widget to the dashboard.
+   *
+   * @param builder The SendableBuilder to use
+   * @param values An array containing the accelerations in the x, y, and z directions
+   */
+  public static void sendThreeAxisAccelerometer(SendableBuilder builder,
+                                                DoubleArrayProperty values) {
+    builder.setSmartDashboardType("3AxisAccelerometer");
+    NetworkTableEntry entryX = builder.getEntry("X");
+    NetworkTableEntry entryY = builder.getEntry("Y");
+    NetworkTableEntry entryZ = builder.getEntry("Z");
+    builder.setUpdateTable(() -> {
+      double[] data = values.get.get();
+      entryX.setDouble(data[0]);
+      entryY.setDouble(data[1]);
+      entryZ.setDouble(data[2]);});
   }
 }

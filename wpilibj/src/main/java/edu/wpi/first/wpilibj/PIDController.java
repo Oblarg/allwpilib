@@ -8,6 +8,10 @@
 package edu.wpi.first.wpilibj;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.BooleanProperty;
+import edu.wpi.first.wpilibj.smartdashboard.SendableTypes.DoubleProperty;
+
+import static edu.wpi.first.wpilibj.smartdashboard.SendableTypes.sendPIDController;
 
 /**
  * Class implements a PID Control Loop.
@@ -175,7 +179,12 @@ public class PIDController extends PIDBase implements Controller {
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    super.initSendable(builder);
-    builder.addBooleanProperty("enabled", this::isEnabled, this::setEnabled);
+    sendPIDController(builder, this::reset,
+        new DoubleProperty(this::getP, this::setP),
+        new DoubleProperty(this::getI, this::setI),
+        new DoubleProperty(this::getD, this::setD),
+        new DoubleProperty(this::getF, this::setF),
+        new DoubleProperty(this::getSetpoint, this::setSetpoint),
+        new BooleanProperty(this::isEnabled, this::setEnabled));
   }
 }
