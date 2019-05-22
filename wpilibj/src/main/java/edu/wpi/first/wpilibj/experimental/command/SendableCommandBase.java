@@ -28,7 +28,7 @@ public abstract class SendableCommandBase implements Sendable, Command {
    *
    * @param requirements the requirements to add
    */
-  public void addRequirements(Subsystem... requirements) {
+  public final void addRequirements(Subsystem... requirements) {
     m_requirements.addAll(Set.of(requirements));
   }
 

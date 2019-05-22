@@ -33,7 +33,7 @@ public class SequentialCommandGroup extends CommandGroupBase {
   }
 
   @Override
-  public void addCommands(Command... commands) {
+  public final void addCommands(Command... commands) {
     requireUngrouped(commands);
 
     if (m_currentCommandIndex != -1) {
