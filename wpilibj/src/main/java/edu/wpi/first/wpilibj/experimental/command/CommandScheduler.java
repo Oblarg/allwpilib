@@ -22,7 +22,7 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.experimental.RobotState;
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -35,11 +35,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * Subsystem#periodic()} methods to be called and for their default commands to be scheduled.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
-public final class CommandScheduler extends SendableBase {
+public class CommandScheduler extends SendableBase {
   /**
    * The Singleton Instance.
    */
   private static CommandScheduler instance;
+
+  /**
+   * Provide access to the current state of the robot.
+   */
+  private final RobotState robotState;
 
   /**
    * Returns the Scheduler instance.
@@ -82,8 +87,13 @@ public final class CommandScheduler extends SendableBase {
   private final List<Consumer<Command>> m_finishActions = new ArrayList<>();
 
   CommandScheduler() {
+    this(RobotState.getInstance());
+  }
+
+  protected CommandScheduler(RobotState robotState) {
     HAL.report(tResourceType.kResourceType_Command, tInstances.kCommand_Scheduler);
     setName("Scheduler");
+    this.robotState = robotState;
   }
 
   /**
@@ -139,7 +149,7 @@ public final class CommandScheduler extends SendableBase {
 
     //Do nothing if the scheduler is disabled, the robot is disabled and the command doesn't
     //run when disabled, or the command is already scheduled.
-    if (m_disabled || (RobotState.isDisabled() && !command.runsWhenDisabled())
+    if (m_disabled || (robotState.isDisabled() && !command.runsWhenDisabled())
         || m_scheduledCommands.containsKey(command)) {
       return;
     }
@@ -230,7 +240,7 @@ public final class CommandScheduler extends SendableBase {
          iterator.hasNext(); ) {
       Command command = iterator.next();
 
-      if (!command.runsWhenDisabled() && RobotState.isDisabled()) {
+      if (!command.runsWhenDisabled() && robotState.isDisabled()) {
         iterator.remove();
         cancel(command);
         continue;
@@ -363,6 +373,15 @@ public final class CommandScheduler extends SendableBase {
     } else {
       return -1;
     }
+  }
+
+  /**
+   * Returns the number of commands currently scheduled.
+   * 
+   * @return number of commands scheduled.
+   */
+  public int getScheduleSize() {
+    return m_scheduledCommands.size();
   }
 
   /**
