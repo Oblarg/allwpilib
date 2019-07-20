@@ -38,8 +38,6 @@ class Notifier : public ErrorBase {
       : Notifier(std::bind(std::forward<Callable>(f), std::forward<Arg>(arg),
                            std::forward<Args>(args)...)) {}
 
-  Notifier(const Notifier& other) : Notifier(other.m_handler) {};
-
   /**
    * Free the resources for a timer event.
    */
