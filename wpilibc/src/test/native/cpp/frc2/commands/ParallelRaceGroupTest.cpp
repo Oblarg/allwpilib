@@ -3,8 +3,7 @@
 #include "frc/frc2/commands/InstantCommand.h"
 #include "frc/frc2/commands/WaitUntilCommand.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
 class ParallelRaceGroupTest : public CommandTestBase {
 
 };

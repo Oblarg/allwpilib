@@ -4,7 +4,6 @@
 #include "frc/frc2/commands/CommandHelper.h"
 #include "frc/Timer.h"
 
-namespace frc {
 namespace frc2 {
 class WaitUntilCommand : public CommandHelper<SendableCommandBase, WaitUntilCommand> {
  public:
@@ -13,7 +12,7 @@ class WaitUntilCommand : public CommandHelper<SendableCommandBase, WaitUntilComm
     }
     
     WaitUntilCommand(double time) 
-      : m_condition{[=]{ return Timer::GetMatchTime() - time > 0; }} {
+      : m_condition{[=]{ return frc::Timer::GetMatchTime() - time > 0; }} {
     }
     
     WaitUntilCommand(WaitUntilCommand&& other) = default;
@@ -30,5 +29,4 @@ class WaitUntilCommand : public CommandHelper<SendableCommandBase, WaitUntilComm
  private:
   std::function<bool()> m_condition;
 };
-}
 }

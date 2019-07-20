@@ -7,7 +7,6 @@
 #include <frc/WPIErrors.h>
 #include <frc/ErrorBase.h>
 
-namespace frc {
 namespace frc2 {
 std::string demangle(const char* name);
 
@@ -22,7 +21,7 @@ class ParallelDeadlineGroup;
 class SequentialCommandGroup;
 class PerpetualCommand;
 
-class Command : public ErrorBase {
+class Command : public frc::ErrorBase {
  public:
   Command() = default;
   Command(Command&& other) = default;
@@ -60,6 +59,5 @@ static bool RequirementsDisjoint(Command* first, Command* second) {
     disjoint &= requirements.find(requirement) == requirements.end(); 
   }
   return disjoint;
-}
 }
 }

@@ -3,7 +3,6 @@
 #include "SendableCommandBase.h"
 #include "CommandHelper.h"
 
-namespace frc {
 namespace frc2 {
 class StartEndCommand : public CommandHelper<SendableCommandBase, StartEndCommand> {
  public:
@@ -30,5 +29,4 @@ class StartEndCommand : public CommandHelper<SendableCommandBase, StartEndComman
   std::function<void()> m_onInit;
   std::function<void()> m_onEnd;
 };
-}
 }

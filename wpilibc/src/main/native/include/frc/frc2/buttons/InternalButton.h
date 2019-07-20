@@ -1,7 +1,6 @@
 #pragma once
 #include "Button.h"
 
-namespace frc {
 namespace frc2 {
 class InternalButton : public Button {
  public:
@@ -25,5 +24,4 @@ class InternalButton : public Button {
   bool m_pressed{false};
   bool m_inverted{false};
 };
-}
 }

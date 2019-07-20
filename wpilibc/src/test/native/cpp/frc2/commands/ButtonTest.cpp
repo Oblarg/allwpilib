@@ -3,8 +3,7 @@
 // #include "frc/frc2/buttons/InternalButton.h"
 // #include "CommandTestBase.h"
 
-// using namespace frc::frc2;
-
+// using namespace frc2;
 // class ButtonTest : public CommandTestBase {
   
 // };

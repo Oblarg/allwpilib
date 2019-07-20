@@ -2,8 +2,7 @@
 #include "frc/frc2/commands/WaitCommand.h"
 #include "frc/frc2/commands/WaitUntilCommand.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
 class WaitCommandTest : public CommandTestBase {
 
 };

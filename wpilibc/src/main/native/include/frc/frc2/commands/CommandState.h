@@ -1,6 +1,5 @@
 #pragma once
 
-namespace frc {
 namespace frc2 {
 class CommandState final {
  public:
@@ -18,5 +17,4 @@ class CommandState final {
   double m_startTime = -1;
   bool m_interruptible;
 };
-}
 }

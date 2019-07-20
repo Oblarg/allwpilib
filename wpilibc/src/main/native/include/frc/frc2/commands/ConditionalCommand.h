@@ -5,7 +5,6 @@
 #include "CommandHelper.h"
 #include <iostream>
 
-namespace frc {
 namespace frc2 {
 class ConditionalCommand : public CommandHelper<SendableCommandBase, ConditionalCommand> {
  public:
@@ -72,5 +71,4 @@ class ConditionalCommand : public CommandHelper<SendableCommandBase, Conditional
   Command* m_selectedCommand{nullptr};
   bool m_runsWhenDisabled = true;
 };
-}
 }

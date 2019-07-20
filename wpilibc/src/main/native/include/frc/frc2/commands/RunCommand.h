@@ -3,7 +3,6 @@
 #include "CommandHelper.h"
 #include "SendableCommandBase.h"
 
-namespace frc {
 namespace frc2 {
 class RunCommand : public CommandHelper<SendableCommandBase, RunCommand> {
  public:
@@ -22,5 +21,4 @@ class RunCommand : public CommandHelper<SendableCommandBase, RunCommand> {
  protected:
   std::function<void()> m_toRun;
 };
-}
 }

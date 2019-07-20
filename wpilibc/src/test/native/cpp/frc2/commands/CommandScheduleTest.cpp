@@ -1,8 +1,7 @@
 #include "CommandTestBase.h"
 #include "frc/frc2/commands/FunctionalCommand.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
 class CommandScheduleTest : public CommandTestBase {
   
 };

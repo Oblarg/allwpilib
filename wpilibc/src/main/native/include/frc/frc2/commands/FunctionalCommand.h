@@ -3,7 +3,6 @@
 #include "SendableCommandBase.h"
 #include "CommandHelper.h"
 
-namespace frc {
 namespace frc2 {
 class FunctionalCommand : public CommandHelper<SendableCommandBase, FunctionalCommand> {
  public:
@@ -36,5 +35,4 @@ class FunctionalCommand : public CommandHelper<SendableCommandBase, FunctionalCo
   std::function<void(bool)> m_onEnd;
   std::function<bool()> m_isFinished;
 };
-}
 }

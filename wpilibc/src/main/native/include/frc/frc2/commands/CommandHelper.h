@@ -3,7 +3,6 @@
 #include "Command.h"
 #include <type_traits>
 
-namespace frc {
 namespace frc2 {
 
 template<typename Base, typename CRTP, typename = std::enable_if_t<std::is_base_of_v<Command, Base>>>
@@ -15,5 +14,4 @@ protected:
         return std::make_unique<CRTP>(std::move(*static_cast<CRTP*>(this)));
     }
 };
-}
 }

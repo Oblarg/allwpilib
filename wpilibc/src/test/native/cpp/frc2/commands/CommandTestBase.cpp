@@ -1,7 +1,6 @@
 #include "CommandTestBase.h"
 
-namespace frc {
-namespace frc2 {
+using namespace frc2;
 
 CommandTestBase::CommandTestBase() {
   auto& scheduler = CommandScheduler::GetInstance();
@@ -29,7 +28,4 @@ void CommandTestBase::SetDSEnabled(bool enabled){
   while (HALSIM_GetDriverStationEnabled() != static_cast<int>(enabled)) {
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
-}
-
-}
 }

@@ -5,7 +5,6 @@
 #include "frc/Timer.h"
 #include "wpi/Twine.h"
 
-namespace frc {
 namespace frc2 {
 class WaitCommand : public CommandHelper<SendableCommandBase, WaitCommand> {
  public:
@@ -41,5 +40,4 @@ class WaitCommand : public CommandHelper<SendableCommandBase, WaitCommand> {
  private:
   double m_duration;
 };
-}
 }

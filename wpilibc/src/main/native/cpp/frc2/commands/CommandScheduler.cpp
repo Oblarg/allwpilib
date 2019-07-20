@@ -1,4 +1,5 @@
 #include <frc/frc2/commands/CommandScheduler.h>
+#include <frc/RobotState.h>
 #include <frc/WPIErrors.h>
 #include <frc/frc2/commands/Subsystem.h>
 #include <frc/frc2/commands/CommandGroupBase.h>
@@ -6,8 +7,7 @@
 #include <frc/smartdashboard/SendableBuilder.h>
 #include <hal/HAL.h>
 
-using namespace frc::frc2;
-
+using namespace frc2;
 template<typename TMap, typename TKey>
 static bool ContainsKey(const TMap& map, TKey keyToCheck) {
   return map.find(keyToCheck) != map.end();
@@ -28,7 +28,7 @@ void CommandScheduler::Schedule(bool interruptible, Command* command) {
         "A command that is part of a command group cannot be independently scheduled");
     return;
   }
-  if (m_disabled || (RobotState::IsDisabled() && !command->RunsWhenDisabled()) || ContainsKey(m_scheduledCommands, command)) {
+  if (m_disabled || (frc::RobotState::IsDisabled() && !command->RunsWhenDisabled()) || ContainsKey(m_scheduledCommands, command)) {
     return;
   }
   
@@ -83,7 +83,7 @@ void CommandScheduler::Run() {
   for (auto iterator = m_scheduledCommands.begin(); iterator != m_scheduledCommands.end(); iterator++) {
     Command* command = iterator->getFirst();
 
-    if (!command->RunsWhenDisabled() && RobotState::IsDisabled()) {
+    if (!command->RunsWhenDisabled() && frc::RobotState::IsDisabled()) {
       Cancel(command);
       continue;
     }

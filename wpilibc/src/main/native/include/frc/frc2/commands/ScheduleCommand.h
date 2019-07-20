@@ -5,7 +5,6 @@
 #include <wpi/SmallVector.h>
 #include "SetUtilities.h"
 
-namespace frc {
 namespace frc2 {  
 class ScheduleCommand : public CommandHelper<SendableCommandBase, ScheduleCommand> {
  public:
@@ -33,5 +32,4 @@ class ScheduleCommand : public CommandHelper<SendableCommandBase, ScheduleComman
  private:
   wpi::SmallVector<Command*, 4> m_toSchedule;
 };
-}
 }

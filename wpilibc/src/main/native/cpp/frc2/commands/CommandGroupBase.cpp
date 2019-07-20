@@ -7,8 +7,7 @@
 #include "frc/frc2/commands/ParallelDeadlineGroup.h"
 #include <set>
 
-using namespace frc::frc2;
-
+using namespace frc2;
 template<typename TMap, typename TKey>
 static bool ContainsKey(const TMap& map, TKey keyToCheck) {
 return map.find(keyToCheck) != map.end();

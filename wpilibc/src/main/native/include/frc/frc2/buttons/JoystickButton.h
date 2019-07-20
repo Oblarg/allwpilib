@@ -2,7 +2,6 @@
 #include "Button.h"
 #include <frc/GenericHID.h>
 
-namespace frc {
 namespace frc2 {
 class JoystickButton : public Button {
  public:
@@ -14,5 +13,4 @@ class JoystickButton : public Button {
   frc::GenericHID* m_joystick;
   int m_buttonNumber;
 };
-}
 }

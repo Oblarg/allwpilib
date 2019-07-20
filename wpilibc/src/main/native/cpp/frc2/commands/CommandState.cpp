@@ -1,8 +1,7 @@
 #include "frc/frc2/commands/CommandState.h"
 #include "frc/Timer.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
   void CommandState::StartTiming() {
       m_startTime = frc::Timer::GetFPGATimestamp();
   }

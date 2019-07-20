@@ -1,6 +1,5 @@
 #pragma once
 
-namespace frc {
 namespace frc2 {
 class Command;
 class Subsystem {
@@ -12,5 +11,4 @@ class Subsystem {
   virtual Command* GetCurrentCommand() const;
   virtual void Register();
 };
-}
 }

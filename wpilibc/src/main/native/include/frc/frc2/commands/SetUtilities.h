@@ -3,7 +3,6 @@
 #include <wpi/SmallVector.h>
 #include <wpi/ArrayRef.h>
 
-namespace frc {
 namespace frc2 {
 template<typename T>
 void SetInsert(wpi::SmallVectorImpl<T*>& vector, wpi::ArrayRef<T*> toAdd) {
@@ -19,6 +18,5 @@ void SetInsert(wpi::SmallVectorImpl<T*>& vector, wpi::ArrayRef<T*> toAdd) {
       vector.emplace_back(addCommand);
     }
   }
-}
 }
 }

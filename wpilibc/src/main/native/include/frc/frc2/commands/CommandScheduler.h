@@ -9,11 +9,10 @@
 #include <unordered_map>
 #include "CommandState.h"
 
-namespace frc {
 namespace frc2 {
 class Command;
 class Subsystem;
-class CommandScheduler final : public SendableBase, ErrorBase {
+class CommandScheduler final : public frc::SendableBase, frc::ErrorBase {
  public:
   static CommandScheduler& GetInstance();
   using Action = std::function<void(const Command&)>;
@@ -84,7 +83,7 @@ class CommandScheduler final : public SendableBase, ErrorBase {
     m_finishActions.emplace_back(std::move(action));
   }
 
-  void InitSendable(SendableBuilder& builder) override;
+  void InitSendable(frc::SendableBuilder& builder) override;
 
  private:
   CommandScheduler();
@@ -107,5 +106,4 @@ class CommandScheduler final : public SendableBase, ErrorBase {
 
   friend class CommandTestBase;
 };
-}
 }

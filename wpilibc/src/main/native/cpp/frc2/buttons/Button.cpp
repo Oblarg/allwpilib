@@ -1,7 +1,6 @@
 #include "frc/frc2/buttons/Button.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
 Button* Button::WhenPressed(Command* command, bool interruptible) {
   WhenActive(command, interruptible);
   return this;

@@ -3,7 +3,6 @@
 #include "SendableCommandBase.h"
 #include "CommandHelper.h"
 
-namespace frc {
 namespace frc2 {
 class InstantCommand : public CommandHelper<SendableCommandBase, InstantCommand> {
  public:
@@ -33,5 +32,4 @@ class InstantCommand : public CommandHelper<SendableCommandBase, InstantCommand>
  private:
   std::function<void()> m_toRun;
 };
-}
 }

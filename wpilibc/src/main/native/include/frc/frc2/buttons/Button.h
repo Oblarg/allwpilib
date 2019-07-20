@@ -1,7 +1,6 @@
 #pragma once
 #include "Trigger.h"
 
-namespace frc {
 namespace frc2 {
 class Command;
 class Button : public Trigger {
@@ -26,5 +25,4 @@ class Button : public Trigger {
 
   Button* CancelWhenPressed(Command* command);
 };
-}
 }

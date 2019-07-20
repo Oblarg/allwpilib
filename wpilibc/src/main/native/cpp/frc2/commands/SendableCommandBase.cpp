@@ -2,8 +2,7 @@
 #include <frc/smartdashboard/SendableBuilder.h>
 #include <frc/frc2/commands/SetUtilities.h>
 
-using namespace frc::frc2;
-
+using namespace frc2;
 SendableCommandBase::SendableCommandBase() {
   m_name = Command::GetName();
   m_subsystem = "Unknown";

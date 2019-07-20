@@ -4,7 +4,6 @@
 #include <set>
 #include <frc/ErrorBase.h>
 
-namespace frc {
 namespace frc2 {
 class CommandGroupBase : public SendableCommandBase {
  public:
@@ -19,5 +18,4 @@ class CommandGroupBase : public SendableCommandBase {
 
   virtual void AddCommands(std::vector<std::unique_ptr<Command>>&& commands) = 0;
 };
-}
 }

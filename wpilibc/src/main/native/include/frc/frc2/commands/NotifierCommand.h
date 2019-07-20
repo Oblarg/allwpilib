@@ -4,7 +4,6 @@
 #include "CommandHelper.h"
 #include <frc/Notifier.h>
 
-namespace frc {
 namespace frc2 {
 class NotifierCommand : public CommandHelper<SendableCommandBase, NotifierCommand> {
  public:
@@ -27,8 +26,7 @@ class NotifierCommand : public CommandHelper<SendableCommandBase, NotifierComman
   }
  private:
   std::function<void()> m_toRun;
-  Notifier m_notifier;
+  frc::Notifier m_notifier;
   double m_period;
 };
-}
 }

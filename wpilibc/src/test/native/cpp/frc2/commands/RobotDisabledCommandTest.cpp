@@ -7,8 +7,7 @@
 #include "frc/frc2/commands/SelectCommand.h"
 
 
-using namespace frc::frc2;
-
+using namespace frc2;
 class RobotDisabledCommandTest : public CommandTestBase {
 
 };

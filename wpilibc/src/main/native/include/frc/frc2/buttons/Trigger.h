@@ -3,7 +3,6 @@
 #include <atomic>
 #include <frc/smartdashboard/SendableBase.h>
 
-namespace frc {
 namespace frc2 {
 class Command;
 class Trigger : public frc::SendableBase {
@@ -50,5 +49,4 @@ class Trigger : public frc::SendableBase {
   std::atomic_bool m_sendablePressed{false};
   std::function<bool()> m_isActive;
 };
-}
 }

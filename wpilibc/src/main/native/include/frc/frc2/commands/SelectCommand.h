@@ -6,7 +6,6 @@
 #include "CommandGroupBase.h"
 #include "PrintCommand.h"
 
-namespace frc {
 namespace frc2 {
 template <typename Key>
 
@@ -100,5 +99,4 @@ void SelectCommand<T>::Initialize() {
   m_selectedCommand->Initialize();
 }
 
-}
 }

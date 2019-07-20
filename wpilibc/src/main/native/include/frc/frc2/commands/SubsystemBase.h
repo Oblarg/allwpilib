@@ -2,7 +2,6 @@
 
 #include "Subsystem.h"
 
-namespace frc {
 namespace frc2 {
 class SusbsystemBase : public Subsystem {
  public:
@@ -18,5 +17,4 @@ class SusbsystemBase : public Subsystem {
  private:
   Command* m_defaultCommand;
 };
-}
 }

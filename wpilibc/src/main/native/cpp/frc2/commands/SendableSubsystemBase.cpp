@@ -3,8 +3,7 @@
 #include <frc/frc2/commands/CommandScheduler.h>
 #include <frc/smartdashboard/SendableBuilder.h>
 
-using namespace frc::frc2;
-
+using namespace frc2;
 SendableSubsystemBase::SendableSubsystemBase() {
   m_name = GetTypeName(*this);
   CommandScheduler::GetInstance().RegisterSubsystem({this});

@@ -1,8 +1,7 @@
 #include <frc/frc2/commands/Subsystem.h>
 #include <frc/frc2/commands/CommandScheduler.h>
 
-using namespace frc::frc2;
-
+using namespace frc2;
   Subsystem::~Subsystem() {
       CommandScheduler::GetInstance().UnregisterSubsystem(this);
   }

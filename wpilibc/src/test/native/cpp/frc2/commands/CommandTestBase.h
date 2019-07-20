@@ -13,7 +13,6 @@
 #include <regex>
 #include "mockdata/MockHooks.h"
 
-namespace frc {
 namespace frc2 {
 class CommandTestBase : public ::testing::Test {
  public:
@@ -81,5 +80,4 @@ class CommandTestBase : public ::testing::Test {
 
   void SetDSEnabled(bool enabled);
 };
-}
 }

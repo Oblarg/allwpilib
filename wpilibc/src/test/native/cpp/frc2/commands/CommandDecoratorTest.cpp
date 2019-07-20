@@ -5,8 +5,7 @@
 #include "frc/frc2/commands/SequentialCommandGroup.h"
 #include "frc/frc2/commands/PerpetualCommand.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
 class CommandDecoratorTest : public CommandTestBase {
   
 };

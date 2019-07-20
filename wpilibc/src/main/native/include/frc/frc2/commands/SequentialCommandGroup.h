@@ -6,7 +6,6 @@
 #include "frc/WPIErrors.h"
 #include "frc/ErrorBase.h"
 
-namespace frc {
 namespace frc2 {
 class SequentialCommandGroup : public CommandHelper<CommandGroupBase, SequentialCommandGroup> {
  public:
@@ -91,5 +90,4 @@ class SequentialCommandGroup : public CommandHelper<CommandGroupBase, Sequential
   int m_currentCommandIndex{-1};
   bool m_runWhenDisabled{true};
 };
-}
 }

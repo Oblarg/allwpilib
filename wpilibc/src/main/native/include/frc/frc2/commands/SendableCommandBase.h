@@ -5,9 +5,8 @@
 #include <wpi/SmallVector.h>
 #include <wpi/SmallSet.h>
 
-namespace frc {
 namespace frc2 {
-class SendableCommandBase : public Sendable, public Command {
+class SendableCommandBase : public frc::Sendable, public Command {
  public:
   SendableCommandBase(SendableCommandBase&& other) = default;
 
@@ -48,5 +47,4 @@ class SendableCommandBase : public Sendable, public Command {
   std::string m_subsystem;
   wpi::SmallSet<Subsystem*, 4> m_requirements;
 };
-}
 }

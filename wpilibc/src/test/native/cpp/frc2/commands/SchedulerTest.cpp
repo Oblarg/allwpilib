@@ -2,8 +2,7 @@
 #include "frc/frc2/commands/InstantCommand.h"
 #include "frc/frc2/commands/RunCommand.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
 class SchedulerTest : public CommandTestBase {
 
 };

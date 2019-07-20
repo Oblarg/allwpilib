@@ -5,7 +5,6 @@
 #include "wpi/Twine.h"
 #include "wpi/raw_ostream.h"
 
-namespace frc {
 namespace frc2 {
 class PrintCommand : public CommandHelper<InstantCommand, PrintCommand>  {
  public:
@@ -23,5 +22,4 @@ class PrintCommand : public CommandHelper<InstantCommand, PrintCommand>  {
     return true;
   }
 };
-}
 }

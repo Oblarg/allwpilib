@@ -3,8 +3,7 @@
 #include "frc/frc2/commands/SelectCommand.h"
 #include "frc/frc2/commands/ConditionalCommand.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
 class SelectCommandTest : public CommandTestBase {
 
 };

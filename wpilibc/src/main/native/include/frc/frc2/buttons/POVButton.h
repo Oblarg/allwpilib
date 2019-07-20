@@ -2,7 +2,6 @@
 #include "Button.h"
 #include <frc/GenericHID.h>
 
-namespace frc {
 namespace frc2 {
 class POVButton : public Button {
  public:
@@ -16,5 +15,4 @@ class POVButton : public Button {
   int m_angle;
   int m_povNumber;
 };
-}
 }

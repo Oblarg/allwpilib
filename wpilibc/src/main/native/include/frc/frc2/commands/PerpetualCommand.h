@@ -4,7 +4,6 @@
 #include "CommandGroupBase.h"
 #include "CommandHelper.h"
 
-namespace frc {
 namespace frc2 {
 class PerpetualCommand : public CommandHelper<SendableCommandBase, PerpetualCommand> {
  public:
@@ -41,5 +40,4 @@ class PerpetualCommand : public CommandHelper<SendableCommandBase, PerpetualComm
  private:
   std::unique_ptr<Command> m_command;
 };
-}
 }

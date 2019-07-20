@@ -5,7 +5,6 @@
 #include <wpi/SmallVector.h>
 #include "SetUtilities.h"
 
-namespace frc {
 namespace frc2 {
 class ProxyScheduleCommand : public CommandHelper<SendableCommandBase, ProxyScheduleCommand> {
  public:
@@ -45,5 +44,4 @@ class ProxyScheduleCommand : public CommandHelper<SendableCommandBase, ProxySche
   wpi::SmallVector<Command*,4> m_toSchedule;
   bool m_finished{false};
 };
-}
 }

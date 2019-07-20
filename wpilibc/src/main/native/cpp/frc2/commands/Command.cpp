@@ -32,18 +32,15 @@ std::string demangle(const char* name) {
 
 #else
 
-namespace frc {
 namespace frc2 {
 std::string demangle(const char* name) {
   return name;
 }
 }
-}
 
 #endif
 
-using namespace frc::frc2;
-
+using namespace frc2;
 void Command::Initialize() {}
 void Command::Execute() {}
 void Command::End(bool interrupted) {}

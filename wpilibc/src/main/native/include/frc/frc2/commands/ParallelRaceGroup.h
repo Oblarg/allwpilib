@@ -4,7 +4,6 @@
 #include "CommandHelper.h"
 #include <unordered_map>
 
-namespace frc {
 namespace frc2 {
 class ParallelRaceGroup : public CommandHelper<CommandGroupBase, ParallelRaceGroup> {
  public:
@@ -93,5 +92,4 @@ class ParallelRaceGroup : public CommandHelper<CommandGroupBase, ParallelRaceGro
   bool m_finished{false};
   bool isRunning = false;
 };
-}
 }

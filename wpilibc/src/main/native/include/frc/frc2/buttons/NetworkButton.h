@@ -4,7 +4,6 @@
 #include <networktables/NetworkTableInstance.h>
 #include <networktables/NetworkTable.h>
 
-namespace frc {
 namespace frc2 {
 class NetworkButton : public Button {
  public:
@@ -14,5 +13,4 @@ class NetworkButton : public Button {
  private:
   nt::NetworkTableEntry m_entry;
 };
-}
 }

@@ -9,8 +9,7 @@
 #include "frc/frc2/commands/SelectCommand.h"
 #include "frc/frc2/commands/SequentialCommandGroup.h"
 
-using namespace frc::frc2;
-
+using namespace frc2;
 class CommandRequirementsTest : public CommandTestBase {
   
 };

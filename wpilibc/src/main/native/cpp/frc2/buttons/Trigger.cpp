@@ -4,8 +4,7 @@
 #include <frc/frc2/commands/InstantCommand.h>
 #include <frc/smartdashboard/SendableBuilder.h>
 
-using namespace frc::frc2;
-
+using namespace frc2;
 Trigger* Trigger::WhenActive(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton([pressedLast = Grab(), this, command, interruptible]() mutable {
     bool pressed = Grab();
