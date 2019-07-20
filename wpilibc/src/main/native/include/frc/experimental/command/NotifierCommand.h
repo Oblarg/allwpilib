@@ -15,8 +15,8 @@ class NotifierCommand : public CommandHelper<SendableCommandBase, NotifierComman
 
   NotifierCommand(NotifierCommand&& other) = default;
 
-  //TODO: copy constructor, needs notifier to have a copy constructor
-  
+  NotifierCommand(const NotifierCommand& other) = default;
+    
   void Initialize() override {
     m_notifier.StartPeriodic(m_period);
   }
