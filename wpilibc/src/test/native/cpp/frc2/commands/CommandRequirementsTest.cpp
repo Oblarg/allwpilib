@@ -202,7 +202,6 @@ TEST_F(CommandRequirementsTest, DefaultCommandRequirementErrorTest) {
 
   MockCommand command1;
   
-  //TODO: actually test for correct error triggering
   requirement1.SetDefaultCommand(&command1);
 
   EXPECT_TRUE(requirement1.GetDefaultCommand() == NULL);

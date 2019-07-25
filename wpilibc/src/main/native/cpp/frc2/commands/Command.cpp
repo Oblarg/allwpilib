@@ -10,6 +10,8 @@
 #include "frc/frc2/commands/SequentialCommandGroup.h"
 #include "frc/frc2/commands/WaitUntilCommand.h"
 
+#include <iostream>
+
 #ifdef __GNUG__
 #include <cstdlib>
 #include <memory>
@@ -41,6 +43,11 @@ std::string demangle(const char* name) {
 #endif
 
 using namespace frc2;
+
+Command::~Command(){
+  CommandScheduler::GetInstance().Cancel(this);
+}
+
 void Command::Initialize() {}
 void Command::Execute() {}
 void Command::End(bool interrupted) {}

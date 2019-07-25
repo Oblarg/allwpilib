@@ -74,9 +74,9 @@ class CommandTestBase : public ::testing::Test {
 
   CommandScheduler GetScheduler();
 
-  virtual void SetUp();
+  virtual void SetUp() override;
 
-  virtual void TearDown();
+  virtual void TearDown() override;
 
   void SetDSEnabled(bool enabled);
 };

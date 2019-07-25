@@ -171,9 +171,10 @@ void CommandScheduler::Cancel(Command* command) {
     action(*command);
   }
   m_scheduledCommands.erase(find);
-  const auto& requirements = command->GetRequirements();
-  for (auto requirement : requirements) {
-    m_requirements.erase(requirement);
+  for (auto&& requirement : m_requirements) {
+    if(requirement.second == command) {
+      m_requirements.erase(requirement.first);
+    }
   }
 }
 

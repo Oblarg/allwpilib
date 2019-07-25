@@ -21,6 +21,7 @@ void CommandTestBase::SetUp() {
 }
 
 void CommandTestBase::TearDown() {
+  CommandScheduler::GetInstance().ClearButtons();
 }
 
 void CommandTestBase::SetDSEnabled(bool enabled){

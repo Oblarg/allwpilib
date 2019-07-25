@@ -25,7 +25,7 @@ class Command : public frc::ErrorBase {
  public:
   Command() = default;
   Command(Command&& other) = default;
-  virtual ~Command() = default;
+  virtual ~Command();
   virtual void Initialize();
   virtual void Execute();
   virtual void End(bool interrupted);

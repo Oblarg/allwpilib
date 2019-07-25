@@ -7,7 +7,7 @@ namespace frc2 {
 class Command;
 class Trigger : public frc::SendableBase {
  public:
-  explicit Trigger(std::function<bool()> isActive) : m_isActive{std::move(isActive)} {
+  Trigger(std::function<bool()> isActive) : m_isActive{std::move(isActive)} {
   }
 
   Trigger() {
@@ -40,8 +40,16 @@ class Trigger : public frc::SendableBase {
   Trigger* ToggleWhenActive(Command* command) { ToggleWhenActive(command, true); return this; }
   Trigger* CancelWhenActive(Command* command);
 
-  Trigger* And(Trigger* trigger) {
-    return new Trigger([this, trigger]{ return Grab() && trigger->Grab(); });
+  Trigger And(Trigger& trigger) {
+    return Trigger([this, &trigger]{ return Grab() && trigger.Grab(); });
+  }
+
+  Trigger Or(Trigger& trigger) {
+    return Trigger([this, &trigger]{ return Grab() || trigger.Grab(); });
+  }
+
+  Trigger Negate() {
+    return Trigger([this]{ return !Grab(); });
   }
 
   void InitSendable(frc::SendableBuilder& builder) override;
