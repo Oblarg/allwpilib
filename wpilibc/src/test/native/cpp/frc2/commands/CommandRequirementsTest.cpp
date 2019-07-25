@@ -196,14 +196,14 @@ TEST_F(CommandRequirementsTest, SelectCommandRequirementTest) {
   EXPECT_FALSE(scheduler.IsScheduled(&select));
 }
 
-// TEST_F(CommandRequirementsTest, DefaultCommandRequirementErrorTest) {
-//   TestSubsystem requirement1;
-//   ErrorConfirmer confirmer("require");
+TEST_F(CommandRequirementsTest, DefaultCommandRequirementErrorTest) {
+  TestSubsystem requirement1;
+  ErrorConfirmer confirmer("require");
 
-//   MockCommand command1;
+  MockCommand command1;
   
-//   //TODO: actually test for correct error triggering
-//   requirement1.SetDefaultCommand(&command1);
+  //TODO: actually test for correct error triggering
+  requirement1.SetDefaultCommand(&command1);
 
-//   EXPECT_TRUE(requirement1.GetDefaultCommand() == NULL);
-// }
+  EXPECT_TRUE(requirement1.GetDefaultCommand() == NULL);
+}
