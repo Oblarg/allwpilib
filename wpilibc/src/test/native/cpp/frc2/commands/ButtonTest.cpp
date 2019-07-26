@@ -132,7 +132,7 @@ TEST_F(ButtonTest, AndTest) {
   button1.SetPressed(false);
   button2.SetPressed(false);
 
-  auto both = button1.And(button2);
+  auto both = button1 && button2;
 
   both.WhenActive(&command);
   button1.SetPressed(true);
@@ -156,7 +156,7 @@ TEST_F(ButtonTest, OrTest) {
   button1.SetPressed(false);
   button2.SetPressed(false);
 
-  auto either = button1.Or(button2);
+  auto either = button1 || button2;
 
   either.WhenActive(&command1);
   button1.SetPressed(true);
@@ -180,7 +180,7 @@ TEST_F(ButtonTest, NegateTest) {
 
   button1.SetPressed(true);
 
-  auto negated = button1.Negate();
+  auto negated = !button1;
 
   negated.WhenActive(&command);
   scheduler.Run();

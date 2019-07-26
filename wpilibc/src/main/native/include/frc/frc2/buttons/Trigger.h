@@ -40,15 +40,15 @@ class Trigger : public frc::SendableBase {
   Trigger* ToggleWhenActive(Command* command) { ToggleWhenActive(command, true); return this; }
   Trigger* CancelWhenActive(Command* command);
 
-  Trigger And(Trigger& trigger) {
-    return Trigger([this, &trigger]{ return Grab() && trigger.Grab(); });
+  Trigger operator &&(Trigger& rhs) {
+    return Trigger([this, &rhs]{ return Grab() && rhs.Grab(); });
   }
 
-  Trigger Or(Trigger& trigger) {
-    return Trigger([this, &trigger]{ return Grab() || trigger.Grab(); });
+  Trigger operator ||(Trigger& rhs) {
+    return Trigger([this, &rhs]{ return Grab() || rhs.Grab(); });
   }
 
-  Trigger Negate() {
+  Trigger operator !() {
     return Trigger([this]{ return !Grab(); });
   }
 
