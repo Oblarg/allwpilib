@@ -9,6 +9,7 @@
 #include "frc/frc2/commands/ParallelDeadlineGroup.h"
 #include "frc/frc2/commands/SequentialCommandGroup.h"
 #include "frc/frc2/commands/WaitUntilCommand.h"
+#include "frc/frc2/commands/ProxyScheduleCommand.h"
 
 #include <iostream>
 
@@ -84,6 +85,10 @@ PerpetualCommand Command::Perpetually()&&  {
   return PerpetualCommand(std::move(*this).TransferOwnership());
 }
 
+ProxyScheduleCommand Command::AsProxy() {
+  return ProxyScheduleCommand(this);
+}
+
 void Command::Schedule(bool interruptible) {
   CommandScheduler::GetInstance().Schedule(interruptible, this);
 }
@@ -115,5 +120,3 @@ bool Command::IsGrouped() const {
 void Command::SetGrouped(bool grouped) {
   m_isGrouped = grouped;
 }
-
-
