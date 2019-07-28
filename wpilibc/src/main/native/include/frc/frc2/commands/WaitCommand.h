@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <wpi/Twine.h>
 
 #include "CommandHelper.h"
@@ -15,13 +17,15 @@
 
 namespace frc2 {
 /**
- * A command that does nothing but takes a specified amount of time to finish.  Useful for
- * CommandGroups.  Can also be subclassed to make a command with an internal timer.
+ * A command that does nothing but takes a specified amount of time to finish.
+ * Useful for CommandGroups.  Can also be subclassed to make a command with an
+ * internal timer.
  */
 class WaitCommand : public CommandHelper<SendableCommandBase, WaitCommand> {
  public:
   /**
-   * Creates a new WaitCommand.  This command will do nothing, and end after the specified duration.
+   * Creates a new WaitCommand.  This command will do nothing, and end after the
+   * specified duration.
    *
    * @param seconds the time to wait, in seconds
    */
@@ -38,8 +42,10 @@ class WaitCommand : public CommandHelper<SendableCommandBase, WaitCommand> {
   bool IsFinished() override;
 
   bool RunsWhenDisabled() const override;
+
  protected:
   std::unique_ptr<frc::Timer> m_timer;
+
  private:
   double m_duration;
 };

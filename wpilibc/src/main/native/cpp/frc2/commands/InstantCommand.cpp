@@ -9,16 +9,14 @@
 
 using namespace frc2;
 
-InstantCommand::InstantCommand(std::function<void()> toRun, std::initializer_list<Subsystem*> requirements) : m_toRun{std::move(toRun)} {
+InstantCommand::InstantCommand(std::function<void()> toRun,
+                               std::initializer_list<Subsystem*> requirements)
+    : m_toRun{std::move(toRun)} {
   AddRequirements(requirements);
 }
 
-InstantCommand::InstantCommand() : m_toRun{[]{}} {}
+InstantCommand::InstantCommand() : m_toRun{[] {}} {}
 
-void InstantCommand::Initialize() {
-  m_toRun();
-}
+void InstantCommand::Initialize() { m_toRun(); }
 
-bool InstantCommand::IsFinished() {
-  return true;
-}
+bool InstantCommand::IsFinished() { return true; }

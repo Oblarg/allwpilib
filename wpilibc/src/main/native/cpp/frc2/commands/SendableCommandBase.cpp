@@ -24,11 +24,13 @@ SendableCommandBase::SendableCommandBase(const SendableCommandBase& other) {
   m_requirements = other.m_requirements;
 }
 
-void SendableCommandBase::AddRequirements(std::initializer_list<Subsystem*> requirements) {
+void SendableCommandBase::AddRequirements(
+    std::initializer_list<Subsystem*> requirements) {
   m_requirements.insert(requirements.begin(), requirements.end());
 }
 
-void SendableCommandBase::AddRequirements(wpi::SmallSet<Subsystem*, 4> requirements) {
+void SendableCommandBase::AddRequirements(
+    wpi::SmallSet<Subsystem*, 4> requirements) {
   m_requirements.insert(requirements.begin(), requirements.end());
 }
 
@@ -40,13 +42,9 @@ void SendableCommandBase::SetName(const wpi::Twine& name) {
   m_name = name.str();
 }
 
-std::string SendableCommandBase::GetName() const {
-  return m_name;
-}
+std::string SendableCommandBase::GetName() const { return m_name; }
 
-std::string SendableCommandBase::GetSubsystem() const {
-  return m_subsystem;
-}
+std::string SendableCommandBase::GetSubsystem() const { return m_subsystem; }
 
 void SendableCommandBase::SetSubsystem(const wpi::Twine& subsystem) {
   m_subsystem = subsystem.str();
@@ -54,14 +52,15 @@ void SendableCommandBase::SetSubsystem(const wpi::Twine& subsystem) {
 
 void SendableCommandBase::InitSendable(frc::SendableBuilder& builder) {
   builder.SetSmartDashboardType("Command");
-  builder.AddStringProperty(".name", [this]{return GetName();}, nullptr);
-  builder.AddBooleanProperty("running", [this] {return IsScheduled();},
-  [this](bool value){
-    bool isScheduled = IsScheduled();
-    if (value && !isScheduled) {
-      CommandScheduler::GetInstance().QueueSchedule(this);
-    } else if (!value && isScheduled) {
-      CommandScheduler::GetInstance().QueueCancel(this);
-    }
-  });
+  builder.AddStringProperty(".name", [this] { return GetName(); }, nullptr);
+  builder.AddBooleanProperty(
+      "running", [this] { return IsScheduled(); },
+      [this](bool value) {
+        bool isScheduled = IsScheduled();
+        if (value && !isScheduled) {
+          CommandScheduler::GetInstance().QueueSchedule(this);
+        } else if (!value && isScheduled) {
+          CommandScheduler::GetInstance().QueueCancel(this);
+        }
+      });
 }

@@ -20,19 +20,21 @@ namespace frc2 {
 class RunCommand : public CommandHelper<SendableCommandBase, RunCommand> {
  public:
   /**
-   * Creates a new RunCommand.  The Runnable will be run continuously until the command
-   * ends.  Does not run when disabled.
+   * Creates a new RunCommand.  The Runnable will be run continuously until the
+   * command ends.  Does not run when disabled.
    *
    * @param toRun        the Runnable to run
    * @param requirements the subsystems to require
    */
-  RunCommand(std::function<void()> toRun, std::initializer_list<Subsystem*> requirements);
+  RunCommand(std::function<void()> toRun,
+             std::initializer_list<Subsystem*> requirements);
 
   RunCommand(RunCommand&& other) = default;
 
   RunCommand(const RunCommand& other) = default;
 
   void Execute();
+
  protected:
   std::function<void()> m_toRun;
 };

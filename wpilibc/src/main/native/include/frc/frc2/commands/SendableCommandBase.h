@@ -9,6 +9,8 @@
 
 #include <frc/smartdashboard/Sendable.h>
 
+#include <string>
+
 #include <wpi/SmallSet.h>
 #include <wpi/SmallVector.h>
 
@@ -44,7 +46,7 @@ class SendableCommandBase : public frc::Sendable, public Command {
   void SetSubsystem(const wpi::Twine& subsystem) override;
 
   void InitSendable(frc::SendableBuilder& builder) override;
-  
+
  protected:
   SendableCommandBase();
   std::string m_name;

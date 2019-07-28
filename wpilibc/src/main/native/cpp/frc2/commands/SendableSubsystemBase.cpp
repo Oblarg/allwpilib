@@ -20,24 +20,36 @@ SendableSubsystemBase::SendableSubsystemBase() {
 
 void SendableSubsystemBase::InitSendable(frc::SendableBuilder& builder) {
   builder.SetSmartDashboardType("Subsystem");
-  builder.AddBooleanProperty(".hasDefault", [this] { return GetDefaultCommand() != nullptr; }, nullptr);
-  builder.AddStringProperty(".default", [this]()-> std::string {
-    auto command = GetDefaultCommand();
-    if (command == nullptr) return "none";
-    return command->GetName();
-   }, nullptr);
-  builder.AddBooleanProperty(".hasCommand", [this] { return GetCurrentCommand() != nullptr; }, nullptr);
-  builder.AddStringProperty(".command", [this]()-> std::string {
-    auto command = GetCurrentCommand();
-    if (command == nullptr) return "none";
-    return command->GetName();
-   }, nullptr);
+  builder.AddBooleanProperty(".hasDefault",
+                             [this] { return GetDefaultCommand() != nullptr; },
+                             nullptr);
+  builder.AddStringProperty(".default",
+                            [this]() -> std::string {
+                              auto command = GetDefaultCommand();
+                              if (command == nullptr) return "none";
+                              return command->GetName();
+                            },
+                            nullptr);
+  builder.AddBooleanProperty(".hasCommand",
+                             [this] { return GetCurrentCommand() != nullptr; },
+                             nullptr);
+  builder.AddStringProperty(".command",
+                            [this]() -> std::string {
+                              auto command = GetCurrentCommand();
+                              if (command == nullptr) return "none";
+                              return command->GetName();
+                            },
+                            nullptr);
 }
 
 std::string SendableSubsystemBase::GetName() const { return m_name; }
 
-void SendableSubsystemBase::SetName(const wpi::Twine& name) { m_name = name.str(); }
+void SendableSubsystemBase::SetName(const wpi::Twine& name) {
+  m_name = name.str();
+}
 
 std::string SendableSubsystemBase::GetSubsystem() const { return GetName(); }
 
-void SendableSubsystemBase::SetSubsystem(const wpi::Twine& name) { SetName(name); }
+void SendableSubsystemBase::SetSubsystem(const wpi::Twine& name) {
+  SetName(name);
+}

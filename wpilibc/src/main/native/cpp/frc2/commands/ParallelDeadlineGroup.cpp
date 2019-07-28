@@ -9,7 +9,9 @@
 
 using namespace frc2;
 
-ParallelDeadlineGroup::ParallelDeadlineGroup(std::unique_ptr<Command>&& deadline, std::vector<std::unique_ptr<Command>>&& commands) {
+ParallelDeadlineGroup::ParallelDeadlineGroup(
+    std::unique_ptr<Command>&& deadline,
+    std::vector<std::unique_ptr<Command>>&& commands) {
   SetDeadline(std::move(deadline));
   AddCommands(std::move(commands));
 }
@@ -30,7 +32,7 @@ void ParallelDeadlineGroup::Execute() {
       commandRunning.first->End(false);
       commandRunning.second = false;
     }
-  };
+  }
 }
 
 void ParallelDeadlineGroup::End(bool interrupted) {
@@ -42,34 +44,34 @@ void ParallelDeadlineGroup::End(bool interrupted) {
   isRunning = false;
 }
 
-bool ParallelDeadlineGroup::IsFinished() {
-  return m_deadline->IsFinished();
-}
+bool ParallelDeadlineGroup::IsFinished() { return m_deadline->IsFinished(); }
 
 bool ParallelDeadlineGroup::RunsWhenDisabled() const {
   return m_runWhenDisabled;
 }
 
-void ParallelDeadlineGroup::AddCommands(std::vector<std::unique_ptr<Command>>&& commands) {
+void ParallelDeadlineGroup::AddCommands(
+    std::vector<std::unique_ptr<Command>>&& commands) {
   if (!RequireUngrouped(commands)) {
     return;
   }
 
   if (isRunning) {
     wpi_setWPIErrorWithContext(CommandIllegalUse,
-      "Commands cannot be added to a CommandGroup while the group is running");
+                               "Commands cannot be added to a CommandGroup "
+                               "while the group is running");
   }
 
-  for(auto&& command : commands) {
-    if(RequirementsDisjoint(this, command.get())) {
+  for (auto&& command : commands) {
+    if (RequirementsDisjoint(this, command.get())) {
       command->SetGrouped(true);
       AddRequirements(command->GetRequirements());
       m_runWhenDisabled &= command->RunsWhenDisabled();
       m_commands[std::move(command)] = false;
-    }
-    else {
+    } else {
       wpi_setWPIErrorWithContext(CommandIllegalUse,
-        "Multiple commands in a parallel group cannot require the same subsystems");
+                                 "Multiple commands in a parallel group cannot "
+                                 "require the same subsystems");
       return;
     }
   }

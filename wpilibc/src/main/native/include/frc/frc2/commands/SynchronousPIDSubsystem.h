@@ -1,13 +1,20 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include "frc/frc2/commands/SendableSubsystemBase.h"
 #include "frc/controller/PIDController.h"
+#include "frc/frc2/commands/SendableSubsystemBase.h"
 
-namespace frc2{
+namespace frc2 {
 /**
- * A subsystem that uses a PIDController to control an output.  The controller is run
- * synchronously from the subsystem's periodic() method.
- * 
+ * A subsystem that uses a PIDController to control an output.  The controller
+ * is run synchronously from the subsystem's periodic() method.
+ *
  * @see PIDController
  */
 class SynchronousPIDSubsystem : public SendableSubsystemBase {
@@ -56,4 +63,4 @@ class SynchronousPIDSubsystem : public SendableSubsystemBase {
   PIDController m_controller;
   bool m_enabled;
 };
-}
+}  // namespace frc2

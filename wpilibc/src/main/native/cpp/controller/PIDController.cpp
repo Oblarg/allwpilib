@@ -72,8 +72,8 @@ PIDController& PIDController::operator=(PIDController&& rhs) {
   return *this;
 }
 
-PIDController::PIDController(const PIDController& other) 
-  : PIDController(other.m_Kp, other.m_Ki, other .m_Kd, other.m_period) {
+PIDController::PIDController(const PIDController& other)
+    : PIDController(other.m_Kp, other.m_Ki, other.m_Kd, other.m_period) {
   m_maximumInput = other.m_maximumInput;
   m_minimumInput = other.m_minimumInput;
   m_maximumOutput = other.m_maximumOutput;
@@ -103,6 +103,8 @@ PIDController& PIDController::operator=(const PIDController& other) {
   m_deltaTolerance = other.m_deltaTolerance;
   m_setpoint = other.m_setpoint;
   m_output = other.m_output;
+
+  return *this;
 }
 
 void PIDController::SetP(double Kp) {

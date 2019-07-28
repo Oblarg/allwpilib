@@ -9,62 +9,65 @@
 
 using namespace frc2;
 
-SequentialCommandGroup::SequentialCommandGroup(std::vector<std::unique_ptr<Command>>&& commands) {
+SequentialCommandGroup::SequentialCommandGroup(
+    std::vector<std::unique_ptr<Command>>&& commands) {
   AddCommands(std::move(commands));
 }
 
 void SequentialCommandGroup::Initialize() {
-    m_currentCommandIndex = 0;
+  m_currentCommandIndex = 0;
 
-    if (!m_commands.empty()) {
-      m_commands[0]->Initialize();
+  if (!m_commands.empty()) {
+    m_commands[0]->Initialize();
+  }
+}
+
+void SequentialCommandGroup::Execute() {
+  if (m_commands.empty()) return;
+
+  auto& currentCommand = m_commands[m_currentCommandIndex];
+
+  currentCommand->Execute();
+  if (currentCommand->IsFinished()) {
+    currentCommand->End(false);
+    m_currentCommandIndex++;
+    if (m_currentCommandIndex < m_commands.size()) {
+      m_commands[m_currentCommandIndex]->Initialize();
     }
   }
+}
 
-  void SequentialCommandGroup::Execute() {
-    if (m_commands.empty()) return;
+void SequentialCommandGroup::End(bool interrupted) {
+  if (interrupted && !m_commands.empty()) {
+    m_commands[m_currentCommandIndex]->End(interrupted);
+  }
+  m_currentCommandIndex = -1;
+}
 
-    auto& currentCommand = m_commands[m_currentCommandIndex];
+bool SequentialCommandGroup::IsFinished() {
+  return m_currentCommandIndex == m_commands.size();
+}
 
-    currentCommand->Execute();
-    if (currentCommand->IsFinished()) {
-      currentCommand->End(false);
-      m_currentCommandIndex++;
-      if (m_currentCommandIndex < m_commands.size()) {
-        m_commands[m_currentCommandIndex]->Initialize();
-      }
-    }
+bool SequentialCommandGroup::RunsWhenDisabled() const {
+  return m_runWhenDisabled;
+}
+
+void SequentialCommandGroup::AddCommands(
+    std::vector<std::unique_ptr<Command>>&& commands) {
+  if (!RequireUngrouped(commands)) {
+    return;
   }
 
-  void SequentialCommandGroup::End(bool interrupted) {
-    if (interrupted && !m_commands.empty()) {
-      m_commands[m_currentCommandIndex]->End(interrupted);
-    }
-    m_currentCommandIndex = -1;
+  if (m_currentCommandIndex != -1) {
+    wpi_setWPIErrorWithContext(CommandIllegalUse,
+                               "Commands cannot be added to a CommandGroup "
+                               "while the group is running");
   }
 
-  bool SequentialCommandGroup::IsFinished() {
-    return m_currentCommandIndex == m_commands.size();
+  for (auto&& command : commands) {
+    command->SetGrouped(true);
+    AddRequirements(command->GetRequirements());
+    m_runWhenDisabled &= command->RunsWhenDisabled();
+    m_commands.emplace_back(std::move(command));
   }
-
-  bool SequentialCommandGroup::RunsWhenDisabled() const {
-    return m_runWhenDisabled;
-  }
-
-  void SequentialCommandGroup::AddCommands(std::vector<std::unique_ptr<Command>>&& commands) {
-    if (!RequireUngrouped(commands)) {
-      return;
-    }
-
-    if (m_currentCommandIndex != -1) {
-      wpi_setWPIErrorWithContext(CommandIllegalUse,
-          "Commands cannot be added to a CommandGroup while the group is running");
-    }
-
-    for(auto&& command : commands) {
-      command->SetGrouped(true);
-      AddRequirements(command->GetRequirements());
-      m_runWhenDisabled &= command->RunsWhenDisabled();
-      m_commands.emplace_back(std::move(command));
-    }
-  }
+}

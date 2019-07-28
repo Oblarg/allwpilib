@@ -17,9 +17,7 @@
 #include "frc/frc2/commands/SequentialCommandGroup.h"
 
 using namespace frc2;
-class CommandRequirementsTest : public CommandTestBase {
-
-};
+class CommandRequirementsTest : public CommandTestBase {};
 
 TEST_F(CommandRequirementsTest, RequirementInterruptTest) {
   CommandScheduler scheduler = GetScheduler();
@@ -83,9 +81,9 @@ TEST_F(CommandRequirementsTest, ParallelGroupRequirementTest) {
   TestSubsystem requirement3;
   TestSubsystem requirement4;
 
-  InstantCommand command1([]{},{&requirement1, &requirement2});
-  InstantCommand command2([]{},{&requirement3});
-  InstantCommand command3([]{},{&requirement3, &requirement4});
+  InstantCommand command1([] {}, {&requirement1, &requirement2});
+  InstantCommand command2([] {}, {&requirement3});
+  InstantCommand command3([] {}, {&requirement3, &requirement4});
 
   ParallelCommandGroup group(std::move(command1), std::move(command2));
 
@@ -104,9 +102,9 @@ TEST_F(CommandRequirementsTest, SequentialGroupRequirementTest) {
   TestSubsystem requirement3;
   TestSubsystem requirement4;
 
-  InstantCommand command1([]{},{&requirement1, &requirement2});
-  InstantCommand command2([]{},{&requirement3});
-  InstantCommand command3([]{},{&requirement3, &requirement4});
+  InstantCommand command1([] {}, {&requirement1, &requirement2});
+  InstantCommand command2([] {}, {&requirement3});
+  InstantCommand command3([] {}, {&requirement3, &requirement4});
 
   SequentialCommandGroup group(std::move(command1), std::move(command2));
 
@@ -125,9 +123,9 @@ TEST_F(CommandRequirementsTest, RaceGroupRequirementTest) {
   TestSubsystem requirement3;
   TestSubsystem requirement4;
 
-  InstantCommand command1([]{},{&requirement1, &requirement2});
-  InstantCommand command2([]{},{&requirement3});
-  InstantCommand command3([]{},{&requirement3, &requirement4});
+  InstantCommand command1([] {}, {&requirement1, &requirement2});
+  InstantCommand command2([] {}, {&requirement3});
+  InstantCommand command3([] {}, {&requirement3, &requirement4});
 
   ParallelRaceGroup group(std::move(command1), std::move(command2));
 
@@ -146,9 +144,9 @@ TEST_F(CommandRequirementsTest, ParallelDeadlineRequirementTest) {
   TestSubsystem requirement3;
   TestSubsystem requirement4;
 
-  InstantCommand command1([]{},{&requirement1, &requirement2});
-  InstantCommand command2([]{},{&requirement3});
-  InstantCommand command3([]{},{&requirement3, &requirement4});
+  InstantCommand command1([] {}, {&requirement1, &requirement2});
+  InstantCommand command2([] {}, {&requirement3});
+  InstantCommand command3([] {}, {&requirement3, &requirement4});
 
   ParallelDeadlineGroup group(std::move(command1), std::move(command2));
 
@@ -167,11 +165,12 @@ TEST_F(CommandRequirementsTest, ConditionalCommandRequirementTest) {
   TestSubsystem requirement3;
   TestSubsystem requirement4;
 
-  InstantCommand command1([]{},{&requirement1, &requirement2});
-  InstantCommand command2([]{},{&requirement3});
-  InstantCommand command3([]{},{&requirement3, &requirement4});
+  InstantCommand command1([] {}, {&requirement1, &requirement2});
+  InstantCommand command2([] {}, {&requirement3});
+  InstantCommand command3([] {}, {&requirement3, &requirement4});
 
-  ConditionalCommand conditional(std::move(command1), std::move(command2), []{return true;});
+  ConditionalCommand conditional(std::move(command1), std::move(command2),
+                                 [] { return true; });
   scheduler.Schedule(&conditional);
   scheduler.Schedule(&command3);
 
@@ -187,14 +186,12 @@ TEST_F(CommandRequirementsTest, SelectCommandRequirementTest) {
   TestSubsystem requirement3;
   TestSubsystem requirement4;
 
-  InstantCommand command1([]{},{&requirement1, &requirement2});
-  InstantCommand command2([]{},{&requirement3});
-  InstantCommand command3([]{},{&requirement3, &requirement4});
+  InstantCommand command1([] {}, {&requirement1, &requirement2});
+  InstantCommand command2([] {}, {&requirement3});
+  InstantCommand command3([] {}, {&requirement3, &requirement4});
 
-  SelectCommand<int> select(
-    []{return 1;},
-    std::pair(1, std::move(command1)),
-    std::pair(2, std::move(command2)));
+  SelectCommand<int> select([] { return 1; }, std::pair(1, std::move(command1)),
+                            std::pair(2, std::move(command2)));
 
   scheduler.Schedule(&select);
   scheduler.Schedule(&command3);

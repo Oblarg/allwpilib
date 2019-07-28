@@ -34,6 +34,4 @@ void ProxyScheduleCommand::Execute() {
   }
 }
 
-bool ProxyScheduleCommand::IsFinished() {
-  return m_finished;
-}
+bool ProxyScheduleCommand::IsFinished() { return m_finished; }

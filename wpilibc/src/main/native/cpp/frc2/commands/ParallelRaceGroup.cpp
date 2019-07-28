@@ -9,7 +9,8 @@
 
 using namespace frc2;
 
-ParallelRaceGroup::ParallelRaceGroup(std::vector<std::unique_ptr<Command>>&& commands) {
+ParallelRaceGroup::ParallelRaceGroup(
+    std::vector<std::unique_ptr<Command>>&& commands) {
   AddCommands(std::move(commands));
 }
 
@@ -39,35 +40,33 @@ void ParallelRaceGroup::End(bool interrupted) {
   isRunning = false;
 }
 
-bool ParallelRaceGroup::IsFinished() {
-  return m_finished;
-}
+bool ParallelRaceGroup::IsFinished() { return m_finished; }
 
-bool ParallelRaceGroup::RunsWhenDisabled() const {
-  return m_runWhenDisabled;
-}
+bool ParallelRaceGroup::RunsWhenDisabled() const { return m_runWhenDisabled; }
 
-void ParallelRaceGroup::AddCommands(std::vector<std::unique_ptr<Command>>&& commands) {
-    if (!RequireUngrouped(commands)) {
+void ParallelRaceGroup::AddCommands(
+    std::vector<std::unique_ptr<Command>>&& commands) {
+  if (!RequireUngrouped(commands)) {
+    return;
+  }
+
+  if (isRunning) {
+    wpi_setWPIErrorWithContext(CommandIllegalUse,
+                               "Commands cannot be added to a CommandGroup "
+                               "while the group is running");
+  }
+
+  for (auto&& command : commands) {
+    if (RequirementsDisjoint(this, command.get())) {
+      command->SetGrouped(true);
+      AddRequirements(command->GetRequirements());
+      m_runWhenDisabled &= command->RunsWhenDisabled();
+      m_commands.emplace(std::move(command));
+    } else {
+      wpi_setWPIErrorWithContext(CommandIllegalUse,
+                                 "Multiple commands in a parallel group cannot "
+                                 "require the same subsystems");
       return;
     }
-
-    if (isRunning) {
-      wpi_setWPIErrorWithContext(CommandIllegalUse,
-        "Commands cannot be added to a CommandGroup while the group is running");
-    }
-
-    for (auto&& command : commands) {
-      if(RequirementsDisjoint(this, command.get())) {
-        command->SetGrouped(true);
-        AddRequirements(command->GetRequirements());
-        m_runWhenDisabled &= command->RunsWhenDisabled();
-        m_commands.emplace(std::move(command));
-      }
-      else {
-        wpi_setWPIErrorWithContext(CommandIllegalUse,
-          "Multiple commands in a parallel group cannot require the same subsystems");
-        return;
-      }
-    }
   }
+}

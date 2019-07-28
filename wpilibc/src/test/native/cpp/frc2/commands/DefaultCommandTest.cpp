@@ -9,16 +9,14 @@
 #include "frc/frc2/commands/RunCommand.h"
 
 using namespace frc2;
-class DefaultCommandTest : public CommandTestBase {
-
-};
+class DefaultCommandTest : public CommandTestBase {};
 
 TEST_F(DefaultCommandTest, DefaultCommandScheduleTest) {
   CommandScheduler scheduler = GetScheduler();
 
   TestSubsystem subsystem;
 
-  RunCommand command1([]{}, {&subsystem});
+  RunCommand command1([] {}, {&subsystem});
 
   scheduler.SetDefaultCommand(&subsystem, &command1);
   scheduler.Run();
@@ -31,8 +29,8 @@ TEST_F(DefaultCommandTest, DefaultCommandInterruptResumeTest) {
 
   TestSubsystem subsystem;
 
-  RunCommand command1([]{}, {&subsystem});
-  RunCommand command2([]{}, {&subsystem});
+  RunCommand command1([] {}, {&subsystem});
+  RunCommand command2([] {}, {&subsystem});
 
   scheduler.SetDefaultCommand(&subsystem, &command1);
   scheduler.Run();

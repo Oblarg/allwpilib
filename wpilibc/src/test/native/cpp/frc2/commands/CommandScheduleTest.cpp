@@ -9,9 +9,7 @@
 #include "frc/frc2/commands/FunctionalCommand.h"
 
 using namespace frc2;
-class CommandScheduleTest : public CommandTestBase {
-
-};
+class CommandScheduleTest : public CommandTestBase {};
 
 TEST_F(CommandScheduleTest, InstantScheduleTest) {
   CommandScheduler scheduler = GetScheduler();
@@ -89,7 +87,6 @@ TEST_F(CommandScheduleTest, SchedulerCancelTest) {
   EXPECT_CALL(command, Execute());
   EXPECT_CALL(command, End(false)).Times(0);
   EXPECT_CALL(command, End(true));
-
 
   scheduler.Schedule(&command);
   scheduler.Run();

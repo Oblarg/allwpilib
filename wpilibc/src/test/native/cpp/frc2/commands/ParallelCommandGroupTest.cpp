@@ -11,11 +11,9 @@
 #include "frc/frc2/commands/WaitUntilCommand.h"
 
 using namespace frc2;
-class ParallelCommandGroupTest : public CommandTestBase {
+class ParallelCommandGroupTest : public CommandTestBase {};
 
-};
-
-TEST_F(ParallelCommandGroupTest, ParallelGroupScheduleTest){
+TEST_F(ParallelCommandGroupTest, ParallelGroupScheduleTest) {
   CommandScheduler scheduler = GetScheduler();
 
   std::unique_ptr<MockCommand> command1Holder = std::make_unique<MockCommand>();
@@ -24,7 +22,8 @@ TEST_F(ParallelCommandGroupTest, ParallelGroupScheduleTest){
   MockCommand* command1 = command1Holder.get();
   MockCommand* command2 = command2Holder.get();
 
-  ParallelCommandGroup group(tcb::make_vector<std::unique_ptr<Command>>(std::move(command1Holder), std::move(command2Holder)));
+  ParallelCommandGroup group(tcb::make_vector<std::unique_ptr<Command>>(
+      std::move(command1Holder), std::move(command2Holder)));
 
   EXPECT_CALL(*command1, Initialize());
   EXPECT_CALL(*command1, Execute()).Times(1);
@@ -44,7 +43,7 @@ TEST_F(ParallelCommandGroupTest, ParallelGroupScheduleTest){
   EXPECT_FALSE(scheduler.IsScheduled(&group));
 }
 
-TEST_F(ParallelCommandGroupTest, ParallelGroupInterruptTest){
+TEST_F(ParallelCommandGroupTest, ParallelGroupInterruptTest) {
   CommandScheduler scheduler = GetScheduler();
 
   std::unique_ptr<MockCommand> command1Holder = std::make_unique<MockCommand>();
@@ -53,7 +52,8 @@ TEST_F(ParallelCommandGroupTest, ParallelGroupInterruptTest){
   MockCommand* command1 = command1Holder.get();
   MockCommand* command2 = command2Holder.get();
 
-  ParallelCommandGroup group(tcb::make_vector<std::unique_ptr<Command>>(std::move(command1Holder), std::move(command2Holder)));
+  ParallelCommandGroup group(tcb::make_vector<std::unique_ptr<Command>>(
+      std::move(command1Holder), std::move(command2Holder)));
 
   EXPECT_CALL(*command1, Initialize());
   EXPECT_CALL(*command1, Execute()).Times(1);
@@ -74,7 +74,7 @@ TEST_F(ParallelCommandGroupTest, ParallelGroupInterruptTest){
   EXPECT_FALSE(scheduler.IsScheduled(&group));
 }
 
-TEST_F(ParallelCommandGroupTest, ParallelGroupNotScheduledCancelTest){
+TEST_F(ParallelCommandGroupTest, ParallelGroupNotScheduledCancelTest) {
   CommandScheduler scheduler = GetScheduler();
 
   ParallelCommandGroup group((InstantCommand(), InstantCommand()));
@@ -87,7 +87,7 @@ TEST_F(ParallelCommandGroupTest, ParallelGroupCopyTest) {
 
   bool finished = false;
 
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   ParallelCommandGroup group(command);
   scheduler.Schedule(&group);

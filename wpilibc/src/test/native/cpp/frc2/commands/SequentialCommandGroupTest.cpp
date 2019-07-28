@@ -11,11 +11,9 @@
 #include "frc/frc2/commands/WaitUntilCommand.h"
 
 using namespace frc2;
-class SequentialCommandGroupTest : public CommandTestBase {
+class SequentialCommandGroupTest : public CommandTestBase {};
 
-};
-
-TEST_F(SequentialCommandGroupTest, SequentialGroupScheduleTest){
+TEST_F(SequentialCommandGroupTest, SequentialGroupScheduleTest) {
   CommandScheduler scheduler = GetScheduler();
 
   std::unique_ptr<MockCommand> command1Holder = std::make_unique<MockCommand>();
@@ -26,8 +24,9 @@ TEST_F(SequentialCommandGroupTest, SequentialGroupScheduleTest){
   MockCommand* command2 = command2Holder.get();
   MockCommand* command3 = command3Holder.get();
 
-  SequentialCommandGroup group{
-    tcb::make_vector<std::unique_ptr<Command>>(std::move(command1Holder), std::move(command2Holder), std::move(command3Holder))};
+  SequentialCommandGroup group{tcb::make_vector<std::unique_ptr<Command>>(
+      std::move(command1Holder), std::move(command2Holder),
+      std::move(command3Holder))};
 
   EXPECT_CALL(*command1, Initialize());
   EXPECT_CALL(*command1, Execute()).Times(1);
@@ -53,7 +52,7 @@ TEST_F(SequentialCommandGroupTest, SequentialGroupScheduleTest){
   EXPECT_FALSE(scheduler.IsScheduled(&group));
 }
 
-TEST_F(SequentialCommandGroupTest, SequentialGroupInterruptTest){
+TEST_F(SequentialCommandGroupTest, SequentialGroupInterruptTest) {
   CommandScheduler scheduler = GetScheduler();
 
   std::unique_ptr<MockCommand> command1Holder = std::make_unique<MockCommand>();
@@ -64,8 +63,9 @@ TEST_F(SequentialCommandGroupTest, SequentialGroupInterruptTest){
   MockCommand* command2 = command2Holder.get();
   MockCommand* command3 = command3Holder.get();
 
-  SequentialCommandGroup group{
-    tcb::make_vector<std::unique_ptr<Command>>(std::move(command1Holder), std::move(command2Holder), std::move(command3Holder))};
+  SequentialCommandGroup group{tcb::make_vector<std::unique_ptr<Command>>(
+      std::move(command1Holder), std::move(command2Holder),
+      std::move(command3Holder))};
 
   EXPECT_CALL(*command1, Initialize());
   EXPECT_CALL(*command1, Execute()).Times(1);
@@ -91,7 +91,7 @@ TEST_F(SequentialCommandGroupTest, SequentialGroupInterruptTest){
   EXPECT_FALSE(scheduler.IsScheduled(&group));
 }
 
-TEST_F(SequentialCommandGroupTest, SequentialGroupNotScheduledCancelTest){
+TEST_F(SequentialCommandGroupTest, SequentialGroupNotScheduledCancelTest) {
   CommandScheduler scheduler = GetScheduler();
 
   SequentialCommandGroup group{InstantCommand(), InstantCommand()};
@@ -104,7 +104,7 @@ TEST_F(SequentialCommandGroupTest, SequentialGroupCopyTest) {
 
   bool finished = false;
 
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   SequentialCommandGroup group(command);
   scheduler.Schedule(&group);

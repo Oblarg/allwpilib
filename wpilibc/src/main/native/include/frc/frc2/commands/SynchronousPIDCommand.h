@@ -1,21 +1,31 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include "frc/frc2/commands/SendableCommandBase.h"
-#include "frc/frc2/commands/CommandHelper.h"
 #include "frc/controller/PIDController.h"
+#include "frc/frc2/commands/CommandHelper.h"
+#include "frc/frc2/commands/SendableCommandBase.h"
 
-namespace frc2{
+namespace frc2 {
 /**
- * A command that controls an output with a PIDController.  Runs forever by default - to add
- * exit conditions and/or other behavior, subclass this class.  The controller calculation and
- * output are performed synchronously in the command's execute() method.
- * 
+ * A command that controls an output with a PIDController.  Runs forever by
+ * default - to add exit conditions and/or other behavior, subclass this class.
+ * The controller calculation and output are performed synchronously in the
+ * command's execute() method.
+ *
  * @see PIDController
  */
-class SynchronousPIDCommand : public CommandHelper<SendableCommandBase, SynchronousPIDCommand> {
+class SynchronousPIDCommand
+    : public CommandHelper<SendableCommandBase, SynchronousPIDCommand> {
  public:
   /**
-   * Creates a new SynchronousPIDCommand, which controls the given output with a PIDController.
+   * Creates a new SynchronousPIDCommand, which controls the given output with a
+   * PIDController.
    *
    * @param controller        the controller that controls the output.
    * @param measurementSource the measurement of the process variable
@@ -23,14 +33,15 @@ class SynchronousPIDCommand : public CommandHelper<SendableCommandBase, Synchron
    * @param useOutput         the controller's output
    * @param requirements      the subsystems required by this command
    */
-  SynchronousPIDCommand(PIDController controller, 
-    std::function<double()> measurementSource, 
-    std::function<double()> setpointSource, 
-    std::function<void(double)> useOutput, 
-    std::initializer_list<Subsystem*> requirements);
+  SynchronousPIDCommand(PIDController controller,
+                        std::function<double()> measurementSource,
+                        std::function<double()> setpointSource,
+                        std::function<void(double)> useOutput,
+                        std::initializer_list<Subsystem*> requirements);
 
   /**
-   * Creates a new SynchronousPIDCommand, which controls the given output with a PIDController with a constant setpoint.
+   * Creates a new SynchronousPIDCommand, which controls the given output with a
+   * PIDController with a constant setpoint.
    *
    * @param controller        the controller that controls the output.
    * @param measurementSource the measurement of the process variable
@@ -38,11 +49,10 @@ class SynchronousPIDCommand : public CommandHelper<SendableCommandBase, Synchron
    * @param useOutput         the controller's output
    * @param requirements      the subsystems required by this command
    */
-  SynchronousPIDCommand(PIDController controller, 
-    std::function<double()> measurementSource, 
-    double setpoint, 
-    std::function<void(double)> useOutput, 
-    std::initializer_list<Subsystem*> requirements);
+  SynchronousPIDCommand(PIDController controller,
+                        std::function<double()> measurementSource,
+                        double setpoint, std::function<void(double)> useOutput,
+                        std::initializer_list<Subsystem*> requirements);
 
   SynchronousPIDCommand(SynchronousPIDCommand&& other) = default;
 
@@ -56,7 +66,7 @@ class SynchronousPIDCommand : public CommandHelper<SendableCommandBase, Synchron
 
   /**
    * Sets the function that uses the output of the PIDController.
-   * 
+   *
    * @param useOutput The function that uses the output.
    */
   void SetOutput(std::function<void(double)> useOutput);
@@ -76,7 +86,8 @@ class SynchronousPIDCommand : public CommandHelper<SendableCommandBase, Synchron
   void SetSetpoint(double setpoint);
 
   /**
-   * Sets the setpoint for the controller to a constant value relative (i.e. added to) the current setpoint.
+   * Sets the setpoint for the controller to a constant value relative (i.e.
+   * added to) the current setpoint.
    *
    * @param relativeReference The change in setpoint
    */
@@ -88,11 +99,11 @@ class SynchronousPIDCommand : public CommandHelper<SendableCommandBase, Synchron
    * @return The PIDController
    */
   PIDController& getController();
-  
+
  protected:
   PIDController m_controller;
   std::function<double()> m_measurement;
   std::function<double()> m_setpoint;
   std::function<void(double)> m_useOutput;
 };
-}
+}  // namespace frc2

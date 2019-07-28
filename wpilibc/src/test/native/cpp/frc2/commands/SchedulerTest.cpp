@@ -10,9 +10,7 @@
 #include "frc/frc2/commands/RunCommand.h"
 
 using namespace frc2;
-class SchedulerTest : public CommandTestBase {
-
-};
+class SchedulerTest : public CommandTestBase {};
 
 TEST_F(SchedulerTest, SchedulerLambdaTestNoInterrupt) {
   CommandScheduler scheduler = GetScheduler();
@@ -21,9 +19,9 @@ TEST_F(SchedulerTest, SchedulerLambdaTestNoInterrupt) {
 
   int counter = 0;
 
-  scheduler.OnCommandInitialize([&counter](const Command&){counter++;});
-  scheduler.OnCommandExecute([&counter](const Command&){counter++;});
-  scheduler.OnCommandFinish([&counter](const Command&){counter++;});
+  scheduler.OnCommandInitialize([&counter](const Command&) { counter++; });
+  scheduler.OnCommandExecute([&counter](const Command&) { counter++; });
+  scheduler.OnCommandFinish([&counter](const Command&) { counter++; });
 
   scheduler.Schedule(&command);
   scheduler.Run();
@@ -34,11 +32,11 @@ TEST_F(SchedulerTest, SchedulerLambdaTestNoInterrupt) {
 TEST_F(SchedulerTest, SchedulerLambdaInterruptTest) {
   CommandScheduler scheduler = GetScheduler();
 
-  RunCommand command([]{}, {});
+  RunCommand command([] {}, {});
 
   int counter = 0;
 
-  scheduler.OnCommandInterrupt([&counter](const Command&){counter++;});
+  scheduler.OnCommandInterrupt([&counter](const Command&) { counter++; });
 
   scheduler.Schedule(&command);
   scheduler.Run();

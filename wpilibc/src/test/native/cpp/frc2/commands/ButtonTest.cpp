@@ -12,14 +12,12 @@
 #include "gtest/gtest.h"
 
 using namespace frc2;
-class ButtonTest : public CommandTestBase {
-
-};
+class ButtonTest : public CommandTestBase {};
 
 TEST_F(ButtonTest, WhenPressedTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   InternalButton button;
 
@@ -38,7 +36,7 @@ TEST_F(ButtonTest, WhenPressedTest) {
 TEST_F(ButtonTest, WhenReleasedTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   InternalButton button;
 
@@ -57,7 +55,7 @@ TEST_F(ButtonTest, WhenReleasedTest) {
 TEST_F(ButtonTest, WhileHeldTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   InternalButton button;
 
@@ -81,7 +79,7 @@ TEST_F(ButtonTest, WhileHeldTest) {
 TEST_F(ButtonTest, WhenHeldTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   InternalButton button;
 
@@ -110,7 +108,7 @@ TEST_F(ButtonTest, WhenHeldTest) {
 TEST_F(ButtonTest, ToggleWhenPressedTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   InternalButton button;
 
@@ -131,7 +129,7 @@ TEST_F(ButtonTest, ToggleWhenPressedTest) {
 TEST_F(ButtonTest, AndTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   InternalButton button1;
   InternalButton button2;
@@ -153,9 +151,8 @@ TEST_F(ButtonTest, AndTest) {
 TEST_F(ButtonTest, OrTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
-  WaitUntilCommand command1([&finished]{return finished;});
-  WaitUntilCommand command2([&finished]{return finished;});
-
+  WaitUntilCommand command1([&finished] { return finished; });
+  WaitUntilCommand command2([&finished] { return finished; });
 
   InternalButton button1;
   InternalButton button2;
@@ -181,7 +178,7 @@ TEST_F(ButtonTest, OrTest) {
 TEST_F(ButtonTest, NegateTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   InternalButton button1;
 

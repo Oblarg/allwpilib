@@ -14,15 +14,16 @@
 
 using namespace frc2;
 Trigger* Trigger::WhenActive(Command* command, bool interruptible) {
-  CommandScheduler::GetInstance().AddButton([pressedLast = Grab(), this, command, interruptible]() mutable {
-    bool pressed = Grab();
+  CommandScheduler::GetInstance().AddButton(
+      [pressedLast = Grab(), this, command, interruptible]() mutable {
+        bool pressed = Grab();
 
-    if (!pressedLast && pressed) {
-      command->Schedule(interruptible);
-    }
+        if (!pressedLast && pressed) {
+          command->Schedule(interruptible);
+        }
 
-    pressedLast = pressed;
-  });
+        pressedLast = pressed;
+      });
 
   return this;
 }
@@ -32,17 +33,18 @@ Trigger* Trigger::WhenActive(std::function<void()> toRun) {
 }
 
 Trigger* Trigger::WhileActiveContinous(Command* command, bool interruptible) {
-  CommandScheduler::GetInstance().AddButton([pressedLast = Grab(), this, command, interruptible]() mutable {
-    bool pressed = Grab();
+  CommandScheduler::GetInstance().AddButton(
+      [pressedLast = Grab(), this, command, interruptible]() mutable {
+        bool pressed = Grab();
 
-    if (pressed) {
-      command->Schedule(interruptible);
-    } else if (pressedLast && !pressed) {
-      command->Cancel();
-    }
+        if (pressed) {
+          command->Schedule(interruptible);
+        } else if (pressedLast && !pressed) {
+          command->Cancel();
+        }
 
-    pressedLast = pressed;
-  });
+        pressedLast = pressed;
+      });
   return this;
 }
 
@@ -51,30 +53,32 @@ Trigger* Trigger::WhileActiveContinous(std::function<void()> toRun) {
 }
 
 Trigger* Trigger::WhileActiveOnce(Command* command, bool interruptible) {
-  CommandScheduler::GetInstance().AddButton([pressedLast = Grab(), this, command, interruptible]() mutable {
-    bool pressed = Grab();
+  CommandScheduler::GetInstance().AddButton(
+      [pressedLast = Grab(), this, command, interruptible]() mutable {
+        bool pressed = Grab();
 
-    if (!pressedLast && pressed) {
-      command->Schedule(interruptible);
-    } else if (pressedLast && !pressed) {
-      command->Cancel();
-    }
+        if (!pressedLast && pressed) {
+          command->Schedule(interruptible);
+        } else if (pressedLast && !pressed) {
+          command->Cancel();
+        }
 
-    pressedLast = pressed;
-  });
+        pressedLast = pressed;
+      });
   return this;
 }
 
 Trigger* Trigger::WhenInactive(Command* command, bool interruptible) {
-  CommandScheduler::GetInstance().AddButton([pressedLast = Grab(), this, command, interruptible]() mutable {
-    bool pressed = Grab();
+  CommandScheduler::GetInstance().AddButton(
+      [pressedLast = Grab(), this, command, interruptible]() mutable {
+        bool pressed = Grab();
 
-    if (pressedLast && !pressed) {
-      command->Schedule(interruptible);
-    }
+        if (pressedLast && !pressed) {
+          command->Schedule(interruptible);
+        }
 
-    pressedLast = pressed;
-  });
+        pressedLast = pressed;
+      });
   return this;
 }
 
@@ -83,39 +87,40 @@ Trigger* Trigger::WhenInactive(std::function<void()> toRun) {
 }
 
 Trigger* Trigger::ToggleWhenActive(Command* command, bool interruptible) {
-  CommandScheduler::GetInstance().AddButton([pressedLast = Grab(), this, command, interruptible]() mutable {
-    bool pressed = Grab();
+  CommandScheduler::GetInstance().AddButton(
+      [pressedLast = Grab(), this, command, interruptible]() mutable {
+        bool pressed = Grab();
 
-    if (!pressedLast && pressed) {
-      if (command->IsScheduled()) {
-        command->Cancel();
-      } else {
-        command->Schedule(interruptible);
-      }
-    }
+        if (!pressedLast && pressed) {
+          if (command->IsScheduled()) {
+            command->Cancel();
+          } else {
+            command->Schedule(interruptible);
+          }
+        }
 
-    pressedLast = pressed;
-  });
+        pressedLast = pressed;
+      });
   return this;
 }
 
 Trigger* Trigger::CancelWhenActive(Command* command) {
-  CommandScheduler::GetInstance().AddButton([pressedLast = Grab(), this, command]() mutable {
-    bool pressed = Grab();
+  CommandScheduler::GetInstance().AddButton(
+      [pressedLast = Grab(), this, command]() mutable {
+        bool pressed = Grab();
 
-    if (!pressedLast && pressed) {
-      command->Cancel();
-    }
+        if (!pressedLast && pressed) {
+          command->Cancel();
+        }
 
-    pressedLast = pressed;
-  });
+        pressedLast = pressed;
+      });
   return this;
 }
 
 void Trigger::InitSendable(frc::SendableBuilder& builder) {
   builder.SetSmartDashboardType("Button");
-  builder.SetSafeState([this]{ m_sendablePressed = false; });
-  builder.AddBooleanProperty("pressed", [this]{return Grab();}, [this](bool value){
-    m_sendablePressed = value;
-  });
+  builder.SetSafeState([this] { m_sendablePressed = false; });
+  builder.AddBooleanProperty("pressed", [this] { return Grab(); },
+                             [this](bool value) { m_sendablePressed = value; });
 }

@@ -7,56 +7,72 @@
 
 #pragma once
 
+#include <memory>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "CommandGroupBase.h"
 #include "CommandHelper.h"
 
 namespace frc2 {
 /**
- * A CommandGroup that runs a set of commands in parallel, ending only when a specific command
- * (the "deadline") ends, interrupting all other commands that are still running at that point.
+ * A CommandGroup that runs a set of commands in parallel, ending only when a
+ * specific command (the "deadline") ends, interrupting all other commands that
+ * are still running at that point.
  *
- * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
+ * <p>As a rule, CommandGroups require the union of the requirements of their
+ * component commands.
  */
-class ParallelDeadlineGroup : public CommandHelper<CommandGroupBase, ParallelDeadlineGroup> {
+class ParallelDeadlineGroup
+    : public CommandHelper<CommandGroupBase, ParallelDeadlineGroup> {
  public:
   /**
-   * Creates a new ParallelDeadlineGroup.  The given commands (including the deadline) will be
-   * executed simultaneously.  The CommandGroup will finish when the deadline finishes,
-   * interrupting all other still-running commands.  If the CommandGroup is interrupted, only
-   * the commands still running will be interrupted.
+   * Creates a new ParallelDeadlineGroup.  The given commands (including the
+   * deadline) will be executed simultaneously.  The CommandGroup will finish
+   * when the deadline finishes, interrupting all other still-running commands.
+   * If the CommandGroup is interrupted, only the commands still running will be
+   * interrupted.
    *
    * @param deadline the command that determines when the group ends
    * @param commands the commands to be executed
    */
-  ParallelDeadlineGroup(std::unique_ptr<Command>&& deadline, std::vector<std::unique_ptr<Command>>&& commands);
+  ParallelDeadlineGroup(std::unique_ptr<Command>&& deadline,
+                        std::vector<std::unique_ptr<Command>>&& commands);
   /**
-   * Creates a new ParallelDeadlineGroup.  The given commands (including the deadline) will be
-   * executed simultaneously.  The CommandGroup will finish when the deadline finishes,
-   * interrupting all other still-running commands.  If the CommandGroup is interrupted, only
-   * the commands still running will be interrupted.
+   * Creates a new ParallelDeadlineGroup.  The given commands (including the
+   * deadline) will be executed simultaneously.  The CommandGroup will finish
+   * when the deadline finishes, interrupting all other still-running commands.
+   * If the CommandGroup is interrupted, only the commands still running will be
+   * interrupted.
    *
    * @param deadline the command that determines when the group ends
    * @param commands the commands to be executed
    */
   template <class T, class... Types,
-    typename = std::enable_if_t<std::is_base_of<Command, std::remove_reference_t<T>>::value>,
-    typename = std::enable_if_t<std::conjunction_v<std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
-  ParallelDeadlineGroup(T&& deadline, Types&&... commands) {
-    SetDeadline(std::make_unique<std::remove_reference_t<T>>(std::forward<T>(deadline)));
+            typename = std::enable_if_t<
+                std::is_base_of<Command, std::remove_reference_t<T>>::value>,
+            typename = std::enable_if_t<std::conjunction_v<
+                std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
+  explicit ParallelDeadlineGroup(T&& deadline, Types&&... commands) {
+    SetDeadline(std::make_unique<std::remove_reference_t<T>>(
+        std::forward<T>(deadline)));
     AddCommands(std::forward<Types>(commands)...);
   }
 
   ParallelDeadlineGroup(ParallelDeadlineGroup&& other) = default;
 
-  //No copy constructors for command groups
+  // No copy constructors for command groups
   ParallelDeadlineGroup(const ParallelDeadlineGroup&) = delete;
 
-  template <class... Types, typename = std::enable_if_t<std::conjunction_v<std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
+  template <class... Types,
+            typename = std::enable_if_t<std::conjunction_v<
+                std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
   void AddCommands(Types&&... commands) {
     std::vector<std::unique_ptr<Command>> foo;
-    ((void)foo.emplace_back(std::make_unique<std::remove_reference_t<Types>>(std::forward<Types>(commands))), ...);
+    ((void)foo.emplace_back(std::make_unique<std::remove_reference_t<Types>>(
+         std::forward<Types>(commands))),
+     ...);
     AddCommands(std::move(foo));
   }
 

@@ -14,9 +14,7 @@
 #include "frc/frc2/commands/SequentialCommandGroup.h"
 
 using namespace frc2;
-class RobotDisabledCommandTest : public CommandTestBase {
-
-};
+class RobotDisabledCommandTest : public CommandTestBase {};
 
 TEST_F(RobotDisabledCommandTest, RobotDisabledCommandCancelTest) {
   CommandScheduler scheduler = GetScheduler();
@@ -61,7 +59,8 @@ TEST_F(RobotDisabledCommandTest, SequentialGroupRunWhenDisabledTest) {
   CommandScheduler scheduler = GetScheduler();
 
   SequentialCommandGroup runWhenDisabled{MockCommand(), MockCommand()};
-  SequentialCommandGroup dontRunWhenDisabled{MockCommand(), MockCommand({}, false, false)};
+  SequentialCommandGroup dontRunWhenDisabled{MockCommand(),
+                                             MockCommand({}, false, false)};
 
   SetDSEnabled(false);
 
@@ -76,7 +75,8 @@ TEST_F(RobotDisabledCommandTest, ParallelGroupRunWhenDisabledTest) {
   CommandScheduler scheduler = GetScheduler();
 
   ParallelCommandGroup runWhenDisabled{MockCommand(), MockCommand()};
-  ParallelCommandGroup dontRunWhenDisabled{MockCommand(), MockCommand({}, false, false)};
+  ParallelCommandGroup dontRunWhenDisabled{MockCommand(),
+                                           MockCommand({}, false, false)};
 
   SetDSEnabled(false);
 
@@ -91,7 +91,8 @@ TEST_F(RobotDisabledCommandTest, ParallelRaceRunWhenDisabledTest) {
   CommandScheduler scheduler = GetScheduler();
 
   ParallelRaceGroup runWhenDisabled{MockCommand(), MockCommand()};
-  ParallelRaceGroup dontRunWhenDisabled{MockCommand(), MockCommand({}, false, false)};
+  ParallelRaceGroup dontRunWhenDisabled{MockCommand(),
+                                        MockCommand({}, false, false)};
 
   SetDSEnabled(false);
 
@@ -106,7 +107,8 @@ TEST_F(RobotDisabledCommandTest, ParallelDeadlineRunWhenDisabledTest) {
   CommandScheduler scheduler = GetScheduler();
 
   ParallelDeadlineGroup runWhenDisabled{MockCommand(), MockCommand()};
-  ParallelDeadlineGroup dontRunWhenDisabled{MockCommand(), MockCommand({}, false, false)};
+  ParallelDeadlineGroup dontRunWhenDisabled{MockCommand(),
+                                            MockCommand({}, false, false)};
 
   SetDSEnabled(false);
 
@@ -120,8 +122,10 @@ TEST_F(RobotDisabledCommandTest, ParallelDeadlineRunWhenDisabledTest) {
 TEST_F(RobotDisabledCommandTest, ConditionalCommandRunWhenDisabledTest) {
   CommandScheduler scheduler = GetScheduler();
 
-  ConditionalCommand runWhenDisabled{MockCommand(), MockCommand(), []{return true;}};
-  ConditionalCommand dontRunWhenDisabled{MockCommand(), MockCommand({}, false, false), []{return true;}};
+  ConditionalCommand runWhenDisabled{MockCommand(), MockCommand(),
+                                     [] { return true; }};
+  ConditionalCommand dontRunWhenDisabled{
+      MockCommand(), MockCommand({}, false, false), [] { return true; }};
 
   SetDSEnabled(false);
 
@@ -135,12 +139,12 @@ TEST_F(RobotDisabledCommandTest, ConditionalCommandRunWhenDisabledTest) {
 TEST_F(RobotDisabledCommandTest, SelectCommandRunWhenDisabledTest) {
   CommandScheduler scheduler = GetScheduler();
 
-  SelectCommand<int> runWhenDisabled{[]{return 1;},
-    std::pair(1, MockCommand()),
-    std::pair(1, MockCommand())};
-  SelectCommand<int> dontRunWhenDisabled{[]{return 1;},
-    std::pair(1, MockCommand()),
-    std::pair(1, MockCommand({}, false, false))};
+  SelectCommand<int> runWhenDisabled{[] { return 1; },
+                                     std::pair(1, MockCommand()),
+                                     std::pair(1, MockCommand())};
+  SelectCommand<int> dontRunWhenDisabled{
+      [] { return 1; }, std::pair(1, MockCommand()),
+      std::pair(1, MockCommand({}, false, false))};
 
   SetDSEnabled(false);
 

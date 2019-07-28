@@ -17,14 +17,12 @@
 #include <hal/HAL.h>
 
 using namespace frc2;
-template<typename TMap, typename TKey>
+template <typename TMap, typename TKey>
 static bool ContainsKey(const TMap& map, TKey keyToCheck) {
   return map.find(keyToCheck) != map.end();
 }
 
-CommandScheduler::CommandScheduler() {
-  SetName("Scheduler");
-}
+CommandScheduler::CommandScheduler() { SetName("Scheduler"); }
 
 CommandScheduler& CommandScheduler::GetInstance() {
   static CommandScheduler scheduler;
@@ -32,20 +30,21 @@ CommandScheduler& CommandScheduler::GetInstance() {
 }
 
 void CommandScheduler::AddButton(std::function<void()> button) {
-    m_buttons.emplace_back(std::move(button));
+  m_buttons.emplace_back(std::move(button));
 }
 
-void CommandScheduler::ClearButtons() {
-    m_buttons.clear();
-  }
+void CommandScheduler::ClearButtons() { m_buttons.clear(); }
 
 void CommandScheduler::Schedule(bool interruptible, Command* command) {
   if (command->IsGrouped()) {
     wpi_setWPIErrorWithContext(CommandIllegalUse,
-        "A command that is part of a command group cannot be independently scheduled");
+                               "A command that is part of a command group "
+                               "cannot be independently scheduled");
     return;
   }
-  if (m_disabled || (frc::RobotState::IsDisabled() && !command->RunsWhenDisabled()) || ContainsKey(m_scheduledCommands, command)) {
+  if (m_disabled ||
+      (frc::RobotState::IsDisabled() && !command->RunsWhenDisabled()) ||
+      ContainsKey(m_scheduledCommands, command)) {
     return;
   }
 
@@ -81,19 +80,21 @@ void CommandScheduler::Schedule(bool interruptible, Command* command) {
   }
 }
 
-void CommandScheduler::Schedule(bool interruptible, wpi::ArrayRef<Command*> commands) {
-    for (auto command : commands) {
-      Schedule(interruptible, command);
-    }
+void CommandScheduler::Schedule(bool interruptible,
+                                wpi::ArrayRef<Command*> commands) {
+  for (auto command : commands) {
+    Schedule(interruptible, command);
+  }
 }
 
 void CommandScheduler::Schedule(wpi::ArrayRef<Command*> commands) {
-    for (auto command : commands) {
-      Schedule(true, command);
-    }
+  for (auto command : commands) {
+    Schedule(true, command);
   }
+}
 
-void CommandScheduler::QueueSchedule(bool interruptible, wpi::ArrayRef<Command*> commands) {
+void CommandScheduler::QueueSchedule(bool interruptible,
+                                     wpi::ArrayRef<Command*> commands) {
   std::scoped_lock lock(m_lock);
   for (auto&& command : commands) {
     m_toSchedule[command] = interruptible;
@@ -101,25 +102,25 @@ void CommandScheduler::QueueSchedule(bool interruptible, wpi::ArrayRef<Command*>
 }
 
 void CommandScheduler::QueueSchedule(wpi::ArrayRef<Command*> commands) {
-    QueueSchedule(true, commands);
-  };
+  QueueSchedule(true, commands);
+}
 
 void CommandScheduler::Run() {
-  if(m_disabled) {
+  if (m_disabled) {
     return;
   }
 
-  //Run the periodic method of all registered subsystems.
-  for(auto&& subsystem : m_subsystems) {
+  // Run the periodic method of all registered subsystems.
+  for (auto&& subsystem : m_subsystems) {
     subsystem.getFirst()->Periodic();
   }
 
-  //Poll buttons for new commands to add.
+  // Poll buttons for new commands to add.
   for (auto&& button : m_buttons) {
     button();
   }
 
-  //add/cancel commands from async queues
+  // add/cancel commands from async queues
   m_lock.lock();
   for (auto&& command : m_toSchedule) {
     Schedule(command.second, command.first);
@@ -131,8 +132,9 @@ void CommandScheduler::Run() {
   m_toCancel.clear();
   m_lock.unlock();
 
-  //Run scheduled commands, remove finished commands.
-  for (auto iterator = m_scheduledCommands.begin(); iterator != m_scheduledCommands.end(); iterator++) {
+  // Run scheduled commands, remove finished commands.
+  for (auto iterator = m_scheduledCommands.begin();
+       iterator != m_scheduledCommands.end(); iterator++) {
     Command* command = iterator->getFirst();
 
     if (!command->RunsWhenDisabled() && frc::RobotState::IsDisabled()) {
@@ -159,7 +161,7 @@ void CommandScheduler::Run() {
     }
   }
 
-  //Add default commands for un-required registered subsystems.
+  // Add default commands for un-required registered subsystems.
   for (auto&& subsystem : m_subsystems) {
     auto s = m_requirements.find(subsystem.getFirst());
     if (s == m_requirements.end()) {
@@ -179,27 +181,30 @@ void CommandScheduler::UnregisterSubsystem(Subsystem* subsystem) {
   }
 }
 
-void CommandScheduler::RegisterSubsystem(std::initializer_list<Subsystem*> subsystems) {
+void CommandScheduler::RegisterSubsystem(
+    std::initializer_list<Subsystem*> subsystems) {
   for (auto* subsystem : subsystems) {
-      RegisterSubsystem(subsystem);
-    }
+    RegisterSubsystem(subsystem);
+  }
 }
 
-void CommandScheduler::UnregisterSubsystem(std::initializer_list<Subsystem*> subsystems) {
-    for (auto* subsystem : subsystems) {
-      UnregisterSubsystem(subsystem);
-    }
+void CommandScheduler::UnregisterSubsystem(
+    std::initializer_list<Subsystem*> subsystems) {
+  for (auto* subsystem : subsystems) {
+    UnregisterSubsystem(subsystem);
+  }
 }
 
-void CommandScheduler::SetDefaultCommand(Subsystem* subsystem, Command* defaultCommand) {
+void CommandScheduler::SetDefaultCommand(Subsystem* subsystem,
+                                         Command* defaultCommand) {
   if (!defaultCommand->HasRequirement(subsystem)) {
-    wpi_setWPIErrorWithContext(CommandIllegalUse,
-        "Default commands must require their subsystem!");
+    wpi_setWPIErrorWithContext(
+        CommandIllegalUse, "Default commands must require their subsystem!");
     return;
   }
   if (defaultCommand->IsFinished()) {
     wpi_setWPIErrorWithContext(CommandIllegalUse,
-        "Default commands should not end!");
+                               "Default commands should not end!");
     return;
   }
   m_subsystems[subsystem] = defaultCommand;
@@ -207,12 +212,11 @@ void CommandScheduler::SetDefaultCommand(Subsystem* subsystem, Command* defaultC
 
 Command* CommandScheduler::GetDefaultCommand(const Subsystem* subsystem) const {
   auto find = m_subsystems.find(subsystem);
-    if (find != m_subsystems.end()) {
-      return find->second;
-    }
-    else {
-      return nullptr;
-    }
+  if (find != m_subsystems.end()) {
+    return find->second;
+  } else {
+    return nullptr;
+  }
 }
 
 void CommandScheduler::Cancel(Command* command) {
@@ -224,59 +228,58 @@ void CommandScheduler::Cancel(Command* command) {
   }
   m_scheduledCommands.erase(find);
   for (auto&& requirement : m_requirements) {
-    if(requirement.second == command) {
+    if (requirement.second == command) {
       m_requirements.erase(requirement.first);
     }
   }
 }
 
 void CommandScheduler::Cancel(wpi::ArrayRef<Command*> commands) {
-    for (auto command : commands) {
-      Cancel(command);
-    }
+  for (auto command : commands) {
+    Cancel(command);
   }
+}
 
 void CommandScheduler::CancelAll() {
   for (auto&& command : m_scheduledCommands) {
-      Cancel(command.first);
+    Cancel(command.first);
   }
 }
 
 void CommandScheduler::QueueCancel(wpi::ArrayRef<Command*> commands) {
   std::scoped_lock lock(m_lock);
-  for(auto&& command : commands) {
+  for (auto&& command : commands) {
     m_toCancel.emplace_back(command);
   }
 }
 
-
-  double CommandScheduler::TimeSinceScheduled(const Command* command) const {
-    auto find = m_scheduledCommands.find(command);
-    if (find != m_scheduledCommands.end()) {
-      return find->second.TimeSinceInitialized();
-    } else {
-      return -1;
+double CommandScheduler::TimeSinceScheduled(const Command* command) const {
+  auto find = m_scheduledCommands.find(command);
+  if (find != m_scheduledCommands.end()) {
+    return find->second.TimeSinceInitialized();
+  } else {
+    return -1;
+  }
+}
+bool CommandScheduler::IsScheduled(
+    std::initializer_list<const Command*> commands) const {
+  for (auto command : commands) {
+    if (!IsScheduled(command)) {
+      return false;
     }
   }
-  bool CommandScheduler::IsScheduled(std::initializer_list<const Command*> commands) const {
-    for (auto command : commands) {
-      if (!IsScheduled(command)) {
-        return false;
-      }
-    }
-    return true;
-  }
+  return true;
+}
 
-  bool CommandScheduler::IsScheduled(const Command* command) const {
-    return m_scheduledCommands.find(command) != m_scheduledCommands.end();
-  }
+bool CommandScheduler::IsScheduled(const Command* command) const {
+  return m_scheduledCommands.find(command) != m_scheduledCommands.end();
+}
 
 Command* CommandScheduler::Requiring(const Subsystem* subsystem) const {
   auto find = m_requirements.find(subsystem);
   if (find != m_requirements.end()) {
     return find->second;
-  }
-  else {
+  } else {
     return nullptr;
   }
 }
@@ -286,20 +289,20 @@ void CommandScheduler::Disable() { m_disabled = true; }
 void CommandScheduler::Enable() { m_disabled = false; }
 
 void CommandScheduler::OnCommandInitialize(Action action) {
-    m_initActions.emplace_back(std::move(action));
-  }
+  m_initActions.emplace_back(std::move(action));
+}
 
-  void CommandScheduler::OnCommandExecute(Action action) {
-    m_executeActions.emplace_back(std::move(action));
-  }
+void CommandScheduler::OnCommandExecute(Action action) {
+  m_executeActions.emplace_back(std::move(action));
+}
 
 void CommandScheduler::OnCommandInterrupt(Action action) {
-    m_interruptActions.emplace_back(std::move(action));
-  }
+  m_interruptActions.emplace_back(std::move(action));
+}
 
-  void CommandScheduler::OnCommandFinish(Action action) {
-    m_finishActions.emplace_back(std::move(action));
-  }
+void CommandScheduler::OnCommandFinish(Action action) {
+  m_finishActions.emplace_back(std::move(action));
+}
 
 void CommandScheduler::InitSendable(frc::SendableBuilder& builder) {
   builder.SetSmartDashboardType("Scheduler");
@@ -307,7 +310,7 @@ void CommandScheduler::InitSendable(frc::SendableBuilder& builder) {
   m_idsEntry = builder.GetEntry("Ids");
   m_cancelEntry = builder.GetEntry("Cancel");
 
-  builder.SetUpdateTable([this]{
+  builder.SetUpdateTable([this] {
     double tmp[1];
     tmp[0] = 0;
     auto toCancel = m_cancelEntry.GetDoubleArray(tmp);
@@ -321,7 +324,7 @@ void CommandScheduler::InitSendable(frc::SendableBuilder& builder) {
     }
 
     wpi::SmallVector<std::string, 8> names;
-    wpi::SmallVector<double, 8>  ids;
+    wpi::SmallVector<double, 8> ids;
     for (auto&& command : m_scheduledCommands) {
       names.emplace_back(command.first->GetName());
       uintptr_t ptrTmp = reinterpret_cast<uintptr_t>(command.first);

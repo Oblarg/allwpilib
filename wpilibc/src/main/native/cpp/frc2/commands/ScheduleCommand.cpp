@@ -14,15 +14,11 @@ ScheduleCommand::ScheduleCommand(wpi::ArrayRef<Command*> toSchedule) {
 }
 
 void ScheduleCommand::Initialize() {
-    for (auto command : m_toSchedule) {
-      command->Schedule();
-    }
+  for (auto command : m_toSchedule) {
+    command->Schedule();
   }
+}
 
-  bool ScheduleCommand::IsFinished() {
-    return true;
-  }
+bool ScheduleCommand::IsFinished() { return true; }
 
-  bool ScheduleCommand::RunsWhenDisabled() const {
-    return true;
-  }
+bool ScheduleCommand::RunsWhenDisabled() const { return true; }

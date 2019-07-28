@@ -11,11 +11,9 @@
 #include "frc/frc2/commands/WaitUntilCommand.h"
 
 using namespace frc2;
-class ParallelRaceGroupTest : public CommandTestBase {
+class ParallelRaceGroupTest : public CommandTestBase {};
 
-};
-
-TEST_F(ParallelRaceGroupTest, ParallelRaceScheduleTest){
+TEST_F(ParallelRaceGroupTest, ParallelRaceScheduleTest) {
   CommandScheduler scheduler = GetScheduler();
 
   std::unique_ptr<MockCommand> command1Holder = std::make_unique<MockCommand>();
@@ -26,8 +24,9 @@ TEST_F(ParallelRaceGroupTest, ParallelRaceScheduleTest){
   MockCommand* command2 = command2Holder.get();
   MockCommand* command3 = command3Holder.get();
 
-  ParallelRaceGroup group{
-    tcb::make_vector<std::unique_ptr<Command>>(std::move(command1Holder), std::move(command2Holder), std::move(command3Holder))};
+  ParallelRaceGroup group{tcb::make_vector<std::unique_ptr<Command>>(
+      std::move(command1Holder), std::move(command2Holder),
+      std::move(command3Holder))};
 
   EXPECT_CALL(*command1, Initialize());
   EXPECT_CALL(*command1, Execute()).Times(2);
@@ -50,7 +49,7 @@ TEST_F(ParallelRaceGroupTest, ParallelRaceScheduleTest){
   EXPECT_FALSE(scheduler.IsScheduled(&group));
 }
 
-TEST_F(ParallelRaceGroupTest, ParallelRaceInterruptTest){
+TEST_F(ParallelRaceGroupTest, ParallelRaceInterruptTest) {
   CommandScheduler scheduler = GetScheduler();
 
   std::unique_ptr<MockCommand> command1Holder = std::make_unique<MockCommand>();
@@ -61,8 +60,9 @@ TEST_F(ParallelRaceGroupTest, ParallelRaceInterruptTest){
   MockCommand* command2 = command2Holder.get();
   MockCommand* command3 = command3Holder.get();
 
-  ParallelRaceGroup group{
-    tcb::make_vector<std::unique_ptr<Command>>(std::move(command1Holder), std::move(command2Holder), std::move(command3Holder))};
+  ParallelRaceGroup group{tcb::make_vector<std::unique_ptr<Command>>(
+      std::move(command1Holder), std::move(command2Holder),
+      std::move(command3Holder))};
 
   EXPECT_CALL(*command1, Initialize());
   EXPECT_CALL(*command1, Execute()).Times(1);
@@ -85,7 +85,7 @@ TEST_F(ParallelRaceGroupTest, ParallelRaceInterruptTest){
   EXPECT_FALSE(scheduler.IsScheduled(&group));
 }
 
-TEST_F(ParallelRaceGroupTest, ParallelRaceNotScheduledCancelTest){
+TEST_F(ParallelRaceGroupTest, ParallelRaceNotScheduledCancelTest) {
   CommandScheduler scheduler = GetScheduler();
 
   ParallelRaceGroup group{InstantCommand(), InstantCommand()};
@@ -98,7 +98,7 @@ TEST_F(ParallelRaceGroupTest, ParallelRaceCopyTest) {
 
   bool finished = false;
 
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   ParallelRaceGroup group(command);
   scheduler.Schedule(&group);

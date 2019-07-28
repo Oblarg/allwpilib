@@ -12,12 +12,14 @@
 
 namespace frc2 {
 /**
- * A command that allows the user to pass in functions for each of the basic command methods through
- * the constructor.  Useful for inline definitions of complex commands - note, however, that if a
- * command is beyond a certain complexity it is usually better practice to write a proper class for
- * it than to inline it.
+ * A command that allows the user to pass in functions for each of the basic
+ * command methods through the constructor.  Useful for inline definitions of
+ * complex commands - note, however, that if a command is beyond a certain
+ * complexity it is usually better practice to write a proper class for it than
+ * to inline it.
  */
-class FunctionalCommand : public CommandHelper<SendableCommandBase, FunctionalCommand> {
+class FunctionalCommand
+    : public CommandHelper<SendableCommandBase, FunctionalCommand> {
  public:
   /**
    * Creates a new FunctionalCommand.
@@ -25,10 +27,14 @@ class FunctionalCommand : public CommandHelper<SendableCommandBase, FunctionalCo
    * @param onInit       the function to run on command initialization
    * @param onExecute    the function to run on command execution
    * @param onEnd        the function to run on command end
-   * @param isFinished   the function that determines whether the command has finished
+   * @param isFinished   the function that determines whether the command has
+   * finished
    * @param requirements the subsystems required by this command
    */
-  FunctionalCommand(std::function<void()> onInit, std::function<void()> onExecute, std::function<void(bool)> onEnd, std::function<bool()> isFinished);
+  FunctionalCommand(std::function<void()> onInit,
+                    std::function<void()> onExecute,
+                    std::function<void(bool)> onEnd,
+                    std::function<bool()> isFinished);
 
   FunctionalCommand(FunctionalCommand&& other) = default;
 
@@ -41,6 +47,7 @@ class FunctionalCommand : public CommandHelper<SendableCommandBase, FunctionalCo
   void End(bool interrupted) override;
 
   bool IsFinished() override;
+
  private:
   std::function<void()> m_onInit;
   std::function<void()> m_onExecute;

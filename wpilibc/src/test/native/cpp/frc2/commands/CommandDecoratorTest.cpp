@@ -13,14 +13,12 @@
 #include "frc/frc2/commands/SequentialCommandGroup.h"
 
 using namespace frc2;
-class CommandDecoratorTest : public CommandTestBase {
-
-};
+class CommandDecoratorTest : public CommandTestBase {};
 
 TEST_F(CommandDecoratorTest, WithTimeoutTest) {
   CommandScheduler scheduler = GetScheduler();
 
-  auto command = RunCommand([]{}, {}).WithTimeout(.1);
+  auto command = RunCommand([] {}, {}).WithTimeout(.1);
 
   scheduler.Schedule(&command);
 
@@ -38,7 +36,8 @@ TEST_F(CommandDecoratorTest, InterruptOnTest) {
 
   bool finished = false;
 
-  auto command = RunCommand([]{}, {}).InterruptOn([&finished]{return finished;});
+  auto command =
+      RunCommand([] {}, {}).InterruptOn([&finished] { return finished; });
 
   scheduler.Schedule(&command);
 
@@ -56,7 +55,8 @@ TEST_F(CommandDecoratorTest, BeforeStartingTest) {
 
   bool finished = false;
 
-  auto command = InstantCommand([]{}, {}).BeforeStarting([&finished]{finished = true;});
+  auto command = InstantCommand([] {}, {}).BeforeStarting(
+      [&finished] { finished = true; });
 
   scheduler.Schedule(&command);
 
@@ -73,7 +73,8 @@ TEST_F(CommandDecoratorTest, WhenFinishedTest) {
 
   bool finished = false;
 
-  auto command = InstantCommand([]{}, {}).WhenFinished([&finished]{finished = true;});
+  auto command =
+      InstantCommand([] {}, {}).WhenFinished([&finished] { finished = true; });
 
   scheduler.Schedule(&command);
 
@@ -89,7 +90,7 @@ TEST_F(CommandDecoratorTest, WhenFinishedTest) {
 TEST_F(CommandDecoratorTest, PerpetuallyTest) {
   CommandScheduler scheduler = GetScheduler();
 
-  auto command = InstantCommand([]{}, {}).Perpetually();
+  auto command = InstantCommand([] {}, {}).Perpetually();
 
   scheduler.Schedule(&command);
 

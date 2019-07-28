@@ -7,43 +7,52 @@
 
 #pragma once
 
+#include <memory>
+#include <utility>
+
 #include "CommandGroupBase.h"
 #include "CommandHelper.h"
 #include "SendableCommandBase.h"
 
 namespace frc2 {
 /**
- * A command that runs another command in perpetuity, ignoring that command's end conditions.  While
- * this class does not extend {@link CommandGroupBase}, it is still considered a CommandGroup, as it
- * allows one to compose another command within it; the command instances that are passed to it
- * cannot be added to any other groups, or scheduled individually.
+ * A command that runs another command in perpetuity, ignoring that command's
+ * end conditions.  While this class does not extend {@link CommandGroupBase},
+ * it is still considered a CommandGroup, as it allows one to compose another
+ * command within it; the command instances that are passed to it cannot be
+ * added to any other groups, or scheduled individually.
  *
- * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
+ * <p>As a rule, CommandGroups require the union of the requirements of their
+ * component commands.
  */
-class PerpetualCommand : public CommandHelper<SendableCommandBase, PerpetualCommand> {
+class PerpetualCommand
+    : public CommandHelper<SendableCommandBase, PerpetualCommand> {
  public:
   /**
-   * Creates a new PerpetualCommand.  Will run another command in perpetuity, ignoring that
-   * command's end conditions, unless this command itself is interrupted.
+   * Creates a new PerpetualCommand.  Will run another command in perpetuity,
+   * ignoring that command's end conditions, unless this command itself is
+   * interrupted.
    *
    * @param command the command to run perpetually
    */
-  PerpetualCommand(std::unique_ptr<Command>&& command);
+  explicit PerpetualCommand(std::unique_ptr<Command>&& command);
 
   /**
-   * Creates a new PerpetualCommand.  Will run another command in perpetuity, ignoring that
-   * command's end conditions, unless this command itself is interrupted.
+   * Creates a new PerpetualCommand.  Will run another command in perpetuity,
+   * ignoring that command's end conditions, unless this command itself is
+   * interrupted.
    *
    * @param command the command to run perpetually
    */
-  template<class T,
-    typename = std::enable_if_t<std::is_base_of<Command, std::remove_reference_t<T>>::value>>
-  PerpetualCommand(T&& command)
-    : PerpetualCommand(std::make_unique<std::remove_reference_t<T>>(std::forward<T>(command))) {};
+  template <class T, typename = std::enable_if_t<std::is_base_of<
+                         Command, std::remove_reference_t<T>>::value>>
+  explicit PerpetualCommand(T&& command)
+      : PerpetualCommand(std::make_unique<std::remove_reference_t<T>>(
+            std::forward<T>(command))) {}
 
   PerpetualCommand(PerpetualCommand&& other) = default;
 
-  //No copy constructors for command groups
+  // No copy constructors for command groups
   PerpetualCommand(const PerpetualCommand& other) = delete;
 
   void Initialize() override;
@@ -51,6 +60,7 @@ class PerpetualCommand : public CommandHelper<SendableCommandBase, PerpetualComm
   void Execute() override;
 
   void End(bool interrupted) override;
+
  private:
   std::unique_ptr<Command> m_command;
 };

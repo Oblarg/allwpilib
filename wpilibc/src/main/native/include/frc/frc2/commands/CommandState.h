@@ -20,8 +20,9 @@ class CommandState final {
 
   bool IsInterruptible() const { return m_interruptible; }
 
-  //The time since this command was initialized.
+  // The time since this command was initialized.
   double TimeSinceInitialized() const;
+
  private:
   double m_startTime = -1;
   bool m_interruptible;

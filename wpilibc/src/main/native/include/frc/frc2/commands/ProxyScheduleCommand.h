@@ -15,15 +15,17 @@
 
 namespace frc2 {
 /**
- * Schedules the given commands when this command is initialized, and ends when all the commands are
- * no longer scheduled.  Useful for forking off from CommandGroups.  If this command is interrupted,
- * it will cancel all of the commands.
+ * Schedules the given commands when this command is initialized, and ends when
+ * all the commands are no longer scheduled.  Useful for forking off from
+ * CommandGroups.  If this command is interrupted, it will cancel all of the
+ * commands.
  */
-class ProxyScheduleCommand : public CommandHelper<SendableCommandBase, ProxyScheduleCommand> {
+class ProxyScheduleCommand
+    : public CommandHelper<SendableCommandBase, ProxyScheduleCommand> {
  public:
   /**
-   * Creates a new ProxyScheduleCommand that schedules the given commands when initialized,
-   * and ends when they are all no longer scheduled.
+   * Creates a new ProxyScheduleCommand that schedules the given commands when
+   * initialized, and ends when they are all no longer scheduled.
    *
    * @param toSchedule the commands to schedule
    */
@@ -40,8 +42,9 @@ class ProxyScheduleCommand : public CommandHelper<SendableCommandBase, ProxySche
   void Execute() override;
 
   bool IsFinished() override;
+
  private:
-  wpi::SmallVector<Command*,4> m_toSchedule;
+  wpi::SmallVector<Command*, 4> m_toSchedule;
   bool m_finished{false};
 };
 }  // namespace frc2

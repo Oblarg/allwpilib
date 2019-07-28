@@ -10,9 +10,7 @@
 #include "frc/frc2/commands/WaitUntilCommand.h"
 
 using namespace frc2;
-class WaitCommandTest : public CommandTestBase {
-
-};
+class WaitCommandTest : public CommandTestBase {};
 
 TEST_F(WaitCommandTest, WaitCommandTest) {
   CommandScheduler scheduler = GetScheduler();
@@ -32,7 +30,7 @@ TEST_F(WaitCommandTest, WaitUntilCommandTest) {
 
   bool finished = false;
 
-  WaitUntilCommand command([&finished]{return finished;});
+  WaitUntilCommand command([&finished] { return finished; });
 
   scheduler.Schedule(&command);
   scheduler.Run();

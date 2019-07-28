@@ -9,7 +9,8 @@
 
 using namespace frc2;
 
-ParallelCommandGroup::ParallelCommandGroup(std::vector<std::unique_ptr<Command>>&& commands) {
+ParallelCommandGroup::ParallelCommandGroup(
+    std::vector<std::unique_ptr<Command>>&& commands) {
   AddCommands(std::move(commands));
 }
 
@@ -54,26 +55,28 @@ bool ParallelCommandGroup::RunsWhenDisabled() const {
   return m_runWhenDisabled;
 }
 
-void ParallelCommandGroup::AddCommands(std::vector<std::unique_ptr<Command>>&& commands) {
+void ParallelCommandGroup::AddCommands(
+    std::vector<std::unique_ptr<Command>>&& commands) {
   for (auto&& command : commands) {
     if (!RequireUngrouped(*command)) return;
   }
 
   if (isRunning) {
     wpi_setWPIErrorWithContext(CommandIllegalUse,
-      "Commands cannot be added to a CommandGroup while the group is running");
+                               "Commands cannot be added to a CommandGroup "
+                               "while the group is running");
   }
 
-  for(auto&& command : commands) {
-    if(RequirementsDisjoint(this, command.get())) {
+  for (auto&& command : commands) {
+    if (RequirementsDisjoint(this, command.get())) {
       command->SetGrouped(true);
       AddRequirements(command->GetRequirements());
       m_runWhenDisabled &= command->RunsWhenDisabled();
       m_commands[std::move(command)] = false;
-    }
-    else {
+    } else {
       wpi_setWPIErrorWithContext(CommandIllegalUse,
-        "Multiple commands in a parallel group cannot require the same subsystems");
+                                 "Multiple commands in a parallel group cannot "
+                                 "require the same subsystems");
       return;
     }
   }

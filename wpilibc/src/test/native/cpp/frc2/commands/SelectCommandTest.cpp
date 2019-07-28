@@ -11,9 +11,7 @@
 #include "frc/frc2/commands/SelectCommand.h"
 
 using namespace frc2;
-class SelectCommandTest : public CommandTestBase {
-
-};
+class SelectCommandTest : public CommandTestBase {};
 
 TEST_F(SelectCommandTest, SelectCommandTest) {
   CommandScheduler scheduler = GetScheduler();
@@ -31,7 +29,7 @@ TEST_F(SelectCommandTest, SelectCommandTest) {
   temp.emplace_back(std::pair(2, std::make_unique<InstantCommand>()));
   temp.emplace_back(std::pair(3, std::make_unique<InstantCommand>()));
 
-  SelectCommand<int> select([]{return 1;}, std::move(temp));
+  SelectCommand<int> select([] { return 1; }, std::move(temp));
 
   scheduler.Schedule(&select);
   scheduler.Run();
@@ -51,7 +49,8 @@ TEST_F(SelectCommandTest, ConditionalCommandTest) {
   EXPECT_CALL(*mock, Execute()).Times(2);
   EXPECT_CALL(*mock, End(false));
 
-  ConditionalCommand conditional(std::move(mock), std::make_unique<InstantCommand>(), []{return true;});
+  ConditionalCommand conditional(
+      std::move(mock), std::make_unique<InstantCommand>(), [] { return true; });
 
   scheduler.Schedule(&conditional);
   scheduler.Run();
