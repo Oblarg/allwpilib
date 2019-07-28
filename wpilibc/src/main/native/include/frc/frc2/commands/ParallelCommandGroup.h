@@ -5,12 +5,29 @@
 #include <unordered_map>
 
 namespace frc2 {
+/**
+ * A CommandGroup that runs a set of commands in parallel, ending when the last command ends.
+ *
+ * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
+ */
 class ParallelCommandGroup : public CommandHelper<CommandGroupBase, ParallelCommandGroup> {
  public:
-  ParallelCommandGroup(std::vector<std::unique_ptr<Command>>&& commands) {
-    AddCommands(std::move(commands));
-  }
+  /**
+   * Creates a new ParallelCommandGroup.  The given commands will be executed simultaneously.
+   * The command group will finish when the last command finishes.  If the CommandGroup is
+   * interrupted, only the commands that are still running will be interrupted.
+   *
+   * @param commands the commands to include in this group.
+   */
+  ParallelCommandGroup(std::vector<std::unique_ptr<Command>>&& commands);
 
+  /**
+   * Creates a new ParallelCommandGroup.  The given commands will be executed simultaneously.
+   * The command group will finish when the last command finishes.  If the CommandGroup is
+   * interrupted, only the commands that are still running will be interrupted.
+   *
+   * @param commands the commands to include in this group.
+   */
   template <class... Types, typename = std::enable_if_t<std::conjunction_v<std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
   ParallelCommandGroup(Types&&... commands) {
     AddCommands(std::forward<Types>(commands)...);
@@ -28,71 +45,18 @@ class ParallelCommandGroup : public CommandHelper<CommandGroupBase, ParallelComm
     AddCommands(std::move(foo));
   }
   
-  void Initialize() override {
-    for (auto& commandRunning : m_commands) {
-      commandRunning.first->Initialize();
-      commandRunning.second = true;
-    }
-    isRunning = true;
-  }
+  void Initialize() override;
   
-    void Execute() override {
-    for (auto& commandRunning : m_commands) {
-      if (!commandRunning.second) continue;
-      commandRunning.first->Execute();
-      if (commandRunning.first->IsFinished()) {
-        commandRunning.first->End(false);
-        commandRunning.second = false;
-      }
-    }
-  }
+  void Execute() override;
   
-  void End(bool interrupted) override {
-    if (interrupted) {
-      for (auto& commandRunning : m_commands) {
-        if (commandRunning.second) {
-          commandRunning.first->End(true);
-        }
-      }
-    }
-    isRunning = false;
-  }
+  void End(bool interrupted) override;
   
-  bool IsFinished() override {
-    for (auto& command : m_commands) {
-      if (command.second) return false;
-    }
-    return true;
-  }
+  bool IsFinished() override;
   
-  bool RunsWhenDisabled() const override {
-    return m_runWhenDisabled;
-  }
+  bool RunsWhenDisabled() const override;
+
  private:
-  void AddCommands(std::vector<std::unique_ptr<Command>>&& commands) override {
-    for (auto&& command : commands) {
-      if (!RequireUngrouped(*command)) return;
-    }
-    
-    if (isRunning) {
-      wpi_setWPIErrorWithContext(CommandIllegalUse,
-        "Commands cannot be added to a CommandGroup while the group is running");
-    }
-    
-    for(auto&& command : commands) {
-      if(RequirementsDisjoint(this, command.get())) {
-        command->SetGrouped(true);
-        AddRequirements(command->GetRequirements());
-        m_runWhenDisabled &= command->RunsWhenDisabled();
-        m_commands[std::move(command)] = false;
-      }
-      else {
-        wpi_setWPIErrorWithContext(CommandIllegalUse, 
-          "Multiple commands in a parallel group cannot require the same subsystems");
-        return;
-      }
-    }
-  }
+  void AddCommands(std::vector<std::unique_ptr<Command>>&& commands) override;
 
   std::unordered_map<std::unique_ptr<Command>, bool> m_commands;
   bool m_runWhenDisabled{true};

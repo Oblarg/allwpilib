@@ -6,8 +6,30 @@
 #include <iostream>
 
 namespace frc2 {
+/**
+ * Runs one of two commands, depending on the value of the given condition when this command is
+ * initialized.  Does not actually schedule the selected command - rather, the command is run
+ * through this command; this ensures that the command will behave as expected if used as part of a
+ * CommandGroup.  Requires the requirements of both commands, again to ensure proper functioning
+ * when used in a CommandGroup.  If this is undesired, consider using ScheduleCommand.
+ *
+ * <p>As this command contains multiple component commands within it, it is technically a command
+ * group; the command instances that are passed to it cannot be added to any other groups, or
+ * scheduled individually.
+ *
+ * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
+ * 
+ * @see ScheduleCommand
+ */
 class ConditionalCommand : public CommandHelper<SendableCommandBase, ConditionalCommand> {
  public:
+  /**
+   * Creates a new ConditionalCommand.
+   *
+   * @param onTrue    the command to run if the condition is true
+   * @param onFalse   the command to run if the condition is false
+   * @param condition the condition to determine which command to run
+   */
   template <class T1, class T2, 
     typename = std::enable_if_t<std::is_base_of<Command, T1>::value>,
     typename = std::enable_if_t<std::is_base_of<Command, T2>::value>>
@@ -16,54 +38,29 @@ class ConditionalCommand : public CommandHelper<SendableCommandBase, Conditional
       std::make_unique<T2>(std::forward<T2>(onFalse)),
       condition) {}
 
-  ConditionalCommand(std::unique_ptr<Command>&& onTrue, std::unique_ptr<Command>&& onFalse, std::function<bool()> condition)
-    : m_condition{std::move(condition)} {
-    if (!CommandGroupBase::RequireUngrouped({onTrue.get(), onFalse.get()})) {
-      return;
-    }
+  /**
+   * Creates a new ConditionalCommand.
+   *
+   * @param onTrue    the command to run if the condition is true
+   * @param onFalse   the command to run if the condition is false
+   * @param condition the condition to determine which command to run
+   */
+  ConditionalCommand(std::unique_ptr<Command>&& onTrue, std::unique_ptr<Command>&& onFalse, std::function<bool()> condition);
 
-    m_onTrue = std::move(onTrue);
-    m_onFalse = std::move(onFalse);
+  ConditionalCommand(ConditionalCommand&& other) = default;
 
-    m_onTrue->SetGrouped(true);
-    m_onFalse->SetGrouped(true);
-
-    m_runsWhenDisabled &= m_onTrue->RunsWhenDisabled();
-    m_runsWhenDisabled &= m_onFalse->RunsWhenDisabled();
-
-    AddRequirements(m_onTrue->GetRequirements());
-    AddRequirements(m_onFalse->GetRequirements());
-  }
-
-    ConditionalCommand(ConditionalCommand&& other) = default;
-
-    //No copy constructors for command groups
-    ConditionalCommand(const ConditionalCommand& other) = delete;
-    
-    void Initialize() override {
-      if (m_condition()) {
-        m_selectedCommand = m_onTrue.get();
-      } else {
-        m_selectedCommand = m_onFalse.get();
-      }
-      m_selectedCommand->Initialize();
-    }
-    
-    void Execute() override {
-      m_selectedCommand->Execute();
-    }
-    
-    void End(bool interrupted) override {
-      m_selectedCommand->End(interrupted);
-    }
-    
-    bool IsFinished() override {
-      return m_selectedCommand->IsFinished();
-    }
-    
-    bool RunsWhenDisabled() const override {
-      return m_runsWhenDisabled;
-    }
+  //No copy constructors for command groups
+  ConditionalCommand(const ConditionalCommand& other) = delete;
+  
+  void Initialize() override;
+  
+  void Execute() override;
+  
+  void End(bool interrupted) override;
+  
+  bool IsFinished() override;
+  
+  bool RunsWhenDisabled() const override;
  private:
   std::unique_ptr<Command> m_onTrue;
   std::unique_ptr<Command> m_onFalse;

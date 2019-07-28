@@ -4,31 +4,36 @@
 #include "CommandHelper.h"
 
 namespace frc2 {
+/**
+ * A command that allows the user to pass in functions for each of the basic command methods through
+ * the constructor.  Useful for inline definitions of complex commands - note, however, that if a
+ * command is beyond a certain complexity it is usually better practice to write a proper class for
+ * it than to inline it.
+ */
 class FunctionalCommand : public CommandHelper<SendableCommandBase, FunctionalCommand> {
  public:
-    FunctionalCommand(std::function<void()> onInit, std::function<void()> onExecute, std::function<void(bool)> onEnd, std::function<bool()> isFinished)
-    : m_onInit{std::move(onInit)}, m_onExecute{std::move(onExecute)}, m_onEnd{std::move(onEnd)}, m_isFinished{std::move(isFinished)} {
-    }
+  /**
+   * Creates a new FunctionalCommand.
+   *
+   * @param onInit       the function to run on command initialization
+   * @param onExecute    the function to run on command execution
+   * @param onEnd        the function to run on command end
+   * @param isFinished   the function that determines whether the command has finished
+   * @param requirements the subsystems required by this command
+   */
+  FunctionalCommand(std::function<void()> onInit, std::function<void()> onExecute, std::function<void(bool)> onEnd, std::function<bool()> isFinished);
 
-    FunctionalCommand(FunctionalCommand&& other) = default;
+  FunctionalCommand(FunctionalCommand&& other) = default;
 
-    FunctionalCommand(const FunctionalCommand& other) = default;
-    
-    void Initialize() override {
-      m_onInit();
-    }
-    
-    void Execute() override {
-      m_onExecute();
-    }
-    
-    void End(bool interrupted) override {
-      m_onEnd(interrupted);
-    }
-    
-    bool IsFinished() override {
-      return m_isFinished();
-    }
+  FunctionalCommand(const FunctionalCommand& other) = default;
+  
+  void Initialize() override;
+  
+  void Execute() override;
+  
+  void End(bool interrupted) override;
+  
+  bool IsFinished() override;
  private:
   std::function<void()> m_onInit;
   std::function<void()> m_onExecute;

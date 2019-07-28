@@ -2,6 +2,11 @@
 #include "frc/Timer.h"
 
 using namespace frc2;
+  CommandState::CommandState(bool interruptible) : m_interruptible{interruptible} {
+    StartTiming();
+    StartRunning();
+  }
+
   void CommandState::StartTiming() {
       m_startTime = frc::Timer::GetFPGATimestamp();
   }
