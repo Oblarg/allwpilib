@@ -35,25 +35,16 @@ class SendableCommandBase : public frc::Sendable, public Command {
 
   wpi::SmallSet<Subsystem*, 4> GetRequirements() const override;
 
-  void SetName(const wpi::Twine& name) override {
-    m_name = name.str();
-  }
+  void SetName(const wpi::Twine& name) override;
 
-  std::string GetName() const override {
-    return m_name;
-  }
+  std::string GetName() const override;
 
-  std::string GetSubsystem() const override {
-    return m_subsystem;
-  }
+  std::string GetSubsystem() const override;
 
-  void SetSubsystem(const wpi::Twine& subsystem) override {
-    m_subsystem = subsystem.str();
-  }
+  void SetSubsystem(const wpi::Twine& subsystem) override;
 
   void InitSendable(frc::SendableBuilder& builder) override;
-
-
+  
  protected:
   SendableCommandBase();
   std::string m_name;

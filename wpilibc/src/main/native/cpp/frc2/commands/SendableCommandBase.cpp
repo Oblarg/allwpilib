@@ -36,6 +36,22 @@ wpi::SmallSet<Subsystem*, 4> SendableCommandBase::GetRequirements() const {
   return m_requirements;
 }
 
+void SendableCommandBase::SetName(const wpi::Twine& name) {
+  m_name = name.str();
+}
+
+std::string SendableCommandBase::GetName() const {
+  return m_name;
+}
+
+std::string SendableCommandBase::GetSubsystem() const {
+  return m_subsystem;
+}
+
+void SendableCommandBase::SetSubsystem(const wpi::Twine& subsystem) {
+  m_subsystem = subsystem.str();
+}
+
 void SendableCommandBase::InitSendable(frc::SendableBuilder& builder) {
   builder.SetSmartDashboardType("Command");
   builder.AddStringProperty(".name", [this]{return GetName();}, nullptr);
