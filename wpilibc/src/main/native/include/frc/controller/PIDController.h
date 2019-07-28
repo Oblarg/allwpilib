@@ -39,6 +39,9 @@ class PIDController : public frc::SendableBase {
   PIDController(PIDController&& rhs);
   PIDController& operator=(PIDController&& rhs);
 
+  PIDController(const PIDController& other);
+  PIDController& operator=(const PIDController& other);
+
   /**
    * Sets the PID Controller gain parameters.
    *

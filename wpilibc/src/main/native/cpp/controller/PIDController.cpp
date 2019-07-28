@@ -72,6 +72,39 @@ PIDController& PIDController::operator=(PIDController&& rhs) {
   return *this;
 }
 
+PIDController::PIDController(const PIDController& other) 
+  : PIDController(other.m_Kp, other.m_Ki, other .m_Kd, other.m_period) {
+  m_maximumInput = other.m_maximumInput;
+  m_minimumInput = other.m_minimumInput;
+  m_maximumOutput = other.m_maximumOutput;
+  m_minimumOutput = other.m_minimumOutput;
+  m_inputRange = other.m_inputRange;
+  m_continuous = other.m_continuous;
+  m_tolerance = other.m_tolerance;
+  m_toleranceType = other.m_toleranceType;
+  m_deltaTolerance = other.m_deltaTolerance;
+  m_setpoint = other.m_setpoint;
+  m_output = other.m_output;
+}
+
+PIDController& PIDController::operator=(const PIDController& other) {
+  m_Kp = other.m_Kp;
+  m_Ki = other.m_Ki;
+  m_Kd = other.m_Kd;
+  m_period = other.m_period;
+  m_maximumInput = other.m_maximumInput;
+  m_minimumInput = other.m_minimumInput;
+  m_maximumOutput = other.m_maximumOutput;
+  m_minimumOutput = other.m_minimumOutput;
+  m_inputRange = other.m_inputRange;
+  m_continuous = other.m_continuous;
+  m_tolerance = other.m_tolerance;
+  m_toleranceType = other.m_toleranceType;
+  m_deltaTolerance = other.m_deltaTolerance;
+  m_setpoint = other.m_setpoint;
+  m_output = other.m_output;
+}
+
 void PIDController::SetP(double Kp) {
   std::scoped_lock lock(m_thisMutex);
   m_Kp = Kp;
