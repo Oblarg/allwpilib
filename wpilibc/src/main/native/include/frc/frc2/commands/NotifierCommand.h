@@ -1,8 +1,16 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include "SendableCommandBase.h"
-#include "CommandHelper.h"
 #include <frc/Notifier.h>
+
+#include "CommandHelper.h"
+#include "SendableCommandBase.h"
 
 namespace frc2 {
 /**
@@ -30,11 +38,11 @@ class NotifierCommand : public CommandHelper<SendableCommandBase, NotifierComman
   NotifierCommand(const NotifierCommand& other) = default;
 
   void Initialize() override;
-  
+
   void End(bool interrupted) override;
  private:
   std::function<void()> m_toRun;
   frc::Notifier m_notifier;
   double m_period;
 };
-}
+}  // namespace frc2

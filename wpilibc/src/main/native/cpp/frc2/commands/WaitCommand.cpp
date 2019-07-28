@@ -1,8 +1,15 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "frc/frc2/commands/WaitCommand.h"
 
 using namespace frc2;
 
-WaitCommand::WaitCommand(double seconds) 
+WaitCommand::WaitCommand(double seconds)
   : m_duration{seconds} {
   auto secondsStr = std::to_string(seconds);
   SetName(wpi::Twine(m_name) + ": " + wpi::Twine(secondsStr) + " seconds");

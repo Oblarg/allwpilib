@@ -1,9 +1,17 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include "SendableCommandBase.h"
+#include <iostream>
+
 #include "CommandGroupBase.h"
 #include "CommandHelper.h"
-#include <iostream>
+#include "SendableCommandBase.h"
 
 namespace frc2 {
 /**
@@ -18,7 +26,7 @@ namespace frc2 {
  * scheduled individually.
  *
  * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
- * 
+ *
  * @see ScheduleCommand
  */
 class ConditionalCommand : public CommandHelper<SendableCommandBase, ConditionalCommand> {
@@ -30,7 +38,7 @@ class ConditionalCommand : public CommandHelper<SendableCommandBase, Conditional
    * @param onFalse   the command to run if the condition is false
    * @param condition the condition to determine which command to run
    */
-  template <class T1, class T2, 
+  template <class T1, class T2,
     typename = std::enable_if_t<std::is_base_of<Command, T1>::value>,
     typename = std::enable_if_t<std::is_base_of<Command, T2>::value>>
   ConditionalCommand(T1&& onTrue, T2&& onFalse, std::function<bool()> condition)
@@ -51,15 +59,15 @@ class ConditionalCommand : public CommandHelper<SendableCommandBase, Conditional
 
   //No copy constructors for command groups
   ConditionalCommand(const ConditionalCommand& other) = delete;
-  
+
   void Initialize() override;
-  
+
   void Execute() override;
-  
+
   void End(bool interrupted) override;
-  
+
   bool IsFinished() override;
-  
+
   bool RunsWhenDisabled() const override;
  private:
   std::unique_ptr<Command> m_onTrue;
@@ -68,4 +76,4 @@ class ConditionalCommand : public CommandHelper<SendableCommandBase, Conditional
   Command* m_selectedCommand{nullptr};
   bool m_runsWhenDisabled = true;
 };
-}
+}  // namespace frc2

@@ -1,8 +1,11 @@
-// make_vector.hpp
-//
-// Copyright (c) 2019 Tristan Brindle (tcbrindle at gmail dot com)
-// Distributed under the Boost Software License, Version 1.0. (See
-//  http://www.boost.org/LICENSE_1_0.txt)
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+#pragma once
 
 #include <type_traits>
 #include <vector>
@@ -54,7 +57,7 @@ std::vector<T> make_vector_impl(Args&&... args)
     return std::vector<T>{std::forward<Args>(args)...};
 }
 
-} // namespace detail
+}  // namespace detail
 
 
 template <typename T = void, typename... Args,
@@ -66,4 +69,4 @@ std::vector<V> make_vector(Args&&... args)
     return detail::make_vector_impl<V>(std::forward<Args>(args)...);
 }
 
-}
+}  // namespace tcb

@@ -1,7 +1,14 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include "SendableCommandBase.h"
 #include "CommandHelper.h"
+#include "SendableCommandBase.h"
 
 namespace frc2 {
 /**
@@ -26,13 +33,13 @@ class FunctionalCommand : public CommandHelper<SendableCommandBase, FunctionalCo
   FunctionalCommand(FunctionalCommand&& other) = default;
 
   FunctionalCommand(const FunctionalCommand& other) = default;
-  
+
   void Initialize() override;
-  
+
   void Execute() override;
-  
+
   void End(bool interrupted) override;
-  
+
   bool IsFinished() override;
  private:
   std::function<void()> m_onInit;
@@ -40,4 +47,4 @@ class FunctionalCommand : public CommandHelper<SendableCommandBase, FunctionalCo
   std::function<void(bool)> m_onEnd;
   std::function<bool()> m_isFinished;
 };
-}
+}  // namespace frc2

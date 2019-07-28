@@ -1,11 +1,17 @@
-#include "CommandTestBase.h"
-#include "frc/frc2/commands/SequentialCommandGroup.h"
-#include "frc/frc2/commands/ParallelCommandGroup.h"
-#include "frc/frc2/commands/ParallelRaceGroup.h"
-#include "frc/frc2/commands/ParallelDeadlineGroup.h"
-#include "frc/frc2/commands/ConditionalCommand.h"
-#include "frc/frc2/commands/SelectCommand.h"
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
+#include "CommandTestBase.h"
+#include "frc/frc2/commands/ConditionalCommand.h"
+#include "frc/frc2/commands/ParallelCommandGroup.h"
+#include "frc/frc2/commands/ParallelDeadlineGroup.h"
+#include "frc/frc2/commands/ParallelRaceGroup.h"
+#include "frc/frc2/commands/SelectCommand.h"
+#include "frc/frc2/commands/SequentialCommandGroup.h"
 
 using namespace frc2;
 class RobotDisabledCommandTest : public CommandTestBase {
@@ -130,10 +136,10 @@ TEST_F(RobotDisabledCommandTest, SelectCommandRunWhenDisabledTest) {
   CommandScheduler scheduler = GetScheduler();
 
   SelectCommand<int> runWhenDisabled{[]{return 1;},
-    std::pair(1, MockCommand()), 
+    std::pair(1, MockCommand()),
     std::pair(1, MockCommand())};
   SelectCommand<int> dontRunWhenDisabled{[]{return 1;},
-    std::pair(1, MockCommand()), 
+    std::pair(1, MockCommand()),
     std::pair(1, MockCommand({}, false, false))};
 
   SetDSEnabled(false);

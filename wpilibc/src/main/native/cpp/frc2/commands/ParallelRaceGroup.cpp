@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "frc/frc2/commands/ParallelRaceGroup.h"
 
 using namespace frc2;
@@ -49,7 +56,7 @@ void ParallelRaceGroup::AddCommands(std::vector<std::unique_ptr<Command>>&& comm
       wpi_setWPIErrorWithContext(CommandIllegalUse,
         "Commands cannot be added to a CommandGroup while the group is running");
     }
-    
+
     for (auto&& command : commands) {
       if(RequirementsDisjoint(this, command.get())) {
         command->SetGrouped(true);
@@ -58,7 +65,7 @@ void ParallelRaceGroup::AddCommands(std::vector<std::unique_ptr<Command>>&& comm
         m_commands.emplace(std::move(command));
       }
       else {
-        wpi_setWPIErrorWithContext(CommandIllegalUse, 
+        wpi_setWPIErrorWithContext(CommandIllegalUse,
           "Multiple commands in a parallel group cannot require the same subsystems");
         return;
       }

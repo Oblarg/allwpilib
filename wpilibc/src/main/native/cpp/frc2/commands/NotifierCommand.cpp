@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "frc/frc2/commands/NotifierCommand.h"
 
 using namespace frc2;
@@ -7,7 +14,7 @@ NotifierCommand::NotifierCommand(std::function<void()> toRun, double period, std
   AddRequirements(requirements);
 }
 
-NotifierCommand::NotifierCommand(NotifierCommand&& other) 
+NotifierCommand::NotifierCommand(NotifierCommand&& other)
   : CommandHelper(other), m_toRun(other.m_toRun), m_notifier(other.m_toRun), m_period(other.m_period) {}
 
 void NotifierCommand::Initialize() {

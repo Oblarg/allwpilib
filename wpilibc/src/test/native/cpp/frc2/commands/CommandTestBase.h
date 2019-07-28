@@ -1,25 +1,33 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include "gtest/gtest.h"
-#include "make_vector.h"
-#include "gmock/gmock.h"
-#include "frc/frc2/commands/CommandScheduler.h"
+#include <regex>
+
+#include <mockdata/MockHooks.h>
+
+#include "ErrorConfirmer.h"
 #include "frc/frc2/commands/CommandGroupBase.h"
-#include "simulation/DriverStationSim.h"
-#include "frc/frc2/commands/SendableSubsystemBase.h"
+#include "frc/frc2/commands/CommandScheduler.h"
 #include "frc/frc2/commands/SendableSubsystemBase.h"
 #include "frc/frc2/commands/SetUtilities.h"
-#include "ErrorConfirmer.h"
-#include <regex>
-#include "mockdata/MockHooks.h"
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+#include "make_vector.h"
+#include "simulation/DriverStationSim.h"
 
 namespace frc2 {
 class CommandTestBase : public ::testing::Test {
  public:
   CommandTestBase();
-  
+
   class TestSubsystem : public SendableSubsystemBase {
-    
+
   };
 
  protected:
@@ -80,4 +88,4 @@ class CommandTestBase : public ::testing::Test {
 
   void SetDSEnabled(bool enabled);
 };
-}
+}  // namespace frc2

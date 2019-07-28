@@ -1,11 +1,20 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "frc/frc2/commands/CommandGroupBase.h"
-#include "frc/frc2/commands/SequentialCommandGroup.h"
-#include "frc/frc2/commands/ParallelCommandGroup.h"
-#include "frc/errorbase.h"
-#include "frc/WPIErrors.h"
-#include "frc/frc2/commands/ParallelRaceGroup.h"
-#include "frc/frc2/commands/ParallelDeadlineGroup.h"
+
 #include <set>
+
+#include "frc/WPIErrors.h"
+#include "frc/errorbase.h"
+#include "frc/frc2/commands/ParallelCommandGroup.h"
+#include "frc/frc2/commands/ParallelDeadlineGroup.h"
+#include "frc/frc2/commands/ParallelRaceGroup.h"
+#include "frc/frc2/commands/SequentialCommandGroup.h"
 
 using namespace frc2;
 template<typename TMap, typename TKey>

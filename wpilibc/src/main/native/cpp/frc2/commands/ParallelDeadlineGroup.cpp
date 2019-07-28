@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "frc/frc2/commands/ParallelDeadlineGroup.h"
 
 using namespace frc2;
@@ -47,7 +54,7 @@ void ParallelDeadlineGroup::AddCommands(std::vector<std::unique_ptr<Command>>&& 
   if (!RequireUngrouped(commands)) {
     return;
   }
-  
+
   if (isRunning) {
     wpi_setWPIErrorWithContext(CommandIllegalUse,
       "Commands cannot be added to a CommandGroup while the group is running");
@@ -61,7 +68,7 @@ void ParallelDeadlineGroup::AddCommands(std::vector<std::unique_ptr<Command>>&& 
       m_commands[std::move(command)] = false;
     }
     else {
-      wpi_setWPIErrorWithContext(CommandIllegalUse, 
+      wpi_setWPIErrorWithContext(CommandIllegalUse,
         "Multiple commands in a parallel group cannot require the same subsystems");
       return;
     }

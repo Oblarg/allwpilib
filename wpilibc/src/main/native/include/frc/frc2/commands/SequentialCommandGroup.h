@@ -1,10 +1,18 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
+
+#include <wpi/ArrayRef.h>
 
 #include "CommandGroupBase.h"
 #include "CommandHelper.h"
-#include <wpi/ArrayRef.h>
-#include "frc/WPIErrors.h"
 #include "frc/ErrorBase.h"
+#include "frc/WPIErrors.h"
 
 namespace frc2 {
 /**
@@ -34,7 +42,7 @@ class SequentialCommandGroup : public CommandHelper<CommandGroupBase, Sequential
   }
 
   SequentialCommandGroup(SequentialCommandGroup&& other) = default;
-  
+
   //No copy constructors for command groups
   SequentialCommandGroup(const SequentialCommandGroup&) = delete;
 
@@ -44,15 +52,15 @@ class SequentialCommandGroup : public CommandHelper<CommandGroupBase, Sequential
     ((void)foo.emplace_back(std::make_unique<std::remove_reference_t<Types>>(std::forward<Types>(commands))), ...);
     AddCommands(std::move(foo));
   }
-  
+
   void Initialize() override;
-  
+
   void Execute() override;
-  
+
   void End(bool interrupted) override;
-  
+
   bool IsFinished() override;
-  
+
   bool RunsWhenDisabled() const override;
 
  private:
@@ -62,4 +70,4 @@ class SequentialCommandGroup : public CommandHelper<CommandGroupBase, Sequential
   int m_currentCommandIndex{-1};
   bool m_runWhenDisabled{true};
 };
-}
+}  // namespace frc2

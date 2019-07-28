@@ -1,8 +1,15 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "frc/frc2/commands/RunCommand.h"
 
 using namespace frc2;
 
-RunCommand::RunCommand(std::function<void()> toRun, std::initializer_list<Subsystem*> requirements) 
+RunCommand::RunCommand(std::function<void()> toRun, std::initializer_list<Subsystem*> requirements)
   : m_toRun{std::move(toRun)} {
   AddRequirements(requirements);
 }

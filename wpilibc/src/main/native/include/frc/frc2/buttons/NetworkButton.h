@@ -1,8 +1,16 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
-#include "Button.h"
+#include <networktables/NetworkTable.h>
 #include <networktables/NetworkTableEntry.h>
 #include <networktables/NetworkTableInstance.h>
-#include <networktables/NetworkTable.h>
+
+#include "Button.h"
 
 namespace frc2 {
 class NetworkButton : public Button {
@@ -13,4 +21,4 @@ class NetworkButton : public Button {
  private:
   nt::NetworkTableEntry m_entry;
 };
-}
+}  // namespace frc2

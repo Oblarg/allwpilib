@@ -1,12 +1,19 @@
-#include "gtest/gtest.h"
-#include "frc/frc2/commands/CommandScheduler.h"
-#include "frc/frc2/buttons/InternalButton.h"
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "CommandTestBase.h"
+#include "frc/frc2/buttons/InternalButton.h"
+#include "frc/frc2/commands/CommandScheduler.h"
 #include "frc/frc2/commands/WaitUntilCommand.h"
+#include "gtest/gtest.h"
 
 using namespace frc2;
 class ButtonTest : public CommandTestBase {
-  
+
 };
 
 TEST_F(ButtonTest, WhenPressedTest) {

@@ -1,10 +1,17 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
 #include <unordered_map>
 
-#include "SendableCommandBase.h"
 #include "CommandGroupBase.h"
 #include "PrintCommand.h"
+#include "SendableCommandBase.h"
 
 namespace frc2 {
 template <typename Key>
@@ -31,7 +38,7 @@ class SelectCommand : public CommandHelper<SendableCommandBase, SelectCommand<Ke
    * @param selector the selector to determine which command to run
    */
   template <class... Types, typename = std::enable_if_t<std::conjunction_v<std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
-  SelectCommand(std::function<Key()> selector, std::pair<Key, Types>... commands) 
+  SelectCommand(std::function<Key()> selector, std::pair<Key, Types>... commands)
     : m_selector{std::move(selector)} {
     std::vector<std::pair<Key, std::unique_ptr<Command>>> foo;
 
@@ -42,7 +49,7 @@ class SelectCommand : public CommandHelper<SendableCommandBase, SelectCommand<Ke
         return;
       }
     }
-    
+
     for (auto&& command : foo) {
       this->AddRequirements(command.second->GetRequirements());
       m_runsWhenDisabled &= command.second->RunsWhenDisabled();
@@ -50,7 +57,7 @@ class SelectCommand : public CommandHelper<SendableCommandBase, SelectCommand<Ke
     }
   }
 
-  SelectCommand(std::function<Key()> selector, std::vector<std::pair<Key, std::unique_ptr<Command>>>&& commands) 
+  SelectCommand(std::function<Key()> selector, std::vector<std::pair<Key, std::unique_ptr<Command>>>&& commands)
     : m_selector{std::move(selector)} {
     for (auto&& command : commands) {
       if (!CommandGroupBase::RequireUngrouped(command.second)) {
@@ -67,32 +74,32 @@ class SelectCommand : public CommandHelper<SendableCommandBase, SelectCommand<Ke
 
   //No copy constructors for command groups
   SelectCommand(const SelectCommand& other) = delete;
-  
+
   /**
    * Creates a new selectcommand.
    *
    * @param toRun a supplier providing the command to run
    */
-  SelectCommand(std::function<Command*()> toRun) 
+  SelectCommand(std::function<Command*()> toRun)
     : m_toRun{toRun} {
   }
 
   SelectCommand(SelectCommand&& other) = default;
-  
+
   void Initialize() override;
-  
+
   void Execute() override {
     m_selectedCommand->Execute();
   }
-  
+
   void End(bool interrupted) override {
     return m_selectedCommand->End(interrupted);
   }
-  
+
   bool IsFinished() override {
     return m_selectedCommand->IsFinished();
   }
-  
+
   bool RunsWhenDisabled() const override {
     return m_runsWhenDisabled;
   }
@@ -123,4 +130,4 @@ void SelectCommand<T>::Initialize() {
   m_selectedCommand->Initialize();
 }
 
-}
+}  // namespace frc2

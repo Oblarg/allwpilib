@@ -1,8 +1,17 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include "SendableCommandBase.h"
-#include <set>
 #include <frc/ErrorBase.h>
+
+#include <set>
+
+#include "SendableCommandBase.h"
 
 namespace frc2 {
 
@@ -42,9 +51,9 @@ class CommandGroupBase : public SendableCommandBase {
 
   /**
    * Adds the given commands to the command group.
-   * 
+   *
    * @param commands The commands to add.
    */
   virtual void AddCommands(std::vector<std::unique_ptr<Command>>&& commands) = 0;
 };
-}
+}  // namespace frc2

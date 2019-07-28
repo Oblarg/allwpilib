@@ -1,8 +1,15 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
 #include "SendableCommandBase.h"
-#include "frc/frc2/commands/CommandHelper.h"
 #include "frc/Timer.h"
+#include "frc/frc2/commands/CommandHelper.h"
 
 namespace frc2 {
 /**
@@ -17,7 +24,7 @@ class WaitUntilCommand : public CommandHelper<SendableCommandBase, WaitUntilComm
    * @param condition the condition to determine when to end
    */
   explicit WaitUntilCommand(std::function<bool()> condition);
-    
+
   /**
    * Creates a new WaitUntilCommand that ends after a given match time.
    *
@@ -28,15 +35,15 @@ class WaitUntilCommand : public CommandHelper<SendableCommandBase, WaitUntilComm
    * @param time the match time after which to end, in seconds
    */
   explicit WaitUntilCommand(double time);
-    
+
   WaitUntilCommand(WaitUntilCommand&& other) = default;
 
   WaitUntilCommand(const WaitUntilCommand& other) = default;
-  
+
   bool IsFinished() override;
-  
+
   bool RunsWhenDisabled() const override;
  private:
   std::function<bool()> m_condition;
 };
-}
+}  // namespace frc2

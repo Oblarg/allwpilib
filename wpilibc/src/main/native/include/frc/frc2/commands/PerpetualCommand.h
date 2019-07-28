@@ -1,8 +1,15 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include "SendableCommandBase.h"
 #include "CommandGroupBase.h"
 #include "CommandHelper.h"
+#include "SendableCommandBase.h"
 
 namespace frc2 {
 /**
@@ -29,22 +36,22 @@ class PerpetualCommand : public CommandHelper<SendableCommandBase, PerpetualComm
    *
    * @param command the command to run perpetually
    */
-  template<class T, 
+  template<class T,
     typename = std::enable_if_t<std::is_base_of<Command, std::remove_reference_t<T>>::value>>
-  PerpetualCommand(T&& command) 
+  PerpetualCommand(T&& command)
     : PerpetualCommand(std::make_unique<std::remove_reference_t<T>>(std::forward<T>(command))) {};
 
   PerpetualCommand(PerpetualCommand&& other) = default;
 
   //No copy constructors for command groups
   PerpetualCommand(const PerpetualCommand& other) = delete;
-    
+
   void Initialize() override;
-  
+
   void Execute() override;
-  
+
   void End(bool interrupted) override;
  private:
   std::unique_ptr<Command> m_command;
 };
-}
+}  // namespace frc2

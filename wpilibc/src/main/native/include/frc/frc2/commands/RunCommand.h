@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
 #include "CommandHelper.h"
@@ -24,9 +31,9 @@ class RunCommand : public CommandHelper<SendableCommandBase, RunCommand> {
   RunCommand(RunCommand&& other) = default;
 
   RunCommand(const RunCommand& other) = default;
-    
+
   void Execute();
  protected:
   std::function<void()> m_toRun;
 };
-}
+}  // namespace frc2

@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
 namespace frc2 {
@@ -16,7 +23,7 @@ class Command;
  * Periodic() method to be called.  It is recommended that this method be called
  * from the constructor of users' Subsystem implementations.  The SendableSubsystemBase
  * class offers a simple base for user implementations that handles this.
- * 
+ *
  * @see Command
  * @see CommandScheduler
  * @see SendableSubsystemBase
@@ -35,7 +42,7 @@ class Subsystem {
   /**
    * Sets the default Command of the subsystem.  The default command will be
    * automatically scheduled when no other commands are scheduled that require the subsystem.
-   * Default commands should generally not end on their own, i.e. their IsFinished() 
+   * Default commands should generally not end on their own, i.e. their IsFinished()
    * method should always return false.  Will automatically register this subsystem with the
    * CommandScheduler.
    *
@@ -65,4 +72,4 @@ class Subsystem {
    */
   virtual void Register();
 };
-}
+}  // namespace frc2

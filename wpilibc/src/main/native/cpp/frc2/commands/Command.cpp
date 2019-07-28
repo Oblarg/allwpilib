@@ -1,46 +1,48 @@
-#include "frc/frc2/commands/Command.h"
-#include "frc/frc2/commands/InstantCommand.h"
-#include "frc/frc2/commands/CommandScheduler.h"
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
-#include "frc/frc2/commands/PerpetualCommand.h"
-#include "frc/frc2/commands/WaitCommand.h"
-#include "frc/frc2/commands/ParallelRaceGroup.h"
-#include "frc/frc2/commands/ParallelCommandGroup.h"
-#include "frc/frc2/commands/ParallelDeadlineGroup.h"
-#include "frc/frc2/commands/SequentialCommandGroup.h"
-#include "frc/frc2/commands/WaitUntilCommand.h"
-#include "frc/frc2/commands/ProxyScheduleCommand.h"
+#include "frc/frc2/commands/Command.h"
 
 #include <iostream>
 
+#include "frc/frc2/commands/CommandScheduler.h"
+#include "frc/frc2/commands/InstantCommand.h"
+#include "frc/frc2/commands/ParallelCommandGroup.h"
+#include "frc/frc2/commands/ParallelDeadlineGroup.h"
+#include "frc/frc2/commands/ParallelRaceGroup.h"
+#include "frc/frc2/commands/PerpetualCommand.h"
+#include "frc/frc2/commands/ProxyScheduleCommand.h"
+#include "frc/frc2/commands/SequentialCommandGroup.h"
+#include "frc/frc2/commands/WaitCommand.h"
+#include "frc/frc2/commands/WaitUntilCommand.h"
+
 #ifdef __GNUG__
-#include <cstdlib>
-#include <memory>
 #include <cxxabi.h>
 
+#include <cstdlib>
+#include <memory>
 namespace frc {
 namespace frc2 {
 std::string demangle(const char* name) {
     int status = -1;
-
     std::unique_ptr<char, void(*)(void*)> res {
         abi::__cxa_demangle(name, NULL, NULL, &status),
         std::free
     };
-
     return (status==0) ? res.get() : name;
 }
-}
-}
-
+}  // namespace frc2
+}  // namespace frc
 #else
-
 namespace frc2 {
 std::string demangle(const char* name) {
   return name;
 }
-}
-
+}  // namespace frc2
 #endif
 
 using namespace frc2;

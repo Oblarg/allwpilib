@@ -1,10 +1,19 @@
-#include <frc/frc2/commands/CommandScheduler.h>
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
+#include "frc/frc2/commands/CommandScheduler.h"
+
 #include <frc/RobotState.h>
 #include <frc/WPIErrors.h>
-#include <frc/frc2/commands/Subsystem.h>
-#include <frc/frc2/commands/CommandGroupBase.h>
 #include <frc/commands/Scheduler.h>
+#include <frc/frc2/commands/CommandGroupBase.h>
+#include <frc/frc2/commands/Subsystem.h>
 #include <frc/smartdashboard/SendableBuilder.h>
+
 #include <hal/HAL.h>
 
 using namespace frc2;
@@ -39,7 +48,7 @@ void CommandScheduler::Schedule(bool interruptible, Command* command) {
   if (m_disabled || (frc::RobotState::IsDisabled() && !command->RunsWhenDisabled()) || ContainsKey(m_scheduledCommands, command)) {
     return;
   }
-  
+
   const auto& requirements = command->GetRequirements();
 
   wpi::SmallVector<Command*, 8> intersection;

@@ -1,7 +1,14 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #include "CommandTestBase.h"
+#include "frc/frc2/commands/ConditionalCommand.h"
 #include "frc/frc2/commands/InstantCommand.h"
 #include "frc/frc2/commands/SelectCommand.h"
-#include "frc/frc2/commands/ConditionalCommand.h"
 
 using namespace frc2;
 class SelectCommandTest : public CommandTestBase {

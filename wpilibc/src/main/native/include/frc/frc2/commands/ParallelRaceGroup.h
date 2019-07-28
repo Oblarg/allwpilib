@@ -1,8 +1,16 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
+
+#include <unordered_map>
 
 #include "CommandGroupBase.h"
 #include "CommandHelper.h"
-#include <unordered_map>
 
 namespace frc2 {
 /**
@@ -31,7 +39,7 @@ class ParallelRaceGroup : public CommandHelper<CommandGroupBase, ParallelRaceGro
 
   //No copy constructors for command groups
   ParallelRaceGroup(const ParallelRaceGroup&) = delete;
-  
+
   template <class... Types>
   void AddCommands(Types&&... commands) {
     std::vector<std::unique_ptr<Command>> foo;
@@ -40,13 +48,13 @@ class ParallelRaceGroup : public CommandHelper<CommandGroupBase, ParallelRaceGro
   }
 
   void Initialize() override;
-  
+
   void Execute() override;
 
   void End(bool interrupted) override;
-  
+
   bool IsFinished() override;
-  
+
   bool RunsWhenDisabled() const override;
  private:
   void AddCommands(std::vector<std::unique_ptr<Command>>&& commands);
@@ -56,4 +64,4 @@ class ParallelRaceGroup : public CommandHelper<CommandGroupBase, ParallelRaceGro
   bool m_finished{false};
   bool isRunning = false;
 };
-}
+}  // namespace frc2

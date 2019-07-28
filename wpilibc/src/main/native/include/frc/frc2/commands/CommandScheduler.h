@@ -1,12 +1,22 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
+#include <frc/ErrorBase.h>
+#include <frc/RobotState.h>
 #include <frc/smartdashboard/SendableBase.h>
+
+#include <unordered_map>
+
+#include <networktables/NetworkTableEntry.h>
 #include <wpi/DenseMap.h>
 #include <wpi/SmallSet.h>
-#include <networktables/NetworkTableEntry.h>
-#include <frc/RobotState.h>
-#include <frc/ErrorBase.h>
-#include <unordered_map>
+
 #include "CommandState.h"
 
 namespace frc2 {
@@ -51,7 +61,7 @@ class CommandScheduler final : public frc::SendableBase, frc::ErrorBase {
    * @param command       the command to schedule
    */
   void Schedule(bool interruptible, Command* command);
-  
+
   /**
    * Schedules multiple commands for execution.  Does nothing if the command is already scheduled.
    * If a command's requirements are not available, it will only be started if all the commands
@@ -304,4 +314,4 @@ class CommandScheduler final : public frc::SendableBase, frc::ErrorBase {
 
   friend class CommandTestBase;
 };
-}
+}  // namespace frc2

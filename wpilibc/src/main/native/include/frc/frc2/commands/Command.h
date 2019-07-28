@@ -1,11 +1,19 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 #pragma once
 
-#include <wpi/Twine.h>
+#include <frc/ErrorBase.h>
+#include <frc/WPIErrors.h>
+#include <frc/frc2/commands/Subsystem.h>
+
 #include <wpi/ArrayRef.h>
 #include <wpi/SmallSet.h>
-#include <frc/frc2/commands/Subsystem.h>
-#include <frc/WPIErrors.h>
-#include <frc/ErrorBase.h>
+#include <wpi/Twine.h>
 
 namespace frc2 {
 std::string demangle(const char* name);
@@ -29,10 +37,10 @@ class ProxyScheduleCommand;
  *
  * <p>Commands are run synchronously from the main robot loop; no multithreading is used, unless
  * specified explicitly from the command implementation.
- * 
+ *
  * <p>Note: ALWAYS create a subclass by extending CommandHelper<Base, Subclass>, or decorators
  * will not function!
- * 
+ *
  * @see CommandScheduler
  * @see CommandHelper
  */
@@ -208,7 +216,7 @@ class Command : public frc::ErrorBase {
 
 /**
  * Checks if two commands have disjoint requirement sets.
- * 
+ *
  * @param first The first command to check.
  * @param second The second command to check.
  * @return False if first and second share a requirement.
@@ -217,8 +225,8 @@ static bool RequirementsDisjoint(Command* first, Command* second) {
   bool disjoint = true;
   auto&& requirements = second->GetRequirements();
   for (auto&& requirement : first->GetRequirements()) {
-    disjoint &= requirements.find(requirement) == requirements.end(); 
+    disjoint &= requirements.find(requirement) == requirements.end();
   }
   return disjoint;
 }
-}
+}  // namespace frc2
