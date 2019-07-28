@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <string>
-
 #include <frc/smartdashboard/Sendable.h>
+
+#include <string>
 
 #include "Subsystem.h"
 

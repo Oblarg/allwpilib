@@ -52,12 +52,19 @@ class SynchronousPIDSubsystem : public SendableSubsystemBase {
   /**
    * Enables the PID control.  Resets the controller.
    */
-  void Enable();
+  virtual void Enable();
 
   /**
    * Disables the PID control.  Sets output to zero.
    */
-  void Disable();
+  virtual void Disable();
+
+  /**
+   * Returns the PIDController.
+   *
+   * @return The controller.
+   */
+  PIDController& GetController();
 
  protected:
   PIDController m_controller;

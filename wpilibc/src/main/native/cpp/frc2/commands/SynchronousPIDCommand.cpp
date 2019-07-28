@@ -17,16 +17,17 @@ SynchronousPIDCommand::SynchronousPIDCommand(
     : m_controller{controller},
       m_measurement{measurementSource},
       m_setpoint{setpointSource},
-      m_useOutput{useOutput} {}
+      m_useOutput{useOutput} {
+  AddRequirements(requirements);
+}
 
 SynchronousPIDCommand::SynchronousPIDCommand(
     PIDController controller, std::function<double()> measurementSource,
     double setpoint, std::function<void(double)> useOutput,
     std::initializer_list<Subsystem*> requirements)
-    : m_controller{controller},
-      m_measurement{measurementSource},
-      m_setpoint{[setpoint] { return setpoint; }},
-      m_useOutput{useOutput} {}
+    : SynchronousPIDCommand(controller, measurementSource,
+                            [setpoint] { return setpoint; }, useOutput,
+                            requirements) {}
 
 void SynchronousPIDCommand::Initialize() { m_controller.Reset(); }
 
