@@ -30,7 +30,11 @@ class ProxyScheduleCommand;
  * <p>Commands are run synchronously from the main robot loop; no multithreading is used, unless
  * specified explicitly from the command implementation.
  * 
+ * <p>Note: ALWAYS create a subclass by extending CommandHelper<Base, Subclass>, or decorators
+ * will not function!
+ * 
  * @see CommandScheduler
+ * @see CommandHelper
  */
 class Command : public frc::ErrorBase {
  public:

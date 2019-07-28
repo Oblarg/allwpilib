@@ -22,6 +22,14 @@ CommandScheduler& CommandScheduler::GetInstance() {
   return scheduler;
 }
 
+void CommandScheduler::AddButton(std::function<void()> button) {
+    m_buttons.emplace_back(std::move(button));
+}
+
+void CommandScheduler::ClearButtons() {
+    m_buttons.clear();
+  }
+
 void CommandScheduler::Schedule(bool interruptible, Command* command) {
   if (command->IsGrouped()) {
     wpi_setWPIErrorWithContext(CommandIllegalUse,
@@ -64,6 +72,29 @@ void CommandScheduler::Schedule(bool interruptible, Command* command) {
   }
 }
 
+void CommandScheduler::Schedule(bool interruptible, wpi::ArrayRef<Command*> commands) {
+    for (auto command : commands) {
+      Schedule(interruptible, command);
+    }
+}
+
+void CommandScheduler::Schedule(wpi::ArrayRef<Command*> commands) {
+    for (auto command : commands) {
+      Schedule(true, command);
+    }
+  }
+
+void CommandScheduler::QueueSchedule(bool interruptible, wpi::ArrayRef<Command*> commands) {
+  std::scoped_lock lock(m_lock);
+  for (auto&& command : commands) {
+    m_toSchedule[command] = interruptible;
+  }
+}
+
+void CommandScheduler::QueueSchedule(wpi::ArrayRef<Command*> commands) {
+    QueueSchedule(true, commands);
+  };
+
 void CommandScheduler::Run() {
   if(m_disabled) {
     return;
@@ -78,6 +109,18 @@ void CommandScheduler::Run() {
   for (auto&& button : m_buttons) {
     button();
   }
+
+  //add/cancel commands from async queues
+  m_lock.lock();
+  for (auto&& command : m_toSchedule) {
+    Schedule(command.second, command.first);
+  }
+  m_toSchedule.clear();
+  for (auto&& command : m_toCancel) {
+    Cancel(command);
+  }
+  m_toCancel.clear();
+  m_lock.unlock();
 
   //Run scheduled commands, remove finished commands.
   for (auto iterator = m_scheduledCommands.begin(); iterator != m_scheduledCommands.end(); iterator++) {
@@ -178,11 +221,25 @@ void CommandScheduler::Cancel(Command* command) {
   }
 }
 
+void CommandScheduler::Cancel(wpi::ArrayRef<Command*> commands) {
+    for (auto command : commands) {
+      Cancel(command);
+    }
+  }
+
 void CommandScheduler::CancelAll() {
   for (auto&& command : m_scheduledCommands) {
       Cancel(command.first);
   }
 }
+
+void CommandScheduler::QueueCancel(wpi::ArrayRef<Command*> commands) {
+  std::scoped_lock lock(m_lock);
+  for(auto&& command : commands) {
+    m_toCancel.emplace_back(command);
+  }
+}
+
 
   double CommandScheduler::TimeSinceScheduled(const Command* command) const {
     auto find = m_scheduledCommands.find(command);
@@ -214,6 +271,26 @@ Command* CommandScheduler::Requiring(const Subsystem* subsystem) const {
     return nullptr;
   }
 }
+
+void CommandScheduler::Disable() { m_disabled = true; }
+
+void CommandScheduler::Enable() { m_disabled = false; }
+
+void CommandScheduler::OnCommandInitialize(Action action) {
+    m_initActions.emplace_back(std::move(action));
+  }
+
+  void CommandScheduler::OnCommandExecute(Action action) {
+    m_executeActions.emplace_back(std::move(action));
+  }
+
+void CommandScheduler::OnCommandInterrupt(Action action) {
+    m_interruptActions.emplace_back(std::move(action));
+  }
+
+  void CommandScheduler::OnCommandFinish(Action action) {
+    m_finishActions.emplace_back(std::move(action));
+  }
 
 void CommandScheduler::InitSendable(frc::SendableBuilder& builder) {
   builder.SetSmartDashboardType("Scheduler");

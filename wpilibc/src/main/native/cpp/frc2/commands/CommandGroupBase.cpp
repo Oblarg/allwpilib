@@ -46,16 +46,3 @@ return map.find(keyToCheck) != map.end();
     }
     return allUngrouped;
   }
-
-  CommandGroupBase* CommandGroupBase::Sequence(std::vector<std::unique_ptr<Command>>&& commands) {
-      return new SequentialCommandGroup(std::move(commands));
-  }
-  CommandGroupBase* CommandGroupBase::Parallel(std::vector<std::unique_ptr<Command>>&& commands) {
-      return new ParallelCommandGroup(std::move(commands));
-  }
-  CommandGroupBase* CommandGroupBase::Race(std::vector<std::unique_ptr<Command>>&& commands) {
-      return new ParallelRaceGroup(std::move(commands));
-  }
-  CommandGroupBase* CommandGroupBase::Deadline(std::unique_ptr<Command>&& deadline, std::vector<std::unique_ptr<Command>>&& commands) {
-      return new ParallelDeadlineGroup(std::move(deadline), std::move(commands));
-  }
