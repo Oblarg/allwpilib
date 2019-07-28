@@ -29,13 +29,9 @@ class NotifierCommand : public CommandHelper<SendableCommandBase, NotifierComman
 
   NotifierCommand(const NotifierCommand& other) = default;
 
-  void Initialize() override {
-    m_notifier.StartPeriodic(m_period);
-  }
+  void Initialize() override;
   
-  void End(bool interrupted) override {
-    m_notifier.Stop();
-  }
+  void End(bool interrupted) override;
  private:
   std::function<void()> m_toRun;
   frc::Notifier m_notifier;

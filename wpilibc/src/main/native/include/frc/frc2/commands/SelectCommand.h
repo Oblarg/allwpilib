@@ -8,9 +8,28 @@
 
 namespace frc2 {
 template <typename Key>
-
+/**
+ * Runs one of a selection of commands, either using a selector and a key to command mapping, or a
+ * supplier that returns the command directly at runtime.  Does not actually schedule the selected
+ * command - rather, the command is run through this command; this ensures that the command will
+ * behave as expected if used as part of a CommandGroup.  Requires the requirements of all included
+ * commands, again to ensure proper functioning when used in a CommandGroup.  If this is undesired,
+ * consider using ScheduleCommand.
+ *
+ * <p>As this command contains multiple component commands within it, it is technically a command
+ * group; the command instances that are passed to it cannot be added to any other groups, or
+ * scheduled individually.
+ *
+ * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
+ */
 class SelectCommand : public CommandHelper<SendableCommandBase, SelectCommand<Key>> {
  public:
+  /**
+   * Creates a new selectcommand.
+   *
+   * @param commands the map of commands to choose from
+   * @param selector the selector to determine which command to run
+   */
   template <class... Types, typename = std::enable_if_t<std::conjunction_v<std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
   SelectCommand(std::function<Key()> selector, std::pair<Key, Types>... commands) 
     : m_selector{std::move(selector)} {
@@ -23,7 +42,7 @@ class SelectCommand : public CommandHelper<SendableCommandBase, SelectCommand<Ke
         return;
       }
     }
-
+    
     for (auto&& command : foo) {
       this->AddRequirements(command.second->GetRequirements());
       m_runsWhenDisabled &= command.second->RunsWhenDisabled();
@@ -49,6 +68,11 @@ class SelectCommand : public CommandHelper<SendableCommandBase, SelectCommand<Ke
   //No copy constructors for command groups
   SelectCommand(const SelectCommand& other) = delete;
   
+  /**
+   * Creates a new selectcommand.
+   *
+   * @param toRun a supplier providing the command to run
+   */
   SelectCommand(std::function<Command*()> toRun) 
     : m_toRun{toRun} {
   }

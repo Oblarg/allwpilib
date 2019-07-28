@@ -5,13 +5,33 @@
 #include <unordered_map>
 
 namespace frc2 {
+/**
+ * A CommandGroup that runs a set of commands in parallel, ending only when a specific command
+ * (the "deadline") ends, interrupting all other commands that are still running at that point.
+ *
+ * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
+ */
 class ParallelDeadlineGroup : public CommandHelper<CommandGroupBase, ParallelDeadlineGroup> {
  public:
-  ParallelDeadlineGroup(std::unique_ptr<Command>&& deadline, std::vector<std::unique_ptr<Command>>&& commands) {
-    SetDeadline(std::move(deadline));
-    AddCommands(std::move(commands));
-  }
-
+  /**
+   * Creates a new ParallelDeadlineGroup.  The given commands (including the deadline) will be
+   * executed simultaneously.  The CommandGroup will finish when the deadline finishes,
+   * interrupting all other still-running commands.  If the CommandGroup is interrupted, only
+   * the commands still running will be interrupted.
+   *
+   * @param deadline the command that determines when the group ends
+   * @param commands the commands to be executed
+   */
+  ParallelDeadlineGroup(std::unique_ptr<Command>&& deadline, std::vector<std::unique_ptr<Command>>&& commands);
+  /**
+   * Creates a new ParallelDeadlineGroup.  The given commands (including the deadline) will be
+   * executed simultaneously.  The CommandGroup will finish when the deadline finishes,
+   * interrupting all other still-running commands.  If the CommandGroup is interrupted, only
+   * the commands still running will be interrupted.
+   *
+   * @param deadline the command that determines when the group ends
+   * @param commands the commands to be executed
+   */
   template <class T, class... Types,
     typename = std::enable_if_t<std::is_base_of<Command, std::remove_reference_t<T>>::value>,
     typename = std::enable_if_t<std::conjunction_v<std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
@@ -32,74 +52,20 @@ class ParallelDeadlineGroup : public CommandHelper<CommandGroupBase, ParallelDea
     AddCommands(std::move(foo));
   }
   
-  void Initialize() override {
-    for (auto& commandRunning : m_commands) {
-      commandRunning.first->Initialize();
-      commandRunning.second = true;
-    }
-    isRunning = true;
-  }
+  void Initialize() override;
   
-  void Execute() override {
-    for (auto& commandRunning : m_commands) {
-      if (!commandRunning.second) continue;
-      commandRunning.first->Execute();
-      if (commandRunning.first->IsFinished()) {
-        commandRunning.first->End(false);
-        commandRunning.second = false;
-      }
-    };
-  }
+  void Execute() override;
   
-  void End(bool interrupted) override {
-    for (auto& commandRunning : m_commands) {
-      if (commandRunning.second) {
-        commandRunning.first->End(true);
-      }
-    }
-    isRunning = false;
-  }
+  void End(bool interrupted) override;
   
-  bool IsFinished() override {
-    return m_deadline->IsFinished();
-  }
+  bool IsFinished() override;
   
-  bool RunsWhenDisabled() const override {
-    return m_runWhenDisabled;
-  }
+  bool RunsWhenDisabled() const override;
+
  private:
-  void AddCommands(std::vector<std::unique_ptr<Command>>&& commands) override {
-    if (!RequireUngrouped(commands)) {
-      return;
-    }
-    
-    if (isRunning) {
-      wpi_setWPIErrorWithContext(CommandIllegalUse,
-        "Commands cannot be added to a CommandGroup while the group is running");
-    }
+  void AddCommands(std::vector<std::unique_ptr<Command>>&& commands) override;
 
-    for(auto&& command : commands) {
-      if(RequirementsDisjoint(this, command.get())) {
-        command->SetGrouped(true);
-        AddRequirements(command->GetRequirements());
-        m_runWhenDisabled &= command->RunsWhenDisabled();
-        m_commands[std::move(command)] = false;
-      }
-      else {
-        wpi_setWPIErrorWithContext(CommandIllegalUse, 
-          "Multiple commands in a parallel group cannot require the same subsystems");
-        return;
-      }
-    }
-  }
-
-  void SetDeadline(std::unique_ptr<Command>&& deadline) {
-    m_deadline = deadline.get();
-    m_deadline->SetGrouped(true);
-    m_commands[std::move(deadline)] = false;
-    AddRequirements(m_deadline->GetRequirements());
-    m_runWhenDisabled &= m_deadline->RunsWhenDisabled();
-  }
+  void SetDeadline(std::unique_ptr<Command>&& deadline);
 
   std::unordered_map<std::unique_ptr<Command>, bool> m_commands;
   Command* m_deadline;

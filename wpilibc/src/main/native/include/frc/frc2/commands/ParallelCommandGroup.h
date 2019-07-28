@@ -19,7 +19,7 @@ class ParallelCommandGroup : public CommandHelper<CommandGroupBase, ParallelComm
    *
    * @param commands the commands to include in this group.
    */
-  ParallelCommandGroup(std::vector<std::unique_ptr<Command>>&& commands);
+  explicit ParallelCommandGroup(std::vector<std::unique_ptr<Command>>&& commands);
 
   /**
    * Creates a new ParallelCommandGroup.  The given commands will be executed simultaneously.

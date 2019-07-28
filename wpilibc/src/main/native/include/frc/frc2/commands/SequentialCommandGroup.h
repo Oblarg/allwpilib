@@ -7,12 +7,27 @@
 #include "frc/ErrorBase.h"
 
 namespace frc2 {
+/**
+ * A CommandGroups that runs a list of commands in sequence.
+ *
+ * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
+ */
 class SequentialCommandGroup : public CommandHelper<CommandGroupBase, SequentialCommandGroup> {
  public:
-  SequentialCommandGroup(std::vector<std::unique_ptr<Command>>&& commands) {
-    AddCommands(std::move(commands));
-  }
+  /**
+   * Creates a new SequentialCommandGroup.  The given commands will be run sequentially, with
+   * the CommandGroup finishing when the last command finishes.
+   *
+   * @param commands the commands to include in this group.
+   */
+  explicit SequentialCommandGroup(std::vector<std::unique_ptr<Command>>&& commands);
 
+  /**
+   * Creates a new SequentialCommandGroup.  The given commands will be run sequentially, with
+   * the CommandGroup finishing when the last command finishes.
+   *
+   * @param commands the commands to include in this group.
+   */
   template <class... Types, typename = std::enable_if_t<std::conjunction_v<std::is_base_of<Command, std::remove_reference_t<Types>>...>>>
   SequentialCommandGroup(Types&&... commands) {
     AddCommands(std::forward<Types>(commands)...);
@@ -30,61 +45,18 @@ class SequentialCommandGroup : public CommandHelper<CommandGroupBase, Sequential
     AddCommands(std::move(foo));
   }
   
-  void Initialize() override {
-    m_currentCommandIndex = 0;
-    
-    if (!m_commands.empty()) {
-      m_commands[0]->Initialize();
-    }
-  }
+  void Initialize() override;
   
-  void Execute() override {    
-    if (m_commands.empty()) return;
-    
-    auto& currentCommand = m_commands[m_currentCommandIndex];
-    
-    currentCommand->Execute();
-    if (currentCommand->IsFinished()) {
-      currentCommand->End(false);
-      m_currentCommandIndex++;
-      if (m_currentCommandIndex < m_commands.size()) {
-        m_commands[m_currentCommandIndex]->Initialize();
-      }
-    }
-  }
+  void Execute() override;
   
-  void End(bool interrupted) override {
-    if (interrupted && !m_commands.empty()) {
-      m_commands[m_currentCommandIndex]->End(interrupted);
-    }
-    m_currentCommandIndex = -1;
-  }
+  void End(bool interrupted) override;
   
-  bool IsFinished() override {
-    return m_currentCommandIndex == m_commands.size();
-  }
+  bool IsFinished() override;
   
-  bool RunsWhenDisabled() const override {
-    return m_runWhenDisabled;
-  }
+  bool RunsWhenDisabled() const override;
+
  private:
-  void AddCommands(std::vector<std::unique_ptr<Command>>&& commands) final {
-    if (!RequireUngrouped(commands)) {
-      return;
-    }
-    
-    if (m_currentCommandIndex != -1) {
-      wpi_setWPIErrorWithContext(CommandIllegalUse, 
-          "Commands cannot be added to a CommandGroup while the group is running");
-    }
-        
-    for(auto&& command : commands) {
-      command->SetGrouped(true);
-      AddRequirements(command->GetRequirements());
-      m_runWhenDisabled &= command->RunsWhenDisabled();
-      m_commands.emplace_back(std::move(command));
-    }
-  }
+  void AddCommands(std::vector<std::unique_ptr<Command>>&& commands) final;
 
   wpi::SmallVector<std::unique_ptr<Command>, 4> m_commands;
   int m_currentCommandIndex{-1};

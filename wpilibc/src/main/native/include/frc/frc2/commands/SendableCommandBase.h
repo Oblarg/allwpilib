@@ -6,16 +6,20 @@
 #include <wpi/SmallSet.h>
 
 namespace frc2 {
+/**
+ * A Sendable base class for Commands.
+ */
 class SendableCommandBase : public frc::Sendable, public Command {
  public:
   SendableCommandBase(SendableCommandBase&& other) = default;
 
-  SendableCommandBase(const SendableCommandBase& other) {
-    m_name = other.m_name;
-    m_subsystem = other.m_subsystem;
-    m_requirements = other.m_requirements;
-  };
+  SendableCommandBase(const SendableCommandBase& other);
 
+  /**
+   * Adds the specified requirements to the command.
+   *
+   * @param requirements the requirements to add
+   */
   void AddRequirements(std::initializer_list<Subsystem*> requirements);
 
   void AddRequirements(wpi::SmallSet<Subsystem*, 4> requirements);

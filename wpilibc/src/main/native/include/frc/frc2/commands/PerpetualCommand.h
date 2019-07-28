@@ -5,17 +5,30 @@
 #include "CommandHelper.h"
 
 namespace frc2 {
+/**
+ * A command that runs another command in perpetuity, ignoring that command's end conditions.  While
+ * this class does not extend {@link CommandGroupBase}, it is still considered a CommandGroup, as it
+ * allows one to compose another command within it; the command instances that are passed to it
+ * cannot be added to any other groups, or scheduled individually.
+ *
+ * <p>As a rule, CommandGroups require the union of the requirements of their component commands.
+ */
 class PerpetualCommand : public CommandHelper<SendableCommandBase, PerpetualCommand> {
  public:
-  PerpetualCommand(std::unique_ptr<Command>&& command) {
-      if (!CommandGroupBase::RequireUngrouped(command)) { 
-        return; 
-      }
-      m_command = std::move(command);
-      m_command->SetGrouped(true);
-      AddRequirements(m_command->GetRequirements());
-  }
+  /**
+   * Creates a new PerpetualCommand.  Will run another command in perpetuity, ignoring that
+   * command's end conditions, unless this command itself is interrupted.
+   *
+   * @param command the command to run perpetually
+   */
+  PerpetualCommand(std::unique_ptr<Command>&& command);
 
+  /**
+   * Creates a new PerpetualCommand.  Will run another command in perpetuity, ignoring that
+   * command's end conditions, unless this command itself is interrupted.
+   *
+   * @param command the command to run perpetually
+   */
   template<class T, 
     typename = std::enable_if_t<std::is_base_of<Command, std::remove_reference_t<T>>::value>>
   PerpetualCommand(T&& command) 
@@ -26,17 +39,11 @@ class PerpetualCommand : public CommandHelper<SendableCommandBase, PerpetualComm
   //No copy constructors for command groups
   PerpetualCommand(const PerpetualCommand& other) = delete;
     
-  void Initialize() override {
-    m_command->Initialize();
-  }
+  void Initialize() override;
   
-  void Execute() override {
-    m_command->Execute();
-  }
+  void Execute() override;
   
-  void End(bool interrupted) override {
-    m_command->End(interrupted);
-  }
+  void End(bool interrupted) override;
  private:
   std::unique_ptr<Command> m_command;
 };

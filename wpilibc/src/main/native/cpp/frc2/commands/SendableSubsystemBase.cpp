@@ -4,6 +4,7 @@
 #include <frc/smartdashboard/SendableBuilder.h>
 
 using namespace frc2;
+
 SendableSubsystemBase::SendableSubsystemBase() {
   m_name = GetTypeName(*this);
   CommandScheduler::GetInstance().RegisterSubsystem({this});
@@ -24,3 +25,11 @@ void SendableSubsystemBase::InitSendable(frc::SendableBuilder& builder) {
     return command->GetName();
    }, nullptr);
 }
+
+std::string SendableSubsystemBase::GetName() const { return m_name; }
+
+void SendableSubsystemBase::SetName(const wpi::Twine& name) { m_name = name.str(); }
+
+std::string SendableSubsystemBase::GetSubsystem() const { return GetName(); }
+
+void SendableSubsystemBase::SetSubsystem(const wpi::Twine& name) { SetName(name); }

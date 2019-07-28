@@ -4,27 +4,31 @@
 #include "CommandHelper.h"
 
 namespace frc2 {
+/**
+ * A command that runs a given runnable when it is initalized, and another runnable when it ends.
+ * Useful for running and then stopping a motor, or extending and then retracting a solenoid.
+ * Has no end condition as-is; either subclass it or use Command.WithTimeout() or
+ * Command.InterruptOn() to give it one.
+ */
 class StartEndCommand : public CommandHelper<SendableCommandBase, StartEndCommand> {
  public:
-  StartEndCommand(std::function<void()> onInit, std::function<void()> onEnd, std::initializer_list<Subsystem*> requirements) 
-    : m_onInit{std::move(onInit)}, m_onEnd{std::move(onEnd)} {
-    AddRequirements(requirements);
-  }
+  /**
+   * Creates a new StartEndCommand.  Will run the given runnables when the command starts and when
+   * it ends.
+   *
+   * @param onInit       the Runnable to run on command init
+   * @param onEnd        the Runnable to run on command end
+   * @param requirements the subsystems required by this command
+   */
+  StartEndCommand(std::function<void()> onInit, std::function<void()> onEnd, std::initializer_list<Subsystem*> requirements);
 
   StartEndCommand(StartEndCommand&& other) = default;
 
-  StartEndCommand(const StartEndCommand& other) : CommandHelper(other) {
-    m_onInit = other.m_onInit;
-    m_onEnd = other.m_onEnd;
-  };
+  StartEndCommand(const StartEndCommand& other);
   
-  void Initialize() override {
-    m_onInit();
-  }
+  void Initialize() override;
   
-  void End(bool interrupted) override {
-    m_onEnd();
-  }
+  void End(bool interrupted) override;
  protected:
   std::function<void()> m_onInit;
   std::function<void()> m_onEnd;

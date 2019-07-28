@@ -5,27 +5,37 @@
 #include "frc/Timer.h"
 
 namespace frc2 {
+/**
+ * A command that does nothing but ends after a specified match time or condition.  Useful for
+ * CommandGroups.
+ */
 class WaitUntilCommand : public CommandHelper<SendableCommandBase, WaitUntilCommand> {
  public:
-    WaitUntilCommand(std::function<bool()> condition) 
-    : m_condition{std::move(condition)} {
-    }
+  /**
+   * Creates a new WaitUntilCommand that ends after a given condition becomes true.
+   *
+   * @param condition the condition to determine when to end
+   */
+  explicit WaitUntilCommand(std::function<bool()> condition);
     
-    WaitUntilCommand(double time) 
-      : m_condition{[=]{ return frc::Timer::GetMatchTime() - time > 0; }} {
-    }
+  /**
+   * Creates a new WaitUntilCommand that ends after a given match time.
+   *
+   * <p>NOTE: The match timer used for this command is UNOFFICIAL.  Using this command does NOT
+   * guarantee that the time at which the action is performed will be judged to be legal by the
+   * referees.  When in doubt, add a safety factor or time the action manually.
+   *
+   * @param time the match time after which to end, in seconds
+   */
+  explicit WaitUntilCommand(double time);
     
-    WaitUntilCommand(WaitUntilCommand&& other) = default;
+  WaitUntilCommand(WaitUntilCommand&& other) = default;
 
-    WaitUntilCommand(const WaitUntilCommand& other) = default;
-    
-    bool IsFinished() override {
-      return m_condition();
-    }
-    
-    bool RunsWhenDisabled() const override {
-      return true;
-    }
+  WaitUntilCommand(const WaitUntilCommand& other) = default;
+  
+  bool IsFinished() override;
+  
+  bool RunsWhenDisabled() const override;
  private:
   std::function<bool()> m_condition;
 };

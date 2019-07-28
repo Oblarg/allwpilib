@@ -6,20 +6,22 @@
 #include "wpi/raw_ostream.h"
 
 namespace frc2 {
+/**
+ * A command that prints a string when initialized.
+ */
 class PrintCommand : public CommandHelper<InstantCommand, PrintCommand>  {
  public:
-  PrintCommand(const wpi::Twine& message) 
-    : CommandHelper{[str = message.str()]{
-      wpi::outs() << str << "\n";
-    }, {}} {
-    }
+  /**
+   * Creates a new a PrintCommand.
+   *
+   * @param message the message to print
+   */
+  explicit PrintCommand(const wpi::Twine& message);
 
   PrintCommand(PrintCommand&& other) = default;
 
   PrintCommand(const PrintCommand& other) = default;
     
-  bool RunsWhenDisabled() const override {
-    return true;
-  }
+  bool RunsWhenDisabled() const override;
 };
 }
