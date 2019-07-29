@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "hatchbottraditional/include/commands/HalveDriveSpeed.h"
+#include "HatchbotTraditional/include/commands/HalveDriveSpeed.h"
 
 HalveDriveSpeed::HalveDriveSpeed(DriveSubsystem* subsystem)
     : m_drive(subsystem) {}

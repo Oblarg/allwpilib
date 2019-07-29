@@ -6,10 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "CommandTestBase.h"
+#include "frc/frc2/buttons/Trigger.h"
 #include "frc/frc2/commands/CommandScheduler.h"
 #include "frc/frc2/commands/WaitUntilCommand.h"
 #include "gtest/gtest.h"
-#include "frc/frc2/buttons/Trigger.h"
 
 using namespace frc2;
 class ButtonTest : public CommandTestBase {};
@@ -21,7 +21,7 @@ TEST_F(ButtonTest, FooTest) {
 
   WaitUntilCommand command([&finished] { return finished; });
 
-  Trigger([&pressed]{return pressed;}).WhenActive(&command);
+  Trigger([&pressed] { return pressed; }).WhenActive(&command);
 
   scheduler.Run();
 
@@ -41,7 +41,7 @@ TEST_F(ButtonTest, WhenPressedTest) {
 
   WaitUntilCommand command([&finished] { return finished; });
 
-  Trigger([&pressed]{return pressed;}).WhenActive(&command);
+  Trigger([&pressed] { return pressed; }).WhenActive(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
   pressed = true;
@@ -59,7 +59,7 @@ TEST_F(ButtonTest, WhenReleasedTest) {
   WaitUntilCommand command([&finished] { return finished; });
 
   pressed = true;
-  Trigger([&pressed]{return pressed;}).WhenInactive(&command);
+  Trigger([&pressed] { return pressed; }).WhenInactive(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
   pressed = false;
@@ -77,7 +77,7 @@ TEST_F(ButtonTest, WhileHeldTest) {
   WaitUntilCommand command([&finished] { return finished; });
 
   pressed = false;
-  Trigger([&pressed]{return pressed;}).WhileActiveContinous(&command);
+  Trigger([&pressed] { return pressed; }).WhileActiveContinous(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
   pressed = true;
@@ -100,7 +100,7 @@ TEST_F(ButtonTest, WhenHeldTest) {
   WaitUntilCommand command([&finished] { return finished; });
 
   pressed = false;
-  Trigger([&pressed]{return pressed;}).WhileActiveOnce(&command);
+  Trigger([&pressed] { return pressed; }).WhileActiveOnce(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
   pressed = true;
@@ -113,7 +113,7 @@ TEST_F(ButtonTest, WhenHeldTest) {
   EXPECT_FALSE(scheduler.IsScheduled(&command));
 
   pressed = false;
-  Trigger([&pressed]{return pressed;}).WhileActiveOnce(&command);
+  Trigger([&pressed] { return pressed; }).WhileActiveOnce(&command);
   pressed = true;
   scheduler.Run();
   pressed = false;
@@ -128,7 +128,7 @@ TEST_F(ButtonTest, ToggleWhenPressedTest) {
   WaitUntilCommand command([&finished] { return finished; });
 
   pressed = false;
-  Trigger([&pressed]{return pressed;}).ToggleWhenActive(&command);
+  Trigger([&pressed] { return pressed; }).ToggleWhenActive(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
   pressed = true;
@@ -148,7 +148,9 @@ TEST_F(ButtonTest, AndTest) {
   bool pressed2 = false;
   WaitUntilCommand command([&finished] { return finished; });
 
-  (Trigger([&pressed1]{return pressed1;}) && Trigger([&pressed2]{return pressed2;})).WhenActive(&command);
+  (Trigger([&pressed1] { return pressed1; }) &&
+   Trigger([&pressed2] { return pressed2; }))
+      .WhenActive(&command);
   pressed1 = true;
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
@@ -165,14 +167,18 @@ TEST_F(ButtonTest, OrTest) {
   WaitUntilCommand command1([&finished] { return finished; });
   WaitUntilCommand command2([&finished] { return finished; });
 
-  (Trigger([&pressed1]{return pressed1;}) || Trigger([&pressed2]{return pressed2;})).WhenActive(&command1);
+  (Trigger([&pressed1] { return pressed1; }) ||
+   Trigger([&pressed2] { return pressed2; }))
+      .WhenActive(&command1);
   pressed1 = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command1));
 
   pressed1 = false;
 
-  (Trigger([&pressed1]{return pressed1;}) || Trigger([&pressed2]{return pressed2;})).WhenActive(&command2);
+  (Trigger([&pressed1] { return pressed1; }) ||
+   Trigger([&pressed2] { return pressed2; }))
+      .WhenActive(&command2);
   pressed2 = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command2));
@@ -184,7 +190,7 @@ TEST_F(ButtonTest, NegateTest) {
   bool pressed = true;
   WaitUntilCommand command([&finished] { return finished; });
 
-  (!Trigger([&pressed]{return pressed;})).WhenActive(&command);
+  (!Trigger([&pressed] { return pressed; })).WhenActive(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
   pressed = false;

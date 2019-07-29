@@ -16,7 +16,7 @@ using namespace frc2;
 
 Trigger::Trigger(const Trigger& other) : m_isActive(other.m_isActive) {}
 
-Trigger* Trigger::WhenActive(Command* command, bool interruptible) {
+Trigger Trigger::WhenActive(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
       [pressedLast = Get(), *this, command, interruptible]() mutable {
         bool pressed = Get();
@@ -28,14 +28,14 @@ Trigger* Trigger::WhenActive(Command* command, bool interruptible) {
         pressedLast = pressed;
       });
 
-  return this;
+  return *this;
 }
 
-Trigger* Trigger::WhenActive(std::function<void()> toRun) {
+Trigger Trigger::WhenActive(std::function<void()> toRun) {
   return WhenActive(new InstantCommand(std::move(toRun), {}));
 }
 
-Trigger* Trigger::WhileActiveContinous(Command* command, bool interruptible) {
+Trigger Trigger::WhileActiveContinous(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
       [pressedLast = Get(), *this, command, interruptible]() mutable {
         bool pressed = Get();
@@ -48,14 +48,14 @@ Trigger* Trigger::WhileActiveContinous(Command* command, bool interruptible) {
 
         pressedLast = pressed;
       });
-  return this;
+  return *this;
 }
 
-Trigger* Trigger::WhileActiveContinous(std::function<void()> toRun) {
+Trigger Trigger::WhileActiveContinous(std::function<void()> toRun) {
   return WhileActiveContinous(new InstantCommand(std::move(toRun), {}));
 }
 
-Trigger* Trigger::WhileActiveOnce(Command* command, bool interruptible) {
+Trigger Trigger::WhileActiveOnce(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
       [pressedLast = Get(), *this, command, interruptible]() mutable {
         bool pressed = Get();
@@ -68,10 +68,10 @@ Trigger* Trigger::WhileActiveOnce(Command* command, bool interruptible) {
 
         pressedLast = pressed;
       });
-  return this;
+  return *this;
 }
 
-Trigger* Trigger::WhenInactive(Command* command, bool interruptible) {
+Trigger Trigger::WhenInactive(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
       [pressedLast = Get(), *this, command, interruptible]() mutable {
         bool pressed = Get();
@@ -82,14 +82,14 @@ Trigger* Trigger::WhenInactive(Command* command, bool interruptible) {
 
         pressedLast = pressed;
       });
-  return this;
+  return *this;
 }
 
-Trigger* Trigger::WhenInactive(std::function<void()> toRun) {
+Trigger Trigger::WhenInactive(std::function<void()> toRun) {
   return WhenInactive(new InstantCommand(std::move(toRun), {}));
 }
 
-Trigger* Trigger::ToggleWhenActive(Command* command, bool interruptible) {
+Trigger Trigger::ToggleWhenActive(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
       [pressedLast = Get(), *this, command, interruptible]() mutable {
         bool pressed = Get();
@@ -104,10 +104,10 @@ Trigger* Trigger::ToggleWhenActive(Command* command, bool interruptible) {
 
         pressedLast = pressed;
       });
-  return this;
+  return *this;
 }
 
-Trigger* Trigger::CancelWhenActive(Command* command) {
+Trigger Trigger::CancelWhenActive(Command* command) {
   CommandScheduler::GetInstance().AddButton(
       [pressedLast = Get(), *this, command]() mutable {
         bool pressed = Get();
@@ -118,5 +118,5 @@ Trigger* Trigger::CancelWhenActive(Command* command) {
 
         pressedLast = pressed;
       });
-  return this;
+  return *this;
 }

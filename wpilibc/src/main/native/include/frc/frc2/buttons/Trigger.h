@@ -27,35 +27,35 @@ class Trigger {
 
   virtual bool Get() const { return m_isActive(); }
 
-  Trigger* WhenActive(Command* command, bool interruptible);
-  Trigger* WhenActive(Command* command) {
+  Trigger WhenActive(Command* command, bool interruptible);
+  Trigger WhenActive(Command* command) {
     WhenActive(command, true);
-    return this;
+    return *this;
   }
-  Trigger* WhenActive(std::function<void()> toRun);
-  Trigger* WhileActiveContinous(Command* command, bool interruptible);
-  Trigger* WhileActiveContinous(Command* command) {
+  Trigger WhenActive(std::function<void()> toRun);
+  Trigger WhileActiveContinous(Command* command, bool interruptible);
+  Trigger WhileActiveContinous(Command* command) {
     WhileActiveContinous(command, true);
-    return this;
+    return *this;
   }
-  Trigger* WhileActiveContinous(std::function<void()> toRun);
-  Trigger* WhileActiveOnce(Command* command, bool interruptible);
-  Trigger* WhileActiveOnce(Command* command) {
+  Trigger WhileActiveContinous(std::function<void()> toRun);
+  Trigger WhileActiveOnce(Command* command, bool interruptible);
+  Trigger WhileActiveOnce(Command* command) {
     WhileActiveOnce(command, true);
-    return this;
+    return *this;
   }
-  Trigger* WhenInactive(Command* command, bool interruptible);
-  Trigger* WhenInactive(Command* command) {
+  Trigger WhenInactive(Command* command, bool interruptible);
+  Trigger WhenInactive(Command* command) {
     WhenInactive(command, true);
-    return this;
+    return *this;
   }
-  Trigger* WhenInactive(std::function<void()> toRun);
-  Trigger* ToggleWhenActive(Command* command, bool interruptible);
-  Trigger* ToggleWhenActive(Command* command) {
+  Trigger WhenInactive(std::function<void()> toRun);
+  Trigger ToggleWhenActive(Command* command, bool interruptible);
+  Trigger ToggleWhenActive(Command* command) {
     ToggleWhenActive(command, true);
-    return this;
+    return *this;
   }
-  Trigger* CancelWhenActive(Command* command);
+  Trigger CancelWhenActive(Command* command);
 
   Trigger operator&&(Trigger rhs) {
     return Trigger([*this, rhs] { return Get() && rhs.Get(); });

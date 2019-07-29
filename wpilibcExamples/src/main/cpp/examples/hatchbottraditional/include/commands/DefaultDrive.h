@@ -10,7 +10,7 @@
 #include <frc/frc2/commands/CommandHelper.h>
 #include <frc/frc2/commands/SendableCommandBase.h>
 
-#include "hatchbottraditional/include/subsystems/DriveSubsystem.h"
+#include "HatchbotTraditional/include/subsystems/DriveSubsystem.h"
 
 /**
  * A command to drive the robot with joystick input passed in through lambdas.

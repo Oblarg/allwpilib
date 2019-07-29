@@ -10,7 +10,7 @@
 #include <frc/frc2/commands/CommandHelper.h>
 #include <frc/frc2/commands/SendableCommandBase.h>
 
-#include "hatchbottraditional/include/subsystems/HatchSubsystem.h"
+#include "HatchbotTraditional/include/subsystems/HatchSubsystem.h"
 
 /**
  * A simple command that grabs a hatch with the HatchSubsystem.  Written

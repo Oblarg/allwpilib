@@ -10,9 +10,9 @@
 #include <frc/frc2/commands/CommandHelper.h>
 #include <frc/frc2/commands/SequentialCommandGroup.h>
 
-#include "HatchbotTraditional/include/Constants.h"
-#include "HatchbotTraditional/include/commands/DriveDistance.h"
-#include "HatchbotTraditional/include/commands/ReleaseHatch.h"
+#include "HatchbotInlined/include/Constants.h"
+#include "HatchbotInlined/include/subsystems/DriveSubsystem.h"
+#include "HatchbotInlined/include/subsystems/HatchSubsystem.h"
 
 /**
  * A complex auto command that drives forward, releases a hatch, and then drives

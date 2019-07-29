@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "HatchbotTraditional/include/subsystems/DriveSubsystem.h"
+#include "HatchbotInlined/include/subsystems/DriveSubsystem.h"
 
 using namespace DriveConstants;
 

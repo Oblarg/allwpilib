@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "hatchbottraditional/include/commands/DriveDistance.h"
+#include "HatchbotTraditional/include/commands/DriveDistance.h"
 
 DriveDistance::DriveDistance(double inches, double speed,
                              DriveSubsystem* subsystem)

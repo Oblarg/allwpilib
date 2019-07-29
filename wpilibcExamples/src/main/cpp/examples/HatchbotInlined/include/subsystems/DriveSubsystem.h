@@ -13,7 +13,7 @@
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/frc2/commands/SendableSubsystemBase.h>
 
-#include "HatchbotTraditional/include/Constants.h"
+#include "HatchbotInlined/include/Constants.h"
 
 class DriveSubsystem : public frc2::SendableSubsystemBase {
  public:

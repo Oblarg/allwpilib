@@ -5,12 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "HatchbotTraditional/include/commands/GrabHatch.h"
+#include "HatchbotInlined/include/subsystems/HatchSubsystem.h"
 
-GrabHatch::GrabHatch(HatchSubsystem* subsystem) : m_hatch(subsystem) {
-  AddRequirements({subsystem});
+using namespace HatchConstants;
+
+HatchSubsystem::HatchSubsystem()
+    : m_hatchSolenoid{kHatchSolenoidPorts[0], kHatchSolenoidPorts[1]} {}
+
+void HatchSubsystem::GrabHatch() {
+  m_hatchSolenoid.Set(frc::DoubleSolenoid::kForward);
 }
 
-void GrabHatch::Initialize() { m_hatch->GrabHatch(); }
-
-bool GrabHatch::IsFinished() { return true; }
+void HatchSubsystem::ReleaseHatch() {
+  m_hatchSolenoid.Set(frc::DoubleSolenoid::kReverse);
+}

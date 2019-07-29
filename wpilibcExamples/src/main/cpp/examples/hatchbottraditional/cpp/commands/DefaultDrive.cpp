@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "hatchbottraditional/include/commands/DefaultDrive.h"
+#include "HatchbotTraditional/include/commands/DefaultDrive.h"
 
 DefaultDrive::DefaultDrive(DriveSubsystem* subsystem,
                            std::function<double()> forward,

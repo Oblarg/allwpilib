@@ -10,9 +10,8 @@
 #include <frc/TimedRobot.h>
 #include <frc/frc2/commands/Command.h>
 
-#include "HatchbotTraditional/include/RobotContainer.h"
-#include "HatchbotTraditional/include/commands/DefaultDrive.h"
-#include "HatchbotTraditional/include/subsystems/DriveSubsystem.h"
+#include "HatchbotInlined/include/RobotContainer.h"
+#include "HatchbotInlined/include/subsystems/DriveSubsystem.h"
 #include "OI.h"
 
 class Robot : public frc::TimedRobot {

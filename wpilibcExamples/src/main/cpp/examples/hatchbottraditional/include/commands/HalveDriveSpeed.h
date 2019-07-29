@@ -10,7 +10,7 @@
 #include <frc/frc2/commands/CommandHelper.h>
 #include <frc/frc2/commands/SendableCommandBase.h>
 
-#include "hatchbottraditional/include/subsystems/DriveSubsystem.h"
+#include "HatchbotTraditional/include/subsystems/DriveSubsystem.h"
 
 class HalveDriveSpeed
     : public frc2::CommandHelper<frc2::SendableCommandBase, HalveDriveSpeed> {

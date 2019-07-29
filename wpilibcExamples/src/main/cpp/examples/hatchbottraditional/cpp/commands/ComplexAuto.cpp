@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "hatchbottraditional/include/commands/ComplexAuto.h"
+#include "HatchbotTraditional/include/commands/ComplexAuto.h"
 
 using namespace AutoConstants;
 

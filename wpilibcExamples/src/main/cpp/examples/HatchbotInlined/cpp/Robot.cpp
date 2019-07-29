@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "HatchbotTraditional/include/Robot.h"
+#include "HatchbotInlined/include/Robot.h"
 
 #include <frc2/commands/CommandScheduler.h>
 

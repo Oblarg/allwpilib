@@ -9,14 +9,18 @@
 
 #include <frc/XboxController.h>
 #include <frc/frc2/commands/Command.h>
+#include <frc/frc2/commands/InstantCommand.h>
+#include <frc/frc2/commands/ParallelRaceGroup.h>
+#include <frc/frc2/commands/SequentialCommandGroup.h>
+#include <frc/frc2/commands/StartEndCommand.h>
 #include <frc/smartdashboard/SendableChooser.h>
 
-#include "HatchbotTraditional/include/Constants.h"
-#include "HatchbotTraditional/include/commands/ComplexAuto.h"
-#include "HatchbotTraditional/include/commands/DefaultDrive.h"
-#include "HatchbotTraditional/include/commands/DriveDistance.h"
-#include "HatchbotTraditional/include/subsystems/DriveSubsystem.h"
-#include "HatchbotTraditional/include/subsystems/HatchSubsystem.h"
+#include "HatchbotInlined/include/Constants.h"
+#include "HatchbotInlined/include/commands/ComplexAuto.h"
+#include "HatchbotInlined/include/subsystems/DriveSubsystem.h"
+#include "HatchbotInlined/include/subsystems/HatchSubsystem.h"
+
+namespace ac = AutoConstants;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -39,8 +43,15 @@ class RobotContainer {
   HatchSubsystem m_hatch;
 
   // The autonomous routines
-  DriveDistance m_simpleAuto{AutoConstants::kAutoDriveDistanceInches,
-                             AutoConstants::kAutoDriveSpeed, &m_drive};
+  frc2::ParallelRaceGroup m_simpleAuto =
+      frc2::StartEndCommand(
+          [this] { m_drive.ArcadeDrive(ac::kAutoDriveSpeed, 0); },
+          [this] { m_drive.ArcadeDrive(0, 0); }, {&m_drive})
+          .BeforeStarting([this] { m_drive.ResetEncoders(); })
+          .InterruptOn([this] {
+            return m_drive.GetAverageEncoderDistance() >=
+                   ac::kAutoDriveDistanceInches;
+          });
   ComplexAuto m_complexAuto{&m_drive, &m_hatch};
 
   // The chooser for the autonomous routines

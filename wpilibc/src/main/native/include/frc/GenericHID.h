@@ -12,6 +12,7 @@
 #include <string>
 
 #include "frc/ErrorBase.h"
+#include "frc/frc2/buttons/JoystickButton.h"
 
 namespace frc {
 
@@ -177,6 +178,8 @@ class GenericHID : public ErrorBase {
    * @param value The normalized value (0 to 1) to set the rumble to
    */
   void SetRumble(RumbleType type, double value);
+
+  frc2::JoystickButton GetButton(int button);
 
  private:
   DriverStation& m_ds;

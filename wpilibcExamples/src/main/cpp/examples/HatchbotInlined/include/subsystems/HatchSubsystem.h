@@ -10,7 +10,7 @@
 #include <frc/DoubleSolenoid.h>
 #include <frc/frc2/commands/SendableSubsystemBase.h>
 
-#include "HatchbotTraditional/include/Constants.h"
+#include "HatchbotInlined/include/Constants.h"
 
 class HatchSubsystem : public frc2::SendableSubsystemBase {
  public:

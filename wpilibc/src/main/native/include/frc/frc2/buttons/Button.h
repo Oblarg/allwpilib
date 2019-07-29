@@ -12,28 +12,28 @@ namespace frc2 {
 class Command;
 class Button : public Trigger {
  public:
-  Button(std::function<bool()> isPressed);
+  explicit Button(std::function<bool()> isPressed);
 
   Button() = default;
 
-  Button* WhenPressed(Command* command, bool interruptible);
-  Button* WhenPressed(Command* command);
-  Button* WhenPressed(std::function<void()> toRun);
+  Button WhenPressed(Command* command, bool interruptible);
+  Button WhenPressed(Command* command);
+  Button WhenPressed(std::function<void()> toRun);
 
-  Button* WhileHeld(Command* command, bool interruptible);
-  Button* WhileHeld(Command* command);
-  Button* WhileHeld(std::function<void()> toRun);
+  Button WhileHeld(Command* command, bool interruptible);
+  Button WhileHeld(Command* command);
+  Button WhileHeld(std::function<void()> toRun);
 
-  Button* WhenHeld(Command* command, bool interruptible);
-  Button* WhenHeld(Command* command);
+  Button WhenHeld(Command* command, bool interruptible);
+  Button WhenHeld(Command* command);
 
-  Button* WhenReleased(Command* command, bool interruptible);
-  Button* WhenReleased(Command* command);
-  Button* WhenReleased(std::function<void()> toRun);
+  Button WhenReleased(Command* command, bool interruptible);
+  Button WhenReleased(Command* command);
+  Button WhenReleased(std::function<void()> toRun);
 
-  Button* ToggleWhenPressed(Command* command, bool interruptible);
-  Button* ToggleWhenPressed(Command* command);
+  Button ToggleWhenPressed(Command* command, bool interruptible);
+  Button ToggleWhenPressed(Command* command);
 
-  Button* CancelWhenPressed(Command* command);
+  Button CancelWhenPressed(Command* command);
 };
 }  // namespace frc2

@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "hatchbottraditional/include/commands/ReleaseHatch.h"
+#include "HatchbotTraditional/include/commands/ReleaseHatch.h"
 
 ReleaseHatch::ReleaseHatch(HatchSubsystem* subsystem) : m_hatch(subsystem) {
   AddRequirements({subsystem});

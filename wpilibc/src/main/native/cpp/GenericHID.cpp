@@ -83,3 +83,7 @@ void GenericHID::SetRumble(RumbleType type, double value) {
   }
   HAL_SetJoystickOutputs(m_port, m_outputs, m_leftRumble, m_rightRumble);
 }
+
+frc2::JoystickButton GenericHID::GetButton(int button) {
+  return frc2::JoystickButton(this, button);
+}

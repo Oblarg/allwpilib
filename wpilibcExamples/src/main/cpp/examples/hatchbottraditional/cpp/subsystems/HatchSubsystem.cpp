@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "hatchbottraditional/include/subsystems/HatchSubsystem.h"
+#include "HatchbotTraditional/include/subsystems/HatchSubsystem.h"
 
 using namespace HatchConstants;
 
