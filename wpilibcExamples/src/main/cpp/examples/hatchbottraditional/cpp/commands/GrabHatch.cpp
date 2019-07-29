@@ -5,20 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commandbasednew/include/RobotContainer.h"
+#include "hatchbottraditional/include/commands/GrabHatch.h"
 
-RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
-  // Initialize all of your commands and subsystems here
-
-  // Configure the button bindings
-  ConfigureButtonBindings();
+GrabHatch::GrabHatch(HatchSubsystem* subsystem) : m_hatch(subsystem) {
+  AddRequirements({subsystem});
 }
 
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
-}
+void GrabHatch::Initialize() { m_hatch->GrabHatch(); }
 
-frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return &m_autonomousCommand;
-}
+bool GrabHatch::IsFinished() { return true; }

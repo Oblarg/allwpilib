@@ -5,20 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commandbasednew/include/RobotContainer.h"
+#include "hatchbottraditional/include/commands/ComplexAuto.h"
 
-RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
-  // Initialize all of your commands and subsystems here
+using namespace AutoConstants;
 
-  // Configure the button bindings
-  ConfigureButtonBindings();
-}
-
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
-}
-
-frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return &m_autonomousCommand;
+ComplexAuto::ComplexAuto(DriveSubsystem* drive, HatchSubsystem* hatch) {
+  AddCommands(
+      // Drive forward the specified distance
+      DriveDistance(kAutoDriveDistanceInches, kAutoDriveSpeed, drive),
+      // Release the hatch
+      ReleaseHatch(hatch),
+      // Drive backward the specified distance
+      DriveDistance(kAutoBackupDistanceInches, -kAutoDriveSpeed, drive));
 }

@@ -10,25 +10,28 @@
 #include <frc/frc2/commands/CommandHelper.h>
 #include <frc/frc2/commands/SendableCommandBase.h>
 
-#include "commandbasednew/include/subsystems/ExampleSubsystem.h"
+#include "hatchbottraditional/include/subsystems/DriveSubsystem.h"
 
-/**
- * An example command that uses an example subsystem.
- *
- * <p>Note that this extends CommandHelper, rather extending SendableCommandBase
- * directly; this is crucially important, or else the decorator functions in
- * Command will *not* work!
- */
-class ExampleCommand
-    : public frc2::CommandHelper<frc2::SendableCommandBase, ExampleCommand> {
+class DriveDistance
+    : public frc2::CommandHelper<frc2::SendableCommandBase, DriveDistance> {
  public:
   /**
-   * Creates a new ExampleCommand.
+   * Creates a new DriveDistance.
    *
-   * @param subsystem The subsystem used by this command.
+   * @param inches The number of inches the robot will drive
+   * @param speed The speed at which the robot will drive
+   * @param drive The drive subsystem on which this command will run
    */
-  explicit ExampleCommand(ExampleSubsystem* subsystem);
+  DriveDistance(double inches, double speed, DriveSubsystem* subsystem);
+
+  void Initialize() override;
+
+  void End(bool interrupted) override;
+
+  bool IsFinished() override;
 
  private:
-  ExampleSubsystem* m_subsystem;
+  DriveSubsystem* m_drive;
+  double m_distance;
+  double m_speed;
 };

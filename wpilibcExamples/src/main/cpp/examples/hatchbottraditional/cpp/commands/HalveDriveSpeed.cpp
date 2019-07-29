@@ -5,20 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commandbasednew/include/RobotContainer.h"
+#include "hatchbottraditional/include/commands/HalveDriveSpeed.h"
 
-RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
-  // Initialize all of your commands and subsystems here
+HalveDriveSpeed::HalveDriveSpeed(DriveSubsystem* subsystem)
+    : m_drive(subsystem) {}
 
-  // Configure the button bindings
-  ConfigureButtonBindings();
-}
+void HalveDriveSpeed::Initialize() { m_drive->SetMaxOutput(.5); }
 
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
-}
-
-frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return &m_autonomousCommand;
-}
+void HalveDriveSpeed::End(bool interrupted) { m_drive->SetMaxOutput(1); }

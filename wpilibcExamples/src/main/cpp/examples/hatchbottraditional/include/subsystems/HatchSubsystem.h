@@ -7,11 +7,14 @@
 
 #pragma once
 
+#include <frc/DoubleSolenoid.h>
 #include <frc/frc2/commands/SendableSubsystemBase.h>
 
-class ExampleSubsystem : public frc2::SendableSubsystemBase {
+#include "hatchbottraditional/include/Constants.h"
+
+class HatchSubsystem : public frc2::SendableSubsystemBase {
  public:
-  ExampleSubsystem();
+  HatchSubsystem();
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -20,7 +23,18 @@ class ExampleSubsystem : public frc2::SendableSubsystemBase {
 
   // Subsystem methods go here.
 
+  /**
+   * Grabs the hatch.
+   */
+  void GrabHatch();
+
+  /**
+   * Releases the hatch.
+   */
+  void ReleaseHatch();
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
+  frc::DoubleSolenoid m_hatchSolenoid;
 };

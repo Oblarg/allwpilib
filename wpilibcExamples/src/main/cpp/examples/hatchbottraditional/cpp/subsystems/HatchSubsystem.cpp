@@ -5,20 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commandbasednew/include/RobotContainer.h"
+#include "hatchbottraditional/include/subsystems/HatchSubsystem.h"
 
-RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
-  // Initialize all of your commands and subsystems here
+using namespace HatchConstants;
 
-  // Configure the button bindings
-  ConfigureButtonBindings();
+HatchSubsystem::HatchSubsystem()
+    : m_hatchSolenoid{kHatchSolenoidPorts[0], kHatchSolenoidPorts[1]} {}
+
+void HatchSubsystem::GrabHatch() {
+  m_hatchSolenoid.Set(frc::DoubleSolenoid::kForward);
 }
 
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
-}
-
-frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return &m_autonomousCommand;
+void HatchSubsystem::ReleaseHatch() {
+  m_hatchSolenoid.Set(frc::DoubleSolenoid::kReverse);
 }

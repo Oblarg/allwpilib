@@ -10,25 +10,24 @@
 #include <frc/frc2/commands/CommandHelper.h>
 #include <frc/frc2/commands/SendableCommandBase.h>
 
-#include "commandbasednew/include/subsystems/ExampleSubsystem.h"
+#include "hatchbottraditional/include/subsystems/HatchSubsystem.h"
 
 /**
- * An example command that uses an example subsystem.
+ * A simple command that grabs a hatch with the HatchSubsystem.  Written
+ * explicitly for pedagogical purposes.  Actual code should inline a command
+ * this simple with InstantCommand.
  *
- * <p>Note that this extends CommandHelper, rather extending SendableCommandBase
- * directly; this is crucially important, or else the decorator functions in
- * Command will *not* work!
+ * @see InstantCommand
  */
-class ExampleCommand
-    : public frc2::CommandHelper<frc2::SendableCommandBase, ExampleCommand> {
+class GrabHatch
+    : public frc2::CommandHelper<frc2::SendableCommandBase, GrabHatch> {
  public:
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  explicit ExampleCommand(ExampleSubsystem* subsystem);
+  explicit GrabHatch(HatchSubsystem* subsystem);
+
+  void Initialize() override;
+
+  bool IsFinished() override;
 
  private:
-  ExampleSubsystem* m_subsystem;
+  HatchSubsystem* m_hatch;
 };

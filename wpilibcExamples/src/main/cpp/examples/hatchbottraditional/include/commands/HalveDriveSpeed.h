@@ -5,20 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-#include "commandbasednew/include/RobotContainer.h"
+#pragma once
 
-RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
-  // Initialize all of your commands and subsystems here
+#include <frc/frc2/commands/CommandHelper.h>
+#include <frc/frc2/commands/SendableCommandBase.h>
 
-  // Configure the button bindings
-  ConfigureButtonBindings();
-}
+#include "hatchbottraditional/include/subsystems/DriveSubsystem.h"
 
-void RobotContainer::ConfigureButtonBindings() {
-  // Configure your button bindings here
-}
+class HalveDriveSpeed
+    : public frc2::CommandHelper<frc2::SendableCommandBase, HalveDriveSpeed> {
+ public:
+  explicit HalveDriveSpeed(DriveSubsystem* subsystem);
 
-frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return &m_autonomousCommand;
-}
+  void Initialize() override;
+
+  void End(bool interrupted) override;
+
+ private:
+  DriveSubsystem* m_drive;
+};

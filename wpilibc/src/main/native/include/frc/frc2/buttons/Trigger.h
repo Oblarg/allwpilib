@@ -69,6 +69,18 @@ class Trigger : public frc::SendableBase {
     return Trigger([this] { return !Grab(); });
   }
 
+  Trigger* operator&&(Trigger* rhs) {
+    return new Trigger([this, rhs] { return Grab() && rhs->Grab(); });
+  }
+
+  Trigger* operator||(Trigger* rhs) {
+    return new Trigger([this, rhs] { return Grab() || rhs->Grab(); });
+  }
+
+  Trigger* operator~() {
+    return new Trigger([this] { return !Grab(); });
+  }
+
   void InitSendable(frc::SendableBuilder& builder) override;
 
  private:

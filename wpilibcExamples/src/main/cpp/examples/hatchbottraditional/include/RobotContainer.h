@@ -7,10 +7,16 @@
 
 #pragma once
 
+#include <frc/XboxController.h>
 #include <frc/frc2/commands/Command.h>
+#include <frc/smartdashboard/SendableChooser.h>
 
-#include "commandbasednew/include/commands/ExampleCommand.h"
-#include "commandbasednew/include/subsystems/ExampleSubsystem.h"
+#include "hatchbottraditional/include/Constants.h"
+#include "hatchbottraditional/include/commands/ComplexAuto.h"
+#include "hatchbottraditional/include/commands/DefaultDrive.h"
+#include "hatchbottraditional/include/commands/DriveDistance.h"
+#include "hatchbottraditional/include/subsystems/DriveSubsystem.h"
+#include "hatchbottraditional/include/subsystems/HatchSubsystem.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -27,8 +33,20 @@ class RobotContainer {
 
  private:
   // The robot's subsystems and commands are defined here...
-  ExampleSubsystem m_subsystem;
-  ExampleCommand m_autonomousCommand;
+
+  // The robot's subsystems
+  DriveSubsystem m_drive;
+  HatchSubsystem m_hatch;
+
+  // The autonomous routines
+  DriveDistance m_simpleAuto;
+  ComplexAuto m_complexAuto;
+
+  // The chooser for the autonomous routines
+  frc::SendableChooser<frc2::Command*> m_chooser;
+
+  // The driver's controller
+  frc::XboxController m_driverController{OIConstants::kDriverControllerPort};
 
   void ConfigureButtonBindings();
 };
