@@ -15,12 +15,7 @@
 #include "hatchbottraditional/include/commands/HalveDriveSpeed.h"
 #include "hatchbottraditional/include/commands/ReleaseHatch.h"
 
-using namespace AutoConstants;
-using namespace OIConstants;
-
-RobotContainer::RobotContainer()
-    : m_simpleAuto{kAutoDriveDistanceInches, kAutoDriveSpeed, &m_drive},
-      m_complexAuto{&m_drive, &m_hatch} {
+RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
 
   // Add commands to the autonomous command chooser

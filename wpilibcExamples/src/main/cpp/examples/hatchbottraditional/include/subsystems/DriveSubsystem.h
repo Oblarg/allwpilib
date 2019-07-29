@@ -79,13 +79,13 @@ class DriveSubsystem : public frc2::SendableSubsystemBase {
   frc::Spark m_right2;
 
   // The motors on the left side of the drive
-  frc::SpeedControllerGroup m_leftMotors;
+  frc::SpeedControllerGroup m_leftMotors{m_left1, m_left2};
 
   // The motors on the right side of the drive
-  frc::SpeedControllerGroup m_rightMotors;
+  frc::SpeedControllerGroup m_rightMotors{m_right1, m_right2};
 
   // The robot's drive
-  frc::DifferentialDrive m_drive;
+  frc::DifferentialDrive m_drive{m_leftMotors, m_rightMotors};
 
   // The left-side drive encoder
   frc::Encoder m_leftEncoder;
