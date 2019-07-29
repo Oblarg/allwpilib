@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "CommandTestBase.h"
-#include "frc/frc2/buttons/InternalButton.h"
 #include "frc/frc2/commands/CommandScheduler.h"
 #include "frc/frc2/commands/ConditionalCommand.h"
 #include "frc/frc2/commands/InstantCommand.h"

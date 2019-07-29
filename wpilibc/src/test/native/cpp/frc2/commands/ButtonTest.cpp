@@ -6,10 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 #include "CommandTestBase.h"
-#include "frc/frc2/buttons/InternalButton.h"
 #include "frc/frc2/commands/CommandScheduler.h"
 #include "frc/frc2/commands/WaitUntilCommand.h"
 #include "gtest/gtest.h"
+#include "frc/frc2/buttons/Trigger.h"
 
 using namespace frc2;
 class ButtonTest : public CommandTestBase {};
@@ -37,15 +37,14 @@ TEST_F(ButtonTest, FooTest) {
 TEST_F(ButtonTest, WhenPressedTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
+  bool pressed = false;
+
   WaitUntilCommand command([&finished] { return finished; });
 
-  InternalButton button;
-
-  button.SetPressed(false);
-  button.WhenPressed(&command);
+  Trigger([&pressed]{return pressed;}).WhenActive(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
-  button.SetPressed(true);
+  pressed = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command));
   finished = true;
@@ -56,15 +55,14 @@ TEST_F(ButtonTest, WhenPressedTest) {
 TEST_F(ButtonTest, WhenReleasedTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
+  bool pressed = false;
   WaitUntilCommand command([&finished] { return finished; });
 
-  InternalButton button;
-
-  button.SetPressed(true);
-  button.WhenReleased(&command);
+  pressed = true;
+  Trigger([&pressed]{return pressed;}).WhenInactive(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
-  button.SetPressed(false);
+  pressed = false;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command));
   finished = true;
@@ -75,15 +73,14 @@ TEST_F(ButtonTest, WhenReleasedTest) {
 TEST_F(ButtonTest, WhileHeldTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
+  bool pressed = false;
   WaitUntilCommand command([&finished] { return finished; });
 
-  InternalButton button;
-
-  button.SetPressed(false);
-  button.WhileHeld(&command);
+  pressed = false;
+  Trigger([&pressed]{return pressed;}).WhileActiveContinous(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
-  button.SetPressed(true);
+  pressed = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command));
   finished = true;
@@ -91,7 +88,7 @@ TEST_F(ButtonTest, WhileHeldTest) {
   finished = false;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command));
-  button.SetPressed(false);
+  pressed = false;
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
 }
@@ -99,15 +96,14 @@ TEST_F(ButtonTest, WhileHeldTest) {
 TEST_F(ButtonTest, WhenHeldTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
+  bool pressed = false;
   WaitUntilCommand command([&finished] { return finished; });
 
-  InternalButton button;
-
-  button.SetPressed(false);
-  button.WhenHeld(&command);
+  pressed = false;
+  Trigger([&pressed]{return pressed;}).WhileActiveOnce(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
-  button.SetPressed(true);
+  pressed = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command));
   finished = true;
@@ -116,11 +112,11 @@ TEST_F(ButtonTest, WhenHeldTest) {
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
 
-  button.SetPressed(false);
-  button.WhenHeld(&command);
-  button.SetPressed(true);
+  pressed = false;
+  Trigger([&pressed]{return pressed;}).WhileActiveOnce(&command);
+  pressed = true;
   scheduler.Run();
-  button.SetPressed(false);
+  pressed = false;
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
 }
@@ -128,20 +124,19 @@ TEST_F(ButtonTest, WhenHeldTest) {
 TEST_F(ButtonTest, ToggleWhenPressedTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
+  bool pressed = false;
   WaitUntilCommand command([&finished] { return finished; });
 
-  InternalButton button;
-
-  button.SetPressed(false);
-  button.ToggleWhenPressed(&command);
+  pressed = false;
+  Trigger([&pressed]{return pressed;}).ToggleWhenActive(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
-  button.SetPressed(true);
+  pressed = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command));
-  button.SetPressed(false);
+  pressed = false;
   scheduler.Run();
-  button.SetPressed(true);
+  pressed = true;
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
 }
@@ -149,21 +144,15 @@ TEST_F(ButtonTest, ToggleWhenPressedTest) {
 TEST_F(ButtonTest, AndTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
+  bool pressed1 = false;
+  bool pressed2 = false;
   WaitUntilCommand command([&finished] { return finished; });
 
-  InternalButton button1;
-  InternalButton button2;
-
-  button1.SetPressed(false);
-  button2.SetPressed(false);
-
-  auto both = button1 && button2;
-
-  both.WhenActive(&command);
-  button1.SetPressed(true);
+  (Trigger([&pressed1]{return pressed1;}) && Trigger([&pressed2]{return pressed2;})).WhenActive(&command);
+  pressed1 = true;
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
-  button2.SetPressed(true);
+  pressed2 = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command));
 }
@@ -171,26 +160,20 @@ TEST_F(ButtonTest, AndTest) {
 TEST_F(ButtonTest, OrTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
+  bool pressed1 = false;
+  bool pressed2 = false;
   WaitUntilCommand command1([&finished] { return finished; });
   WaitUntilCommand command2([&finished] { return finished; });
 
-  InternalButton button1;
-  InternalButton button2;
-
-  button1.SetPressed(false);
-  button2.SetPressed(false);
-
-  auto either = button1 || button2;
-
-  either.WhenActive(&command1);
-  button1.SetPressed(true);
+  (Trigger([&pressed1]{return pressed1;}) || Trigger([&pressed2]{return pressed2;})).WhenActive(&command1);
+  pressed1 = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command1));
 
-  button1.SetPressed(false);
+  pressed1 = false;
 
-  either.WhenActive(&command2);
-  button2.SetPressed(true);
+  (Trigger([&pressed1]{return pressed1;}) || Trigger([&pressed2]{return pressed2;})).WhenActive(&command2);
+  pressed2 = true;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command2));
 }
@@ -198,18 +181,13 @@ TEST_F(ButtonTest, OrTest) {
 TEST_F(ButtonTest, NegateTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;
+  bool pressed = true;
   WaitUntilCommand command([&finished] { return finished; });
 
-  InternalButton button1;
-
-  button1.SetPressed(true);
-
-  auto negated = !button1;
-
-  negated.WhenActive(&command);
+  (!Trigger([&pressed]{return pressed;})).WhenActive(&command);
   scheduler.Run();
   EXPECT_FALSE(scheduler.IsScheduled(&command));
-  button1.SetPressed(false);
+  pressed = false;
   scheduler.Run();
   EXPECT_TRUE(scheduler.IsScheduled(&command));
 }

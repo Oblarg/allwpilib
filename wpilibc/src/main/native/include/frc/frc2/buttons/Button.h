@@ -12,6 +12,10 @@ namespace frc2 {
 class Command;
 class Button : public Trigger {
  public:
+  Button(std::function<bool()> isPressed);
+
+  Button() = default;
+
   Button* WhenPressed(Command* command, bool interruptible);
   Button* WhenPressed(Command* command);
   Button* WhenPressed(std::function<void()> toRun);

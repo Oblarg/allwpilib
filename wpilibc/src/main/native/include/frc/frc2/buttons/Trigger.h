@@ -14,7 +14,7 @@
 
 namespace frc2 {
 class Command;
-class Trigger : public frc::SendableBase {
+class Trigger {
  public:
   explicit Trigger(std::function<bool()> isActive)
       : m_isActive{std::move(isActive)} {}
@@ -26,8 +26,6 @@ class Trigger : public frc::SendableBase {
   Trigger(const Trigger& other);
 
   virtual bool Get() const { return m_isActive(); }
-
-  virtual bool Grab() const { return Get() || m_sendablePressed.load(); }
 
   Trigger* WhenActive(Command* command, bool interruptible);
   Trigger* WhenActive(Command* command) {
@@ -60,21 +58,18 @@ class Trigger : public frc::SendableBase {
   Trigger* CancelWhenActive(Command* command);
 
   Trigger operator&&(Trigger rhs) {
-    return Trigger([*this, rhs] { return Grab() && rhs.Grab(); });
+    return Trigger([*this, rhs] { return Get() && rhs.Get(); });
   }
 
   Trigger operator||(Trigger rhs) {
-    return Trigger([*this, rhs] { return Grab() || rhs.Grab(); });
+    return Trigger([*this, rhs] { return Get() || rhs.Get(); });
   }
 
   Trigger operator!() {
-    return Trigger([*this] { return !Grab(); });
+    return Trigger([*this] { return !Get(); });
   }
 
-  void InitSendable(frc::SendableBuilder& builder) override;
-
  private:
-  std::atomic_bool m_sendablePressed{false};
   std::function<bool()> m_isActive;
 };
 }  // namespace frc2
