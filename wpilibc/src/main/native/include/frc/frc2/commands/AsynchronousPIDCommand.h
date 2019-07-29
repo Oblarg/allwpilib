@@ -47,6 +47,10 @@ class AsynchronousPIDCommand
                          std::function<void(double)> useOutput,
                          std::initializer_list<Subsystem*> requirements);
 
+  AsynchronousPIDCommand(AsynchronousPIDCommand&& other) = default;
+
+  AsynchronousPIDCommand(const AsynchronousPIDCommand& other) = delete;
+
   void Initialize() override;
 
   void Execute() override;

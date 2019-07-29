@@ -14,6 +14,26 @@
 using namespace frc2;
 class ButtonTest : public CommandTestBase {};
 
+TEST_F(ButtonTest, FooTest) {
+  auto& scheduler = CommandScheduler::GetInstance();
+  bool finished = false;
+  bool pressed = false;
+
+  WaitUntilCommand command([&finished] { return finished; });
+
+  Trigger([&pressed]{return pressed;}).WhenActive(&command);
+
+  scheduler.Run();
+
+  EXPECT_FALSE(scheduler.IsScheduled(&command));
+
+  pressed = true;
+
+  scheduler.Run();
+
+  EXPECT_TRUE(scheduler.IsScheduled(&command));
+}
+
 TEST_F(ButtonTest, WhenPressedTest) {
   auto& scheduler = CommandScheduler::GetInstance();
   bool finished = false;

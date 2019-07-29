@@ -13,9 +13,12 @@
 #include <frc/smartdashboard/SendableBuilder.h>
 
 using namespace frc2;
+
+Trigger::Trigger(const Trigger& other) : m_isActive(other.m_isActive), m_sendablePressed(false) {}
+
 Trigger* Trigger::WhenActive(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
-      [pressedLast = Grab(), this, command, interruptible]() mutable {
+      [pressedLast = Grab(), *this, command, interruptible]() mutable {
         bool pressed = Grab();
 
         if (!pressedLast && pressed) {
@@ -34,7 +37,7 @@ Trigger* Trigger::WhenActive(std::function<void()> toRun) {
 
 Trigger* Trigger::WhileActiveContinous(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
-      [pressedLast = Grab(), this, command, interruptible]() mutable {
+      [pressedLast = Grab(), *this, command, interruptible]() mutable {
         bool pressed = Grab();
 
         if (pressed) {
@@ -54,7 +57,7 @@ Trigger* Trigger::WhileActiveContinous(std::function<void()> toRun) {
 
 Trigger* Trigger::WhileActiveOnce(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
-      [pressedLast = Grab(), this, command, interruptible]() mutable {
+      [pressedLast = Grab(), *this, command, interruptible]() mutable {
         bool pressed = Grab();
 
         if (!pressedLast && pressed) {
@@ -70,7 +73,7 @@ Trigger* Trigger::WhileActiveOnce(Command* command, bool interruptible) {
 
 Trigger* Trigger::WhenInactive(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
-      [pressedLast = Grab(), this, command, interruptible]() mutable {
+      [pressedLast = Grab(), *this, command, interruptible]() mutable {
         bool pressed = Grab();
 
         if (pressedLast && !pressed) {
@@ -88,7 +91,7 @@ Trigger* Trigger::WhenInactive(std::function<void()> toRun) {
 
 Trigger* Trigger::ToggleWhenActive(Command* command, bool interruptible) {
   CommandScheduler::GetInstance().AddButton(
-      [pressedLast = Grab(), this, command, interruptible]() mutable {
+      [pressedLast = Grab(), *this, command, interruptible]() mutable {
         bool pressed = Grab();
 
         if (!pressedLast && pressed) {
@@ -106,7 +109,7 @@ Trigger* Trigger::ToggleWhenActive(Command* command, bool interruptible) {
 
 Trigger* Trigger::CancelWhenActive(Command* command) {
   CommandScheduler::GetInstance().AddButton(
-      [pressedLast = Grab(), this, command]() mutable {
+      [pressedLast = Grab(), *this, command]() mutable {
         bool pressed = Grab();
 
         if (!pressedLast && pressed) {

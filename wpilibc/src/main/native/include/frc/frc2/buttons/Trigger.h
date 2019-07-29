@@ -23,6 +23,8 @@ class Trigger : public frc::SendableBase {
     m_isActive = [] { return false; };
   }
 
+  Trigger(const Trigger& other);
+
   virtual bool Get() const { return m_isActive(); }
 
   virtual bool Grab() const { return Get() || m_sendablePressed.load(); }
@@ -57,28 +59,16 @@ class Trigger : public frc::SendableBase {
   }
   Trigger* CancelWhenActive(Command* command);
 
-  Trigger operator&&(Trigger& rhs) {
-    return Trigger([this, &rhs] { return Grab() && rhs.Grab(); });
+  Trigger operator&&(Trigger rhs) {
+    return Trigger([*this, rhs] { return Grab() && rhs.Grab(); });
   }
 
-  Trigger operator||(Trigger& rhs) {
-    return Trigger([this, &rhs] { return Grab() || rhs.Grab(); });
+  Trigger operator||(Trigger rhs) {
+    return Trigger([*this, rhs] { return Grab() || rhs.Grab(); });
   }
 
   Trigger operator!() {
-    return Trigger([this] { return !Grab(); });
-  }
-
-  Trigger* operator&&(Trigger* rhs) {
-    return new Trigger([this, rhs] { return Grab() && rhs->Grab(); });
-  }
-
-  Trigger* operator||(Trigger* rhs) {
-    return new Trigger([this, rhs] { return Grab() || rhs->Grab(); });
-  }
-
-  Trigger* operator~() {
-    return new Trigger([this] { return !Grab(); });
+    return Trigger([*this] { return !Grab(); });
   }
 
   void InitSendable(frc::SendableBuilder& builder) override;
