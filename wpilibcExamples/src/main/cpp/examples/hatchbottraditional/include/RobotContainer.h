@@ -39,7 +39,8 @@ class RobotContainer {
   HatchSubsystem m_hatch;
 
   // The autonomous routines
-  DriveDistance m_simpleAuto{AutoConstants::kAutoDriveDistanceInches, AutoConstants::kAutoDriveSpeed, &m_drive};
+  DriveDistance m_simpleAuto{AutoConstants::kAutoDriveDistanceInches,
+                             AutoConstants::kAutoDriveSpeed, &m_drive};
   ComplexAuto m_complexAuto{&m_drive, &m_hatch};
 
   // The chooser for the autonomous routines

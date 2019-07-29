@@ -10,8 +10,10 @@
 using namespace DriveConstants;
 
 DriveSubsystem::DriveSubsystem()
-    : m_left1{kLeftMotor1Port}, m_left2{kLeftMotor2Port},
-      m_right1{kRightMotor1Port}, m_right2{kRightMotor2Port},
+    : m_left1{kLeftMotor1Port},
+      m_left2{kLeftMotor2Port},
+      m_right1{kRightMotor1Port},
+      m_right2{kRightMotor2Port},
       m_leftEncoder{kLeftEncoderPorts[0], kLeftEncoderPorts[1]},
       m_rightEncoder{kRightEncoderPorts[0], kRightEncoderPorts[1]} {
   // Set the distance per pulse for the encoders

@@ -55,6 +55,6 @@ void RobotContainer::ConfigureButtonBindings() {
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
+  // Runs the chosen command in autonomous
   return m_chooser.GetSelected();
 }
