@@ -14,7 +14,8 @@ package edu.wpi.first.wpilibj.command;
  * <p> Basically, a command becomes "locked" after it is first started or added to a command group.
  * </p>
  *
- * <p> This exception should be thrown if (after a command has been locked) its requirements change,
+ * <p> This exception should be thrown if (after a command has been locked) its requirements
+ * change,
  * it is put into multiple command groups, it is started from outside its command group, or it adds
  * a new child. </p>
  */

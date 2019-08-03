@@ -132,6 +132,7 @@ public class SPI implements AutoCloseable {
   /**
    * Configure that the data is stable on the falling edge and the data changes on the rising edge.
    * Note this gets reversed is setClockActiveLow is set.
+   *
    * @deprecated use {@link #setSampleDataOnTrailingEdge()} in most cases.
    */
   @Deprecated
@@ -143,6 +144,7 @@ public class SPI implements AutoCloseable {
   /**
    * Configure that the data is stable on the rising edge and the data changes on the falling edge.
    * Note this gets reversed is setClockActiveLow is set.
+   *
    * @deprecated use {@link #setSampleDataOnLeadingEdge()} in most cases.
    */
   @Deprecated
@@ -150,7 +152,6 @@ public class SPI implements AutoCloseable {
     m_sampleOnTrailing = 0;
     SPIJNI.spiSetOpts(m_port, m_msbFirst, m_sampleOnTrailing, m_clockIdleHigh);
   }
-
 
 
   /**
@@ -227,8 +228,8 @@ public class SPI implements AutoCloseable {
    *
    * <p>If the receive FIFO is empty, there is no active transfer, and initiate is false, errors.
    *
-   * @param initiate     If true, this function pushes "0" into the transmit buffer and initiates
-   *                     a transfer. If false, this function assumes that data is already in the
+   * @param initiate     If true, this function pushes "0" into the transmit buffer and initiates a
+   *                     transfer. If false, this function assumes that data is already in the
    *                     receive FIFO from a previous write.
    * @param dataReceived The buffer to be filled with the received data.
    * @param size         The length of the transaction, in bytes
@@ -317,7 +318,7 @@ public class SPI implements AutoCloseable {
    * bytes.
    *
    * @param dataToSend data to send (maximum 16 bytes)
-   * @param zeroSize number of zeros to send after the data
+   * @param zeroSize   number of zeros to send after the data
    */
   public void setAutoTransmitData(byte[] dataToSend, int zeroSize) {
     SPIJNI.spiSetAutoTransmitData(m_port, dataToSend, zeroSize);
@@ -341,13 +342,13 @@ public class SPI implements AutoCloseable {
    * <p>{@link #initAuto(int)} and {@link #setAutoTransmitData(byte[], int)} must
    * be called before calling this function.
    *
-   * @param source digital source for the trigger (may be an analog trigger)
-   * @param rising trigger on the rising edge
+   * @param source  digital source for the trigger (may be an analog trigger)
+   * @param rising  trigger on the rising edge
    * @param falling trigger on the falling edge
    */
   public void startAutoTrigger(DigitalSource source, boolean rising, boolean falling) {
     SPIJNI.spiStartAutoTrigger(m_port, source.getPortHandleForRouting(),
-                               source.getAnalogTriggerTypeForRouting(), rising, falling);
+        source.getAnalogTriggerTypeForRouting(), rising, falling);
   }
 
   /**
@@ -371,16 +372,16 @@ public class SPI implements AutoCloseable {
    * to handle cases where an entire transfer has not been completed.
    *
    * <p>Each received data sequence consists of a timestamp followed by the
-   * received data bytes, one byte per word (in the least significant byte).
-   * The length of each received data sequence is the same as the combined
-   * size of the data and zeroSize set in setAutoTransmitData().
+   * received data bytes, one byte per word (in the least significant byte). The length of each
+   * received data sequence is the same as the combined size of the data and zeroSize set in
+   * setAutoTransmitData().
    *
    * <p>Blocks until numToRead words have been read or timeout expires.
    * May be called with numToRead=0 to retrieve how many words are available.
    *
-   * @param buffer buffer where read words are stored
+   * @param buffer    buffer where read words are stored
    * @param numToRead number of words to read
-   * @param timeout timeout in seconds (ms resolution)
+   * @param timeout   timeout in seconds (ms resolution)
    * @return Number of words remaining to be read
    */
   public int readAutoReceivedData(ByteBuffer buffer, int numToRead, double timeout) {
@@ -388,8 +389,8 @@ public class SPI implements AutoCloseable {
       throw new IllegalArgumentException("must be a direct buffer");
     }
     if (buffer.capacity() < numToRead * 4) {
-      throw new IllegalArgumentException("buffer is too small, must be at least "
-          + (numToRead * 4));
+      throw new IllegalArgumentException(
+          "buffer is too small, must be at least " + (numToRead * 4));
     }
     return SPIJNI.spiReadAutoReceivedData(m_port, buffer, numToRead, timeout);
   }
@@ -401,16 +402,16 @@ public class SPI implements AutoCloseable {
    * to handle cases where an entire transfer has not been completed.
    *
    * <p>Each received data sequence consists of a timestamp followed by the
-   * received data bytes, one byte per word (in the least significant byte).
-   * The length of each received data sequence is the same as the combined
-   * size of the data and zeroSize set in setAutoTransmitData().
+   * received data bytes, one byte per word (in the least significant byte). The length of each
+   * received data sequence is the same as the combined size of the data and zeroSize set in
+   * setAutoTransmitData().
    *
    * <p>Blocks until numToRead words have been read or timeout expires.
    * May be called with numToRead=0 to retrieve how many words are available.
    *
-   * @param buffer array where read words are stored
+   * @param buffer    array where read words are stored
    * @param numToRead number of words to read
-   * @param timeout timeout in seconds (ms resolution)
+   * @param timeout   timeout in seconds (ms resolution)
    * @return Number of words remaining to be read
    */
   public int readAutoReceivedData(int[] buffer, int numToRead, double timeout) {
@@ -421,8 +422,8 @@ public class SPI implements AutoCloseable {
   }
 
   /**
-   * Get the number of bytes dropped by the automatic SPI transfer engine due
-   * to the receive buffer being full.
+   * Get the number of bytes dropped by the automatic SPI transfer engine due to the receive buffer
+   * being full.
    *
    * @return Number of bytes dropped
    */
@@ -434,8 +435,8 @@ public class SPI implements AutoCloseable {
 
   @SuppressWarnings("PMD.TooManyFields")
   private static class Accumulator implements AutoCloseable {
-    Accumulator(int port, int xferSize, int validMask, int validValue, int dataShift,
-                int dataSize, boolean isSigned, boolean bigEndian) {
+    Accumulator(int port, int xferSize, int validMask, int validValue, int dataShift, int dataSize,
+                boolean isSigned, boolean bigEndian) {
       m_notifier = new Notifier(this::update);
       m_buf = ByteBuffer.allocateDirect((xferSize + 1) * kAccumulateDepth * 4)
           .order(ByteOrder.nativeOrder());
@@ -541,11 +542,12 @@ public class SPI implements AutoCloseable {
                 if (m_count != 0) {
                   // timestamps use the 1us FPGA clock; also handle rollover
                   if (timestamp >= m_lastTimestamp) {
-                    m_integratedValue += dataNoCenter * (timestamp - m_lastTimestamp)
-                        * 1e-6 - m_integratedCenter;
+                    m_integratedValue +=
+                        dataNoCenter * (timestamp - m_lastTimestamp) * 1e-6 - m_integratedCenter;
                   } else {
-                    m_integratedValue += dataNoCenter * ((1L << 32) - m_lastTimestamp + timestamp)
-                        * 1e-6 - m_integratedCenter;
+                    m_integratedValue +=
+                        dataNoCenter * ((1L << 32) - m_lastTimestamp + timestamp) * 1e-6
+                            - m_integratedCenter;
                   }
                 }
               }
@@ -577,12 +579,10 @@ public class SPI implements AutoCloseable {
    * @param isSigned   Is data field signed?
    * @param bigEndian  Is device big endian?
    */
-  public void initAccumulator(double period, int cmd, int xferSize,
-                              int validMask, int validValue,
-                              int dataShift, int dataSize,
-                              boolean isSigned, boolean bigEndian) {
+  public void initAccumulator(double period, int cmd, int xferSize, int validMask, int validValue,
+                              int dataShift, int dataSize, boolean isSigned, boolean bigEndian) {
     initAuto(xferSize * 2048);
-    byte[] cmdBytes = new byte[] {0, 0, 0, 0};
+    byte[] cmdBytes = new byte[]{0, 0, 0, 0};
     if (bigEndian) {
       for (int i = xferSize - 1; i >= 0; --i) {
         cmdBytes[i] = (byte) (cmd & 0xff);
@@ -600,8 +600,9 @@ public class SPI implements AutoCloseable {
     setAutoTransmitData(cmdBytes, xferSize - 4);
     startAutoRate(period);
 
-    m_accum = new Accumulator(m_port, xferSize, validMask, validValue, dataShift, dataSize,
-                              isSigned, bigEndian);
+    m_accum =
+        new Accumulator(m_port, xferSize, validMask, validValue, dataShift, dataSize, isSigned,
+            bigEndian);
     m_accum.m_notifier.startPeriodic(period * 1024);
   }
 
@@ -750,8 +751,8 @@ public class SPI implements AutoCloseable {
    * Set the center value of the accumulator integrator.
    *
    * <p>The center value is subtracted from each value*dt before it is added to the
-   * integrated value. This is used for the center value of devices like gyros
-   * and accelerometers to take the device offset into account when integrating.
+   * integrated value. This is used for the center value of devices like gyros and accelerometers to
+   * take the device offset into account when integrating.
    */
   public void setAccumulatorIntegratedCenter(double center) {
     if (m_accum == null) {
@@ -763,8 +764,7 @@ public class SPI implements AutoCloseable {
   }
 
   /**
-   * Read the integrated value.  This is the sum of (each value * time between
-   * values).
+   * Read the integrated value.  This is the sum of (each value * time between values).
    *
    * @return The integrated value accumulated since the last Reset().
    */
@@ -779,11 +779,10 @@ public class SPI implements AutoCloseable {
   }
 
   /**
-   * Read the average of the integrated value.  This is the sum of (each value
-   * times the time between values), divided by the count.
+   * Read the average of the integrated value.  This is the sum of (each value times the time
+   * between values), divided by the count.
    *
-   * @return The average of the integrated value accumulated since the last
-   *         Reset().
+   * @return The average of the integrated value accumulated since the last Reset().
    */
   public double getAccumulatorIntegratedAverage() {
     if (m_accum == null) {

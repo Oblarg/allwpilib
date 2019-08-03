@@ -10,14 +10,13 @@ package edu.wpi.first.wpilibj.vision;
 import edu.wpi.cscore.VideoSource;
 
 /**
- * A vision thread is a special thread that runs a vision pipeline. It is a <i>daemon</i> thread;
- * it does not prevent the program from exiting when all other non-daemon threads
- * have finished running.
+ * A vision thread is a special thread that runs a vision pipeline. It is a <i>daemon</i> thread; it
+ * does not prevent the program from exiting when all other non-daemon threads have finished
+ * running.
  *
  * @see VisionPipeline
  * @see VisionRunner
  * @see Thread#setDaemon(boolean)
- *
  * @deprecated Replaced with edu.wpi.first.vision.VisionThread
  */
 @Deprecated
@@ -41,8 +40,7 @@ public class VisionThread extends Thread {
    * @param listener    the listener to copy outputs from the pipeline after it runs
    * @param <P>         the type of the pipeline
    */
-  public <P extends VisionPipeline> VisionThread(VideoSource videoSource,
-                                                 P pipeline,
+  public <P extends VisionPipeline> VisionThread(VideoSource videoSource, P pipeline,
                                                  VisionRunner.Listener<? super P> listener) {
     this(new VisionRunner<>(videoSource, pipeline, listener));
   }

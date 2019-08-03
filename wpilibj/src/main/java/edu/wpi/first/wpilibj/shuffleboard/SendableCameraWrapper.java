@@ -26,8 +26,8 @@ public final class SendableCameraWrapper extends SendableBase {
   private final String m_uri;
 
   /**
-   * Creates a new sendable wrapper. Private constructor to avoid direct instantiation with
-   * multiple wrappers floating around for the same camera.
+   * Creates a new sendable wrapper. Private constructor to avoid direct instantiation with multiple
+   * wrappers floating around for the same camera.
    *
    * @param source the source to wrap
    */
@@ -39,12 +39,12 @@ public final class SendableCameraWrapper extends SendableBase {
   }
 
   /**
-   * Gets a sendable wrapper object for the given video source, creating the wrapper if one does
-   * not already exist for the source.
+   * Gets a sendable wrapper object for the given video source, creating the wrapper if one does not
+   * already exist for the source.
    *
    * @param source the video source to wrap
-   * @return a sendable wrapper object for the video source, usable in Shuffleboard via
-   * {@link ShuffleboardTab#add(Sendable)} and {@link ShuffleboardLayout#add(Sendable)}
+   * @return a sendable wrapper object for the video source, usable in Shuffleboard via {@link
+   * ShuffleboardTab#add(Sendable)} and {@link ShuffleboardLayout#add(Sendable)}
    */
   public static SendableCameraWrapper wrap(VideoSource source) {
     return m_wrappers.computeIfAbsent(source, SendableCameraWrapper::new);

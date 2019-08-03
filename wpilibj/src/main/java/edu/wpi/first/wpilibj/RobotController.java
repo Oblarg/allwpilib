@@ -22,8 +22,7 @@ public final class RobotController {
   }
 
   /**
-   * Return the FPGA Version number. For now, expect this to be the current
-   * year.
+   * Return the FPGA Version number. For now, expect this to be the current year.
    *
    * @return FPGA Version number.
    */

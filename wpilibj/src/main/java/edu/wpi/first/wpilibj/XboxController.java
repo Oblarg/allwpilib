@@ -21,25 +21,15 @@ public class XboxController extends GenericHID {
   /**
    * Represents a digital button on an XboxController.
    */
-  private enum Button {
-    kBumperLeft(5),
-    kBumperRight(6),
-    kStickLeft(9),
-    kStickRight(10),
-    kA(1),
-    kB(2),
-    kX(3),
-    kY(4),
-    kBack(7),
-    kStart(8);
+  private enum Button {kBumperLeft(5), kBumperRight(6), kStickLeft(9), kStickRight(10), kA(1),
+    kB(2), kX(3), kY(4), kBack(7), kStart(8);
 
     @SuppressWarnings({"MemberName", "PMD.SingularField"})
     private final int value;
 
     Button(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Construct an instance of a joystick. The joystick index is the USB port on the drivers

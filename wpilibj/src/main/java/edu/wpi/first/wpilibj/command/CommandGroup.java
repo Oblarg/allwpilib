@@ -20,7 +20,8 @@ import static java.util.Objects.requireNonNull;
  * {@link CommandGroup CommandGroups} are themselves {@link Command commands} and can be given to
  * other {@link CommandGroup CommandGroups}. </p>
  *
- * <p> {@link CommandGroup CommandGroups} will carry all of the requirements of their {@link Command
+ * <p> {@link CommandGroup CommandGroups} will carry all of the requirements of their {@link
+ * Command
  * subcommands}. Additional requirements can be specified by calling {@link
  * CommandGroup#requires(Subsystem) requires(...)} normally in the constructor. </P>
  *
@@ -172,7 +173,8 @@ public class CommandGroup extends Command {
    * Adds a new child {@link Command} to the group with the given timeout. The {@link Command} will
    * be started after all the previously added {@link Command Commands}.
    *
-   * <p> Once the {@link Command Command} is started, it will run until it finishes, is interrupted,
+   * <p> Once the {@link Command Command} is started, it will run until it finishes, is
+   * interrupted,
    * or the time expires, whichever is sooner. Note that the given {@link Command Command} will have
    * no knowledge that it is on a timer. </p>
    *

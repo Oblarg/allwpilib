@@ -19,7 +19,8 @@ import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
 /**
  * I2C bus interface class.
  *
- * <p>This class is intended to be used by sensor (and other I2C device) drivers. It probably should
+ * <p>This class is intended to be used by sensor (and other I2C device) drivers. It probably
+ * should
  * not be used directly.
  */
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
@@ -75,8 +76,8 @@ public class I2C implements AutoCloseable {
    * @param receiveSize  Number of bytes to read from the device.
    * @return Transfer Aborted... false for success, true for aborted.
    */
-  public synchronized boolean transaction(byte[] dataToSend, int sendSize,
-                                          byte[] dataReceived, int receiveSize) {
+  public synchronized boolean transaction(byte[] dataToSend, int sendSize, byte[] dataReceived,
+                                          int receiveSize) {
     if (dataToSend.length < sendSize) {
       throw new IllegalArgumentException("dataToSend is too small, must be at least " + sendSize);
     }
@@ -84,8 +85,9 @@ public class I2C implements AutoCloseable {
       throw new IllegalArgumentException(
           "dataReceived is too small, must be at least " + receiveSize);
     }
-    return I2CJNI.i2CTransactionB(m_port, (byte) m_deviceAddress, dataToSend,
-                                  (byte) sendSize, dataReceived, (byte) receiveSize) < 0;
+    return I2CJNI
+        .i2CTransactionB(m_port, (byte) m_deviceAddress, dataToSend, (byte) sendSize, dataReceived,
+            (byte) receiveSize) < 0;
   }
 
   /**
@@ -120,8 +122,9 @@ public class I2C implements AutoCloseable {
           "dataReceived is too small, must be at least " + receiveSize);
     }
 
-    return I2CJNI.i2CTransaction(m_port, (byte) m_deviceAddress, dataToSend,
-                                 (byte) sendSize, dataReceived, (byte) receiveSize) < 0;
+    return I2CJNI
+        .i2CTransaction(m_port, (byte) m_deviceAddress, dataToSend, (byte) sendSize, dataReceived,
+            (byte) receiveSize) < 0;
   }
 
   /**
@@ -149,8 +152,7 @@ public class I2C implements AutoCloseable {
     byte[] buffer = new byte[2];
     buffer[0] = (byte) registerAddress;
     buffer[1] = (byte) data;
-    return I2CJNI.i2CWriteB(m_port, (byte) m_deviceAddress, buffer,
-                            (byte) buffer.length) < 0;
+    return I2CJNI.i2CWriteB(m_port, (byte) m_deviceAddress, buffer, (byte) buffer.length) < 0;
   }
 
   /**
@@ -176,8 +178,7 @@ public class I2C implements AutoCloseable {
    */
   public synchronized boolean writeBulk(byte[] data, int size) {
     if (data.length < size) {
-      throw new IllegalArgumentException(
-          "buffer is too small, must be at least " + size);
+      throw new IllegalArgumentException("buffer is too small, must be at least " + size);
     }
     return I2CJNI.i2CWriteB(m_port, (byte) m_deviceAddress, data, (byte) size) < 0;
   }
@@ -200,8 +201,7 @@ public class I2C implements AutoCloseable {
       throw new IllegalArgumentException("must be a direct buffer");
     }
     if (data.capacity() < size) {
-      throw new IllegalArgumentException(
-          "buffer is too small, must be at least " + size);
+      throw new IllegalArgumentException("buffer is too small, must be at least " + size);
     }
 
     return I2CJNI.i2CWrite(m_port, (byte) m_deviceAddress, data, (byte) size) < 0;
@@ -292,8 +292,7 @@ public class I2C implements AutoCloseable {
       throw new IllegalArgumentException("buffer is too small, must be at least " + count);
     }
 
-    return I2CJNI.i2CReadB(m_port, (byte) m_deviceAddress, buffer,
-                           (byte) count) < 0;
+    return I2CJNI.i2CReadB(m_port, (byte) m_deviceAddress, buffer, (byte) count) < 0;
   }
 
   /**
@@ -308,8 +307,7 @@ public class I2C implements AutoCloseable {
   @SuppressWarnings("ByteBufferBackingArray")
   public boolean readOnly(ByteBuffer buffer, int count) {
     if (count < 1) {
-      throw new BoundaryException("Value must be at least 1, " + count
-          + " given");
+      throw new BoundaryException("Value must be at least 1, " + count + " given");
     }
 
     if (buffer.hasArray()) {
@@ -323,8 +321,7 @@ public class I2C implements AutoCloseable {
       throw new IllegalArgumentException("buffer is too small, must be at least " + count);
     }
 
-    return I2CJNI.i2CRead(m_port, (byte) m_deviceAddress, buffer, (byte) count)
-        < 0;
+    return I2CJNI.i2CRead(m_port, (byte) m_deviceAddress, buffer, (byte) count) < 0;
   }
 
   /*
@@ -351,8 +348,7 @@ public class I2C implements AutoCloseable {
    * @return true if the sensor was verified to be connected
    * @pre The device must support and be configured to use register auto-increment.
    */
-  public boolean verifySensor(int registerAddress, int count,
-                              byte[] expected) {
+  public boolean verifySensor(int registerAddress, int count, byte[] expected) {
     // TODO: Make use of all 7 read bytes
     byte[] dataToSend = new byte[1];
 

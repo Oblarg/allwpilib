@@ -125,8 +125,7 @@ final class ContainerHelper {
     checkTitle(title);
   }
 
-  private <T> SuppliedValueWidget<T> addSupplied(String title,
-                                                 Supplier<T> supplier,
+  private <T> SuppliedValueWidget<T> addSupplied(String title, Supplier<T> supplier,
                                                  BiConsumer<NetworkTableEntry, T> setter) {
     SuppliedValueWidget<T> widget = new SuppliedValueWidget<>(m_container, title, supplier, setter);
     m_components.add(widget);

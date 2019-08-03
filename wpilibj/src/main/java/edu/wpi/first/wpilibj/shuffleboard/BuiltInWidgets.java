@@ -24,18 +24,17 @@ import edu.wpi.first.wpilibj.interfaces.Accelerometer.Range;
  * <p>Each value in this enum goes into detail on what data types that widget can support, as well
  * as the custom properties that widget uses.
  */
-public enum BuiltInWidgets implements WidgetType {
-  /**
-   * Displays a value with a simple text field.
-   * <br>Supported types:
-   * <ul>
-   * <li>String</li>
-   * <li>Number</li>
-   * <li>Boolean</li>
-   * </ul>
-   * <br>This widget has no custom properties.
-   */
-  kTextView("Text View"),
+public enum BuiltInWidgets implements WidgetType {/**
+ * Displays a value with a simple text field.
+ * <br>Supported types:
+ * <ul>
+ * <li>String</li>
+ * <li>Number</li>
+ * <li>Boolean</li>
+ * </ul>
+ * <br>This widget has no custom properties.
+ */
+kTextView("Text View"),
   /**
    * Displays a number with a controllable slider.
    * <br>Supported types:
@@ -170,8 +169,8 @@ public enum BuiltInWidgets implements WidgetType {
    */
   kPowerDistributionPanel("PDP"),
   /**
-   * Displays a {@link edu.wpi.first.wpilibj.smartdashboard.SendableChooser SendableChooser} with
-   * a dropdown combo box with a list of options.
+   * Displays a {@link edu.wpi.first.wpilibj.smartdashboard.SendableChooser SendableChooser} with a
+   * dropdown combo box with a list of options.
    * <br>Supported types:
    * <ul>
    * <li>{@link edu.wpi.first.wpilibj.smartdashboard.SendableChooser}</li>
@@ -180,8 +179,8 @@ public enum BuiltInWidgets implements WidgetType {
    */
   kComboBoxChooser("ComboBox Chooser"),
   /**
-   * Displays a {@link edu.wpi.first.wpilibj.smartdashboard.SendableChooser SendableChooser} with
-   * a toggle button for each available option.
+   * Displays a {@link edu.wpi.first.wpilibj.smartdashboard.SendableChooser SendableChooser} with a
+   * toggle button for each available option.
    * <br>Supported types:
    * <ul>
    * <li>{@link edu.wpi.first.wpilibj.smartdashboard.SendableChooser}</li>
@@ -350,8 +349,8 @@ public enum BuiltInWidgets implements WidgetType {
   kDifferentialDrive("Differential Drivebase"),
   /**
    * Displays a mecanum drive with a widget that displays the speed of each wheel, and vectors for
-   * the direction and rotation of the drivebase. The widget will be controllable if the robot is
-   * in test mode.
+   * the direction and rotation of the drivebase. The widget will be controllable if the robot is in
+   * test mode.
    * <br>Supported types:
    * <ul>
    * <li>{@link edu.wpi.first.wpilibj.drive.MecanumDrive}</li>
@@ -395,5 +394,4 @@ public enum BuiltInWidgets implements WidgetType {
   @Override
   public String getWidgetName() {
     return m_widgetName;
-  }
-}
+  }}

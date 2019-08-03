@@ -14,14 +14,13 @@ import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServerSharedStore;
 
 /**
- * A vision runner is a convenient wrapper object to make it easy to run vision pipelines
- * from robot code. The easiest  way to use this is to run it in a {@link VisionThread}
- * and use the listener to take snapshots of the pipeline's outputs.
+ * A vision runner is a convenient wrapper object to make it easy to run vision pipelines from robot
+ * code. The easiest  way to use this is to run it in a {@link VisionThread} and use the listener to
+ * take snapshots of the pipeline's outputs.
  *
  * @see VisionPipeline
  * @see VisionThread
  * @see <a href="package-summary.html">vision</a>
- *
  * @deprecated Replaced with edu.wpi.first.vision.VisionRunner
  */
 @Deprecated
@@ -52,9 +51,9 @@ public class VisionRunner<P extends VisionPipeline> {
   }
 
   /**
-   * Creates a new vision runner. It will take images from the {@code videoSource}, send them to
-   * the {@code pipeline}, and call the {@code listener} when the pipeline has finished to alert
-   * user code when it is safe to access the pipeline's outputs.
+   * Creates a new vision runner. It will take images from the {@code videoSource}, send them to the
+   * {@code pipeline}, and call the {@code listener} when the pipeline has finished to alert user
+   * code when it is safe to access the pipeline's outputs.
    *
    * @param videoSource the video source to use to supply images for the pipeline
    * @param pipeline    the vision pipeline to run
@@ -67,11 +66,11 @@ public class VisionRunner<P extends VisionPipeline> {
   }
 
   /**
-   * Runs the pipeline one time, giving it the next image from the video source specified
-   * in the constructor. This will block until the source either has an image or throws an error.
-   * If the source successfully supplied a frame, the pipeline's image input will be set,
-   * the pipeline will run, and the listener specified in the constructor will be called to notify
-   * it that the pipeline ran.
+   * Runs the pipeline one time, giving it the next image from the video source specified in the
+   * constructor. This will block until the source either has an image or throws an error. If the
+   * source successfully supplied a frame, the pipeline's image input will be set, the pipeline will
+   * run, and the listener specified in the constructor will be called to notify it that the
+   * pipeline ran.
    *
    * <p>This method is exposed to allow teams to add additional functionality or have their own
    * ways to run the pipeline. Most teams, however, should just use {@link #runForever} in its own
@@ -101,9 +100,9 @@ public class VisionRunner<P extends VisionPipeline> {
   }
 
   /**
-   * A convenience method that calls {@link #runOnce()} in an infinite loop. This must
-   * be run in a dedicated thread, and cannot be used in the main robot thread because
-   * it will freeze the robot program.
+   * A convenience method that calls {@link #runOnce()} in an infinite loop. This must be run in a
+   * dedicated thread, and cannot be used in the main robot thread because it will freeze the robot
+   * program.
    *
    * <p><strong>Do not call this method directly from the main thread.</strong></p>
    *

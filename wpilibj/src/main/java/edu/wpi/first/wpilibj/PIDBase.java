@@ -152,8 +152,7 @@ public class PIDBase extends SendableBase implements PIDInterface, PIDOutput {
    * @param output The PIDOutput object that is set to the output percentage
    */
   @SuppressWarnings("ParameterName")
-  public PIDBase(double Kp, double Ki, double Kd, double Kf, PIDSource source,
-                 PIDOutput output) {
+  public PIDBase(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output) {
     super(false);
     requireNonNullParam(source, "PIDSource", "PIDBase");
     requireNonNullParam(output, "output", "PIDBase");
@@ -250,19 +249,16 @@ public class PIDBase extends SendableBase implements PIDInterface, PIDOutput {
 
       if (pidSourceType.equals(PIDSourceType.kRate)) {
         if (P != 0) {
-          totalError = clamp(totalError + error, minimumOutput / P,
-              maximumOutput / P);
+          totalError = clamp(totalError + error, minimumOutput / P, maximumOutput / P);
         }
 
         result = P * totalError + D * error + feedForward;
       } else {
         if (I != 0) {
-          totalError = clamp(totalError + error, minimumOutput / I,
-              maximumOutput / I);
+          totalError = clamp(totalError + error, minimumOutput / I, maximumOutput / I);
         }
 
-        result = P * error + I * totalError + D * (error - prevError)
-            + feedForward;
+        result = P * error + I * totalError + D * (error - prevError) + feedForward;
       }
 
       result = clamp(result, minimumOutput, maximumOutput);
@@ -303,9 +299,9 @@ public class PIDBase extends SendableBase implements PIDInterface, PIDOutput {
    * Calculate the feed forward term.
    *
    * <p>Both of the provided feed forward calculations are velocity feed forwards. If a different
-   * feed forward calculation is desired, the user can override this function and provide his or
-   * her own. This function  does no synchronization because the PIDController class only calls it
-   * in synchronized code, so be careful if calling it oneself.
+   * feed forward calculation is desired, the user can override this function and provide his or her
+   * own. This function  does no synchronization because the PIDController class only calls it in
+   * synchronized code, so be careful if calling it oneself.
    *
    * <p>If a velocity PID controller is being used, the F term should be set to 1 over the maximum
    * setpoint for the output. If a position PID controller is being used, the F term should be set
@@ -643,8 +639,8 @@ public class PIDBase extends SendableBase implements PIDInterface, PIDOutput {
    * number of iterations to average with setToleranceBuffer() (defaults to 1). getAvgError() is
    * used for the onTarget() function.
    *
+   * @return the current average of the error
    * @deprecated Use getError(), which is now already filtered.
-   * @return     the current average of the error
    */
   @Deprecated
   public double getAvgError() {
@@ -680,9 +676,9 @@ public class PIDBase extends SendableBase implements PIDInterface, PIDOutput {
    * object. Use it by creating the type of tolerance that you want to use: setTolerance(new
    * PIDController.AbsoluteTolerance(0.1))
    *
-   * @deprecated      Use setPercentTolerance() instead.
    * @param tolerance A tolerance object of the right type, e.g. PercentTolerance or
    *                  AbsoluteTolerance
+   * @deprecated Use setPercentTolerance() instead.
    */
   @Deprecated
   public void setTolerance(Tolerance tolerance) {
@@ -725,8 +721,8 @@ public class PIDBase extends SendableBase implements PIDInterface, PIDOutput {
    * erroneous measurements when the mechanism is on target. However, the mechanism will not
    * register as on target for at least the specified bufLength cycles.
    *
-   * @deprecated      Use a LinearFilter as the input.
    * @param bufLength Number of previous cycles to average.
+   * @deprecated Use a LinearFilter as the input.
    */
   @Deprecated
   public void setToleranceBuffer(int bufLength) {

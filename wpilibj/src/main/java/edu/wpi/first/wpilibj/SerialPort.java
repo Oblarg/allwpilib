@@ -42,58 +42,50 @@ public class SerialPort implements AutoCloseable {
   /**
    * Represents the parity to use for serial communications.
    */
-  public enum Parity {
-    kNone(0), kOdd(1), kEven(2), kMark(3), kSpace(4);
+  public enum Parity {kNone(0), kOdd(1), kEven(2), kMark(3), kSpace(4);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     Parity(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Represents the number of stop bits to use for Serial Communication.
    */
-  public enum StopBits {
-    kOne(10), kOnePointFive(15), kTwo(20);
+  public enum StopBits {kOne(10), kOnePointFive(15), kTwo(20);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     StopBits(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Represents what type of flow control to use for serial communication.
    */
-  public enum FlowControl {
-    kNone(0), kXonXoff(1), kRtsCts(2), kDtsDsr(4);
+  public enum FlowControl {kNone(0), kXonXoff(1), kRtsCts(2), kDtsDsr(4);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     FlowControl(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Represents which type of buffer mode to use when writing to a serial m_port.
    */
-  public enum WriteBufferMode {
-    kFlushOnAccess(1), kFlushWhenFull(2);
+  public enum WriteBufferMode {kFlushOnAccess(1), kFlushWhenFull(2);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     WriteBufferMode(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Create an instance of a Serial Port class.
@@ -104,7 +96,7 @@ public class SerialPort implements AutoCloseable {
    * @param dataBits The number of data bits per transfer. Valid values are between 5 and 8 bits.
    * @param parity   Select the type of parity checking to use.
    * @param stopBits The number of stop bits to use as defined by the enum StopBits.
-   * @deprecated     Will be removed for 2019
+   * @deprecated Will be removed for 2019
    */
   @Deprecated
   public SerialPort(final int baudRate, String portName, Port port, final int dataBits,
@@ -332,7 +324,8 @@ public class SerialPort implements AutoCloseable {
    * <p>Specify the amount of data that can be stored before data from the device is returned to
    * Read. If you want data that is received to be returned immediately, set this to 1.
    *
-   * <p>It the buffer is not filled before the read timeout expires, all data that has been received
+   * <p>It the buffer is not filled before the read timeout expires, all data that has been
+   * received
    * so far will be returned.
    *
    * @param size The read buffer size.

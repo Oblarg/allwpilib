@@ -11,8 +11,8 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 
 /**
- * VEX Robotics Victor 888 Speed Controller The Vex Robotics Victor 884 Speed Controller can also
- * be used with this class but may need to be calibrated per the Victor 884 user manual.
+ * VEX Robotics Victor 888 Speed Controller The Vex Robotics Victor 884 Speed Controller can also be
+ * used with this class but may need to be calibrated per the Victor 884 user manual.
  */
 public class Victor extends PWMSpeedController {
   /**
@@ -29,8 +29,8 @@ public class Victor extends PWMSpeedController {
    * center of the deadband range (off) - 1.49ms = the "low end" of the deadband range - 1.026ms =
    * full "reverse"
    *
-   * @param channel The PWM channel that the Victor is attached to. 0-9 are
-   *        on-board, 10-19 are on the MXP port
+   * @param channel The PWM channel that the Victor is attached to. 0-9 are on-board, 10-19 are on
+   *                the MXP port
    */
   public Victor(final int channel) {
     super(channel);

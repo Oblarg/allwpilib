@@ -37,7 +37,7 @@ public class PIDControllerRunner extends SendableBase {
    *                          passed as the argument.
    */
   public PIDControllerRunner(PIDController controller, DoubleSupplier measurementSource,
-                          DoubleConsumer controllerOutput) {
+                             DoubleConsumer controllerOutput) {
     m_controller = controller;
     m_controllerOutput = controllerOutput;
     m_measurementSource = measurementSource;

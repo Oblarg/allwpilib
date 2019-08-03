@@ -83,8 +83,8 @@ public class Notifier implements AutoCloseable {
   /**
    * Create a Notifier for timer event notification.
    *
-   * @param run The handler that is called at the notification time which is set
-   *            using StartSingle or StartPeriodic.
+   * @param run The handler that is called at the notification time which is set using StartSingle
+   *            or StartPeriodic.
    */
   public Notifier(Runnable run) {
     requireNonNull(run);
@@ -153,8 +153,8 @@ public class Notifier implements AutoCloseable {
   }
 
   /**
-   * Register for single event notification. A timer event is queued for a single
-   * event after the specified delay.
+   * Register for single event notification. A timer event is queued for a single event after the
+   * specified delay.
    *
    * @param delay Seconds to wait before the handler is called.
    */
@@ -171,12 +171,12 @@ public class Notifier implements AutoCloseable {
   }
 
   /**
-   * Register for periodic event notification. A timer event is queued for
-   * periodic event notification. Each time the interrupt occurs, the event will
-   * be immediately requeued for the same time interval.
+   * Register for periodic event notification. A timer event is queued for periodic event
+   * notification. Each time the interrupt occurs, the event will be immediately requeued for the
+   * same time interval.
    *
-   * @param period Period in seconds to call the handler starting one period after
-   *               the call to this method.
+   * @param period Period in seconds to call the handler starting one period after the call to this
+   *               method.
    */
   public void startPeriodic(double period) {
     m_processLock.lock();
@@ -191,10 +191,10 @@ public class Notifier implements AutoCloseable {
   }
 
   /**
-   * Stop timer events from occurring. Stop any repeating timer events from
-   * occurring. This will also remove any single notification events from the
-   * queue. If a timer-based call to the registered handler is in progress, this
-   * function will block until the handler call is complete.
+   * Stop timer events from occurring. Stop any repeating timer events from occurring. This will
+   * also remove any single notification events from the queue. If a timer-based call to the
+   * registered handler is in progress, this function will block until the handler call is
+   * complete.
    */
   public void stop() {
     NotifierJNI.cancelNotifierAlarm(m_notifier.get());

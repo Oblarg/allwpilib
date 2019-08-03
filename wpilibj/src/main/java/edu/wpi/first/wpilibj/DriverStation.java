@@ -25,8 +25,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  * Provide access to the network communication data to / from the Driver Station.
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity", "PMD.ExcessiveClassLength",
-                   "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.TooManyFields",
-                   "PMD.TooManyMethods"})
+    "PMD.ExcessivePublicCount", "PMD.GodClass", "PMD.TooManyFields", "PMD.TooManyMethods"})
 public class DriverStation {
   /**
    * Number of Joystick Ports.
@@ -59,9 +58,7 @@ public class DriverStation {
   /**
    * The robot alliance that the robot is a part of.
    */
-  public enum Alliance {
-    Red, Blue, Invalid
-  }
+  public enum Alliance {Red, Blue, Invalid}
 
   public enum MatchType {
     None, Practice, Qualification, Elimination
@@ -225,8 +222,7 @@ public class DriverStation {
   }
 
   /**
-   * Report error to Driver Station. Optionally appends Stack trace
-   * to error message.
+   * Report error to Driver Station. Optionally appends Stack trace to error message.
    *
    * @param printTrace If true, append stack trace to error string
    */
@@ -235,8 +231,7 @@ public class DriverStation {
   }
 
   /**
-   * Report error to Driver Station. Appends provided stack trace
-   * to error message.
+   * Report error to Driver Station. Appends provided stack trace to error message.
    *
    * @param stackTrace The stack trace to append
    */
@@ -245,8 +240,7 @@ public class DriverStation {
   }
 
   /**
-   * Report warning to Driver Station. Optionally appends Stack
-   * trace to warning message.
+   * Report warning to Driver Station. Optionally appends Stack trace to warning message.
    *
    * @param printTrace If true, append stack trace to warning string
    */
@@ -255,8 +249,7 @@ public class DriverStation {
   }
 
   /**
-   * Report warning to Driver Station. Appends provided stack
-   * trace to warning message.
+   * Report warning to Driver Station. Appends provided stack trace to warning message.
    *
    * @param stackTrace The stack trace to append
    */
@@ -264,18 +257,17 @@ public class DriverStation {
     reportErrorImpl(false, 1, error, stackTrace);
   }
 
-  private static void reportErrorImpl(boolean isError, int code, String error, boolean
-      printTrace) {
+  private static void reportErrorImpl(boolean isError, int code, String error, boolean printTrace) {
     reportErrorImpl(isError, code, error, printTrace, Thread.currentThread().getStackTrace(), 3);
   }
 
   private static void reportErrorImpl(boolean isError, int code, String error,
-      StackTraceElement[] stackTrace) {
+                                      StackTraceElement[] stackTrace) {
     reportErrorImpl(isError, code, error, true, stackTrace, 0);
   }
 
-  private static void reportErrorImpl(boolean isError, int code, String error,
-      boolean printTrace, StackTraceElement[] stackTrace, int stackTraceFirst) {
+  private static void reportErrorImpl(boolean isError, int code, String error, boolean printTrace,
+                                      StackTraceElement[] stackTrace, int stackTraceFirst) {
     String locString;
     if (stackTrace.length >= stackTraceFirst + 1) {
       locString = stackTrace[stackTraceFirst].toString();
@@ -369,8 +361,7 @@ public class DriverStation {
   }
 
   /**
-   * Whether one joystick button was released since the last check. Button indexes
-   * begin at 1.
+   * Whether one joystick button was released since the last check. Button indexes begin at 1.
    *
    * @param stick  The joystick to read.
    * @param button The button index, beginning at 1.
@@ -593,7 +584,7 @@ public class DriverStation {
    * Returns the types of Axes on a given joystick port.
    *
    * @param stick The joystick port number
-   * @param axis The target axis
+   * @param axis  The target axis
    * @return What type of axis the axis is reporting to be
    */
   public int getJoystickAxisType(int stick, int axis) {
@@ -868,8 +859,8 @@ public class DriverStation {
           long now = RobotController.getFPGATime();
           if (now < startTime + timeoutMicros) {
             // We still have time to wait
-            boolean signaled = m_waitForDataCond.await(startTime + timeoutMicros - now,
-                                                TimeUnit.MICROSECONDS);
+            boolean signaled =
+                m_waitForDataCond.await(startTime + timeoutMicros - now, TimeUnit.MICROSECONDS);
             if (!signaled) {
               // Return false if a timeout happened
               return false;
@@ -896,8 +887,8 @@ public class DriverStation {
    * Return the approximate match time. The FMS does not send an official match time to the robots,
    * but does send an approximate match time. The value will count down the time remaining in the
    * current period (auto or teleop). Warning: This is not an official time (so it cannot be used to
-   * dispute ref calls or guarantee that a function will trigger before the match ends) The
-   * Practice Match function of the DS approximates the behaviour seen on the field.
+   * dispute ref calls or guarantee that a function will trigger before the match ends) The Practice
+   * Match function of the DS approximates the behaviour seen on the field.
    *
    * @return Time remaining in current match period (auto or teleop) in seconds
    */
@@ -1123,8 +1114,8 @@ public class DriverStation {
   }
 
   /**
-   * Updates the data in the control word cache. Updates if the force parameter is set, or if
-   * 50ms have passed since the last update.
+   * Updates the data in the control word cache. Updates if the force parameter is set, or if 50ms
+   * have passed since the last update.
    *
    * @param force True to force an update to the cache, otherwise update if 50ms have passed.
    */

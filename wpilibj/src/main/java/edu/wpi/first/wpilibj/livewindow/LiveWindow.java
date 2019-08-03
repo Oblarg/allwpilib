@@ -97,7 +97,7 @@ public class LiveWindow {
    * Add a child component to a component.
    *
    * @param parent parent component
-   * @param child child component
+   * @param child  child component
    */
   public static synchronized void addChild(Sendable parent, Object child) {
     Component component = components.get(child);
@@ -172,8 +172,8 @@ public class LiveWindow {
     }
 
     for (Component component : components.values()) {
-      if (component.m_sendable != null && component.m_parent == null
-          && (liveWindowEnabled || component.m_telemetryEnabled)) {
+      if (component.m_sendable != null && component.m_parent == null && (liveWindowEnabled
+          || component.m_telemetryEnabled)) {
         if (component.m_firstTime) {
           // By holding off creating the NetworkTable entries, it allows the
           // components to be redefined. This allows default sensor and actuator

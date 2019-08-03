@@ -85,8 +85,7 @@ public abstract class RobotBase implements AutoCloseable {
    * completion before Autonomous is entered.
    *
    * <p>This must be used to ensure that the communications code starts. In the future it would be
-   * nice
-   * to put this code into it's own task that loads on boot so ensure that it runs.
+   * nice to put this code into it's own task that loads on boot so ensure that it runs.
    */
   protected RobotBase() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -145,8 +144,7 @@ public abstract class RobotBase implements AutoCloseable {
   }
 
   /**
-   * Determine if the robot is currently in Autonomous mode as determined by the field
-   * controls.
+   * Determine if the robot is currently in Autonomous mode as determined by the field controls.
    *
    * @return True if the robot is currently operating Autonomously.
    */
@@ -155,8 +153,7 @@ public abstract class RobotBase implements AutoCloseable {
   }
 
   /**
-   * Determine if the robot is currently in Test mode as determined by the driver
-   * station.
+   * Determine if the robot is currently in Test mode as determined by the driver station.
    *
    * @return True if the robot is currently operating in Test mode.
    */
@@ -207,7 +204,7 @@ public abstract class RobotBase implements AutoCloseable {
    * Starting point for the applications.
    */
   @SuppressWarnings({"PMD.AvoidInstantiatingObjectsInLoops", "PMD.AvoidCatchingThrowable",
-                     "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
+      "PMD.CyclomaticComplexity", "PMD.NPathComplexity"})
   public static <T extends RobotBase> void startRobot(Supplier<T> robotSupplier) {
     if (!HAL.initialize(500, 0)) {
       throw new IllegalStateException("Failed to initialize. Terminating");
@@ -234,8 +231,9 @@ public abstract class RobotBase implements AutoCloseable {
       if (elements.length > 0) {
         robotName = elements[0].getClassName();
       }
-      DriverStation.reportError("Unhandled exception instantiating robot " + robotName + " "
-          + throwable.toString(), elements);
+      DriverStation.reportError(
+          "Unhandled exception instantiating robot " + robotName + " " + throwable.toString(),
+          elements);
       DriverStation.reportWarning("Robots should not quit, but yours did!", false);
       DriverStation.reportError("Could not instantiate robot " + robotName + "!", false);
       System.exit(1);
@@ -259,7 +257,7 @@ public abstract class RobotBase implements AutoCloseable {
 
       } catch (IOException ex) {
         DriverStation.reportError("Could not write FRC_Lib_Version.ini: " + ex.toString(),
-                ex.getStackTrace());
+            ex.getStackTrace());
       }
     }
 
@@ -271,8 +269,8 @@ public abstract class RobotBase implements AutoCloseable {
       if (cause != null) {
         throwable = cause;
       }
-      DriverStation.reportError("Unhandled exception: " + throwable.toString(),
-          throwable.getStackTrace());
+      DriverStation
+          .reportError("Unhandled exception: " + throwable.toString(), throwable.getStackTrace());
       errorOnExit = true;
     } finally {
       // startCompetition never returns unless exception occurs....

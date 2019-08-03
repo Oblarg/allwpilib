@@ -42,9 +42,7 @@ public class ADXL345_SPI extends SendableBase implements Accelerometer {
   private static final int kDataFormat_Justify = 0x04;
 
   public enum Axes {
-    kX((byte) 0x00),
-    kY((byte) 0x02),
-    kZ((byte) 0x04);
+    kX((byte) 0x00), kY((byte) 0x02), kZ((byte) 0x04);
 
     /**
      * The integer value representing this enumeration.
@@ -156,8 +154,8 @@ public class ADXL345_SPI extends SendableBase implements Accelerometer {
    */
   public double getAcceleration(ADXL345_SPI.Axes axis) {
     ByteBuffer transferBuffer = ByteBuffer.allocate(3);
-    transferBuffer.put(0,
-        (byte) ((kAddress_Read | kAddress_MultiByte | kDataRegister) + axis.value));
+    transferBuffer
+        .put(0, (byte) ((kAddress_Read | kAddress_MultiByte | kDataRegister) + axis.value));
     m_spi.transaction(transferBuffer, transferBuffer, 3);
     // Sensor is little endian
     transferBuffer.order(ByteOrder.LITTLE_ENDIAN);

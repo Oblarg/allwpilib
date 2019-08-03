@@ -149,8 +149,7 @@ public class DigitalOutput extends SendableBase {
    * Change the duty-cycle that is being generated on the line.
    *
    * <p>The resolution of the duty cycle is 8-bit for low frequencies (1kHz or less) but is reduced
-   * the
-   * higher the frequency of the PWM signal is.
+   * the higher the frequency of the PWM signal is.
    *
    * @param dutyCycle The duty-cycle to change to. [0..1]
    */

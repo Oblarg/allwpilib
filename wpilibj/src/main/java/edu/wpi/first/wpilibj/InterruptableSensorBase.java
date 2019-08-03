@@ -131,8 +131,8 @@ public abstract class InterruptableSensorBase extends SendableBase {
     InterruptJNI.requestInterrupts(m_interrupt, getPortHandleForRouting(),
         getAnalogTriggerTypeForRouting());
     setUpSourceEdge(true, false);
-    InterruptJNI.attachInterruptHandler(m_interrupt, handler.m_function,
-        handler.overridableParameter());
+    InterruptJNI
+        .attachInterruptHandler(m_interrupt, handler.m_function, handler.overridableParameter());
   }
 
   /**
@@ -276,8 +276,7 @@ public abstract class InterruptableSensorBase extends SendableBase {
    */
   public void setUpSourceEdge(boolean risingEdge, boolean fallingEdge) {
     if (m_interrupt != 0) {
-      InterruptJNI.setInterruptUpSourceEdge(m_interrupt, risingEdge,
-          fallingEdge);
+      InterruptJNI.setInterruptUpSourceEdge(m_interrupt, risingEdge, fallingEdge);
     } else {
       throw new IllegalArgumentException("You must call RequestInterrupts before setUpSourceEdge");
     }

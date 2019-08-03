@@ -27,58 +27,50 @@ public class Joystick extends GenericHID {
   /**
    * Represents an analog axis on a joystick.
    */
-  public enum AxisType {
-    kX(0), kY(1), kZ(2), kTwist(3), kThrottle(4);
+  public enum AxisType {kX(0), kY(1), kZ(2), kTwist(3), kThrottle(4);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     AxisType(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Represents a digital button on a joystick.
    */
-  public enum ButtonType {
-    kTrigger(1), kTop(2);
+  public enum ButtonType {kTrigger(1), kTop(2);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     ButtonType(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Represents a digital button on a joystick.
    */
-  private enum Button {
-    kTrigger(1), kTop(2);
+  private enum Button {kTrigger(1), kTop(2);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     Button(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Represents an analog axis on a joystick.
    */
-  private enum Axis {
-    kX(0), kY(1), kZ(2), kTwist(3), kThrottle(4), kNumAxes(5);
+  private enum Axis {kX(0), kY(1), kZ(2), kTwist(3), kThrottle(4), kNumAxes(5);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     Axis(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   private final byte[] m_axes = new byte[Axis.kNumAxes.value];
 

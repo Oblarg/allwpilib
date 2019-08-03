@@ -15,7 +15,8 @@ public class Vector2d {
   public double x;
   public double y;
 
-  public Vector2d() {}
+  public Vector2d() {
+  }
 
   @SuppressWarnings("ParameterName")
   public Vector2d(double x, double y) {

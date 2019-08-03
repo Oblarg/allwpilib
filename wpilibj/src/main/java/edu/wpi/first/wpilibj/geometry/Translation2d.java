@@ -8,12 +8,11 @@
 package edu.wpi.first.wpilibj.geometry;
 
 /**
- * Represents a translation in 2d space.
- * This object can be used to represent a point or a vector.
+ * Represents a translation in 2d space. This object can be used to represent a point or a vector.
  *
  * <p>This assumes that you are using conventional mathematical axes.
- * When the robot is placed on the origin, facing toward the X direction,
- * moving forward increases the X, whereas moving to the left increases the Y.
+ * When the robot is placed on the origin, facing toward the X direction, moving forward increases
+ * the X, whereas moving to the left increases the Y.
  */
 @SuppressWarnings({"ParameterName", "MemberName"})
 public class Translation2d {
@@ -28,8 +27,7 @@ public class Translation2d {
   }
 
   /**
-   * Constructs a Translation2d with the X and Y components equal to the
-   * provided values.
+   * Constructs a Translation2d with the X and Y components equal to the provided values.
    *
    * @param x The x component of the translation.
    * @param y The y component of the translation.
@@ -83,9 +81,8 @@ public class Translation2d {
    * Applies a rotation to the translation in 2d space.
    *
    * <p>This multiplies the translation vector by a counterclockwise rotation
-   * matrix of the given angle.
-   * [x_new]   [other.cos, -other.sin][x]
-   * [y_new] = [other.sin,  other.cos][y]
+   * matrix of the given angle. [x_new]   [other.cos, -other.sin][x] [y_new] = [other.sin,
+   * other.cos][y]
    *
    * <p>For example, rotating a Translation2d of {2, 0} by 90 degrees will return a
    * Translation2d of {0, 2}.
@@ -94,15 +91,12 @@ public class Translation2d {
    * @return The new rotated translation.
    */
   public Translation2d rotateBy(Rotation2d other) {
-    return new Translation2d(
-            m_x * other.getCos() - m_y * other.getSin(),
-            m_x * other.getSin() + m_y * other.getCos()
-    );
+    return new Translation2d(m_x * other.getCos() - m_y * other.getSin(),
+        m_x * other.getSin() + m_y * other.getCos());
   }
 
   /**
-   * Adds two translations in 2d space and returns the sum. This is similar to
-   * vector addition.
+   * Adds two translations in 2d space and returns the sum. This is similar to vector addition.
    *
    * <p>For example, Translation2d{1.0, 2.5} + Translation2d{2.0, 5.5} =
    * Translation2d{3.0, 8.0}
@@ -115,8 +109,7 @@ public class Translation2d {
   }
 
   /**
-   * Subtracts the other translation from the other translation and returns the
-   * difference.
+   * Subtracts the other translation from the other translation and returns the difference.
    *
    * <p>For example, Translation2d{5.0, 4.0} - Translation2d{1.0, 2.0} =
    * Translation2d{4.0, 2.0}
@@ -129,9 +122,8 @@ public class Translation2d {
   }
 
   /**
-   * Returns the inverse of the current translation. This is equivalent to
-   * rotating by 180 degrees, flipping the point over both axes, or simply
-   * negating both components of the translation.
+   * Returns the inverse of the current translation. This is equivalent to rotating by 180 degrees,
+   * flipping the point over both axes, or simply negating both components of the translation.
    *
    * @return The inverse of the current translation.
    */

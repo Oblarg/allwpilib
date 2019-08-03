@@ -28,7 +28,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  *    ---
  * </pre>
  *
- * <p>Each drive() function provides different inverse kinematic relations for a Killough drive. The
+ * <p>Each drive() function provides different inverse kinematic relations for a Killough drive.
+ * The
  * default wheel vectors are parallel to their respective opposite sides, but can be overridden. See
  * the constructor for more information.
  *
@@ -94,11 +95,11 @@ public class KilloughDrive extends RobotDriveBase {
     m_rightMotor = rightMotor;
     m_backMotor = backMotor;
     m_leftVec = new Vector2d(Math.cos(leftMotorAngle * (Math.PI / 180.0)),
-                             Math.sin(leftMotorAngle * (Math.PI / 180.0)));
+        Math.sin(leftMotorAngle * (Math.PI / 180.0)));
     m_rightVec = new Vector2d(Math.cos(rightMotorAngle * (Math.PI / 180.0)),
-                              Math.sin(rightMotorAngle * (Math.PI / 180.0)));
+        Math.sin(rightMotorAngle * (Math.PI / 180.0)));
     m_backVec = new Vector2d(Math.cos(backMotorAngle * (Math.PI / 180.0)),
-                             Math.sin(backMotorAngle * (Math.PI / 180.0)));
+        Math.sin(backMotorAngle * (Math.PI / 180.0)));
     addChild(m_leftMotor);
     addChild(m_rightMotor);
     addChild(m_backMotor);
@@ -107,10 +108,10 @@ public class KilloughDrive extends RobotDriveBase {
   }
 
   /**
-   * Verifies that all motors are nonnull, throwing a NullPointerException if any of them are.
-   * The exception's error message will specify all null motors, e.g. {@code
-   * NullPointerException("leftMotor, rightMotor")}, to give as much information as possible to
-   * the programmer.
+   * Verifies that all motors are nonnull, throwing a NullPointerException if any of them are. The
+   * exception's error message will specify all null motors, e.g. {@code
+   * NullPointerException("leftMotor, rightMotor")}, to give as much information as possible to the
+   * programmer.
    *
    * @throws NullPointerException if any of the given motors are null
    */
@@ -159,15 +160,14 @@ public class KilloughDrive extends RobotDriveBase {
    * @param xSpeed    The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
    * @param zRotation The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
    *                  positive.
-   * @param gyroAngle The current angle reading from the gyro in degrees around the Z axis. Use
-   *                  this to implement field-oriented controls.
+   * @param gyroAngle The current angle reading from the gyro in degrees around the Z axis. Use this
+   *                  to implement field-oriented controls.
    */
   @SuppressWarnings("ParameterName")
-  public void driveCartesian(double ySpeed, double xSpeed, double zRotation,
-                             double gyroAngle) {
+  public void driveCartesian(double ySpeed, double xSpeed, double zRotation, double gyroAngle) {
     if (!m_reported) {
       HAL.report(tResourceType.kResourceType_RobotDrive, 3,
-                 tInstances.kRobotDrive2_KilloughCartesian);
+          tInstances.kRobotDrive2_KilloughCartesian);
       m_reported = true;
     }
 
@@ -209,13 +209,12 @@ public class KilloughDrive extends RobotDriveBase {
   @SuppressWarnings("ParameterName")
   public void drivePolar(double magnitude, double angle, double zRotation) {
     if (!m_reported) {
-      HAL.report(tResourceType.kResourceType_RobotDrive, 3,
-                 tInstances.kRobotDrive2_KilloughPolar);
+      HAL.report(tResourceType.kResourceType_RobotDrive, 3, tInstances.kRobotDrive2_KilloughPolar);
       m_reported = true;
     }
 
     driveCartesian(magnitude * Math.sin(angle * (Math.PI / 180.0)),
-                   magnitude * Math.cos(angle * (Math.PI / 180.0)), zRotation, 0.0);
+        magnitude * Math.cos(angle * (Math.PI / 180.0)), zRotation, 0.0);
   }
 
   @Override

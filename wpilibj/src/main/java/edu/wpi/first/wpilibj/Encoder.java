@@ -346,7 +346,8 @@ public class Encoder extends SendableBase implements CounterBase, PIDSource {
    * Returns the period of the most recent pulse. Returns the period of the most recent Encoder
    * pulse in seconds. This method compensates for the decoding type.
    *
-   * <p><b>Warning:</b> This returns unscaled periods. Use getRate() for rates that are scaled using
+   * <p><b>Warning:</b> This returns unscaled periods. Use getRate() for rates that are scaled
+   * using
    * the value from setDistancePerPulse().
    *
    * @return Period in seconds of the most recent pulse.

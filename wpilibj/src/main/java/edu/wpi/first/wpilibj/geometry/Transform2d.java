@@ -25,7 +25,7 @@ public class Transform2d {
     // using a clockwise rotation matrix. This transforms the global
     // delta into a local delta (relative to the initial pose).
     m_translation = last.getTranslation().minus(initial.getTranslation())
-            .rotateBy(initial.getRotation().unaryMinus());
+        .rotateBy(initial.getRotation().unaryMinus());
 
     m_rotation = last.getRotation().minus(initial.getRotation());
   }

@@ -25,33 +25,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * <p>robotInit() -- provide for initialization at robot power-on
  *
  * <p>init() functions -- each of the following functions is called once when the
- * appropriate mode is entered:
- *   - disabledInit()   -- called each and every time disabled is entered from
- *                         another mode
- *   - autonomousInit() -- called each and every time autonomous is entered from
- *                         another mode
- *   - teleopInit()     -- called each and every time teleop is entered from
- *                         another mode
- *   - testInit()       -- called each and every time test is entered from
- *                         another mode
+ * appropriate mode is entered: - disabledInit()   -- called each and every time disabled is entered
+ * from another mode - autonomousInit() -- called each and every time autonomous is entered from
+ * another mode - teleopInit()     -- called each and every time teleop is entered from another mode
+ * - testInit()       -- called each and every time test is entered from another mode
  *
  * <p>periodic() functions -- each of these functions is called on an interval:
- *   - robotPeriodic()
- *   - disabledPeriodic()
- *   - autonomousPeriodic()
- *   - teleopPeriodic()
- *   - testPeriodic()
+ * - robotPeriodic() - disabledPeriodic() - autonomousPeriodic() - teleopPeriodic() -
+ * testPeriodic()
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public abstract class IterativeRobotBase extends RobotBase {
   protected double m_period;
 
   private enum Mode {
-    kNone,
-    kDisabled,
-    kAutonomous,
-    kTeleop,
-    kTest
+    kNone, kDisabled, kAutonomous, kTeleop, kTest
   }
 
   private Mode m_lastMode = Mode.kNone;
@@ -78,7 +66,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Robot-wide initialization code should go here.
    *
-   * <p>Users should override this method for default Robot-wide initialization which will be called
+   * <p>Users should override this method for default Robot-wide initialization which will be
+   * called
    * when the robot is first powered on. It will be called exactly one time.
    *
    * <p>Warning: the Driver Station "Robot Code" light and FMS "Robot Ready" indicators will be off
@@ -92,7 +81,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Initialization code for disabled mode should go here.
    *
-   * <p>Users should override this method for initialization code which will be called each time the
+   * <p>Users should override this method for initialization code which will be called each time
+   * the
    * robot enters disabled mode.
    */
   public void disabledInit() {
@@ -102,7 +92,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Initialization code for autonomous mode should go here.
    *
-   * <p>Users should override this method for initialization code which will be called each time the
+   * <p>Users should override this method for initialization code which will be called each time
+   * the
    * robot enters autonomous mode.
    */
   public void autonomousInit() {
@@ -112,7 +103,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Initialization code for teleop mode should go here.
    *
-   * <p>Users should override this method for initialization code which will be called each time the
+   * <p>Users should override this method for initialization code which will be called each time
+   * the
    * robot enters teleop mode.
    */
   public void teleopInit() {
@@ -122,7 +114,8 @@ public abstract class IterativeRobotBase extends RobotBase {
   /**
    * Initialization code for test mode should go here.
    *
-   * <p>Users should override this method for initialization code which will be called each time the
+   * <p>Users should override this method for initialization code which will be called each time
+   * the
    * robot enters test mode.
    */
   @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation")

@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 /**
  * Nidec Brushless Motor.
  */
-public class NidecBrushless extends MotorSafety implements SpeedController, Sendable,
-    AutoCloseable {
+public class NidecBrushless extends MotorSafety
+    implements SpeedController, Sendable, AutoCloseable {
   private boolean m_isInverted;
   private final DigitalOutput m_dio;
   private final PWM m_pwm;
@@ -27,10 +27,10 @@ public class NidecBrushless extends MotorSafety implements SpeedController, Send
   /**
    * Constructor.
    *
-   * @param pwmChannel The PWM channel that the Nidec Brushless controller is attached to.
-   *                   0-9 are on-board, 10-19 are on the MXP port
-   * @param dioChannel The DIO channel that the Nidec Brushless controller is attached to.
-   *                   0-9 are on-board, 10-25 are on the MXP port
+   * @param pwmChannel The PWM channel that the Nidec Brushless controller is attached to. 0-9 are
+   *                   on-board, 10-19 are on the MXP port
+   * @param dioChannel The DIO channel that the Nidec Brushless controller is attached to. 0-9 are
+   *                   on-board, 10-25 are on the MXP port
    */
   public NidecBrushless(final int pwmChannel, final int dioChannel) {
     m_sendableImpl = new SendableImpl(true);
@@ -173,8 +173,7 @@ public class NidecBrushless extends MotorSafety implements SpeedController, Send
   }
 
   /**
-   * Disable the motor.  The enable() function must be called to re-enable
-   * the motor.
+   * Disable the motor.  The enable() function must be called to re-enable the motor.
    */
   @Override
   public void disable() {
@@ -184,8 +183,8 @@ public class NidecBrushless extends MotorSafety implements SpeedController, Send
   }
 
   /**
-   * Re-enable the motor after disable() has been called.  The set()
-   * function must be called to set a new motor speed.
+   * Re-enable the motor after disable() has been called.  The set() function must be called to set
+   * a new motor speed.
    */
   public void enable() {
     m_disabled = false;

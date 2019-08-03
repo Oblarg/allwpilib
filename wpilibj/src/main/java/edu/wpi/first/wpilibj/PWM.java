@@ -29,11 +29,10 @@ public class PWM extends MotorSafety implements Sendable, AutoCloseable {
   /**
    * Represents the amount to multiply the minimum servo-pulse pwm period by.
    */
-  public enum PeriodMultiplier {
-    /**
-     * Period Multiplier: don't skip pulses. PWM pulses occur every 5.005 ms
-     */
-    k1X,
+  public enum PeriodMultiplier {/**
+   * Period Multiplier: don't skip pulses. PWM pulses occur every 5.005 ms
+   */
+  k1X,
     /**
      * Period Multiplier: skip every other pulse. PWM pulses occur every 10.010 ms
      */
@@ -41,8 +40,7 @@ public class PWM extends MotorSafety implements Sendable, AutoCloseable {
     /**
      * Period Multiplier: skip three out of four pulses. PWM pulses occur every 20.020 ms
      */
-    k4X
-  }
+    k4X}
 
   private final int m_channel;
   private int m_handle;
@@ -170,14 +168,14 @@ public class PWM extends MotorSafety implements Sendable, AutoCloseable {
    * @param min         The minimum pulse width in ms
    */
   public void setBounds(double max, double deadbandMax, double center, double deadbandMin,
-                           double min) {
+                        double min) {
     PWMJNI.setPWMConfig(m_handle, max, deadbandMax, center, deadbandMin, min);
   }
 
   /**
    * Gets the bounds on the PWM pulse widths. This Gets the bounds on the PWM values for a
-   * particular type of controller. The values determine the upper and lower speeds as well
-   * as the deadband bracket.
+   * particular type of controller. The values determine the upper and lower speeds as well as the
+   * deadband bracket.
    */
   public PWMConfigDataResult getRawBounds() {
     return PWMJNI.getPWMConfigRaw(m_handle);
@@ -272,8 +270,7 @@ public class PWM extends MotorSafety implements Sendable, AutoCloseable {
   }
 
   /**
-   * Temporarily disables the PWM output. The next set call will reenable
-   * the output.
+   * Temporarily disables the PWM output. The next set call will reenable the output.
    */
   public void setDisabled() {
     PWMJNI.setPWMDisabled(m_handle);

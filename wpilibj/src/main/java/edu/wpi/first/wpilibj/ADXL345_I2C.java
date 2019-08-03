@@ -39,9 +39,7 @@ public class ADXL345_I2C extends SendableBase implements Accelerometer {
   private static final byte kDataFormat_Justify = 0x04;
 
   public enum Axes {
-    kX((byte) 0x00),
-    kY((byte) 0x02),
-    kZ((byte) 0x04);
+    kX((byte) 0x00), kY((byte) 0x02), kZ((byte) 0x04);
 
     /**
      * The integer value representing this enumeration.

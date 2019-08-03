@@ -23,8 +23,8 @@ import static java.util.Objects.requireNonNull;
  * Class for counting the number of ticks on a digital input channel.
  *
  * <p>This is a general purpose class for counting repetitive events. It can return the number of
- * counts, the period of the most recent cycle, and detect when the signal being counted has
- * stopped by supplying a maximum cycle time.
+ * counts, the period of the most recent cycle, and detect when the signal being counted has stopped
+ * by supplying a maximum cycle time.
  *
  * <p>All counters will immediately start counting - reset() them if you need them to be zeroed
  * before use.
@@ -33,11 +33,10 @@ public class Counter extends SendableBase implements CounterBase, PIDSource {
   /**
    * Mode determines how and what the counter counts.
    */
-  public enum Mode {
-    /**
-     * mode: two pulse.
-     */
-    kTwoPulse(0),
+  public enum Mode {/**
+   * mode: two pulse.
+   */
+  kTwoPulse(0),
     /**
      * mode: semi period.
      */
@@ -56,8 +55,7 @@ public class Counter extends SendableBase implements CounterBase, PIDSource {
 
     Mode(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   protected DigitalSource m_upSource; // /< What makes the counter count up.
   protected DigitalSource m_downSource; // /< What makes the counter count down.

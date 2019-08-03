@@ -33,8 +33,7 @@ public class DigitalGlitchFilter extends SendableBase {
       if (index != m_filterAllocated.length) {
         m_channelIndex = index;
         m_filterAllocated[index] = true;
-        HAL.report(tResourceType.kResourceType_DigitalGlitchFilter,
-            m_channelIndex, 0);
+        HAL.report(tResourceType.kResourceType_DigitalGlitchFilter, m_channelIndex, 0);
         setName("DigitalGlitchFilter", index);
       }
     }
@@ -61,8 +60,8 @@ public class DigitalGlitchFilter extends SendableBase {
 
       int selected = DigitalGlitchFilterJNI.getFilterSelect(input.getPortHandleForRouting());
       if (selected != channelIndex) {
-        throw new IllegalStateException("DigitalGlitchFilterJNI.setFilterSelect("
-            + channelIndex + ") failed -> " + selected);
+        throw new IllegalStateException(
+            "DigitalGlitchFilterJNI.setFilterSelect(" + channelIndex + ") failed -> " + selected);
       }
     }
   }
@@ -142,8 +141,7 @@ public class DigitalGlitchFilter extends SendableBase {
    * @param nanoseconds The number of nanoseconds.
    */
   public void setPeriodNanoSeconds(long nanoseconds) {
-    int fpgaCycles = (int) (nanoseconds * SensorUtil.kSystemClockTicksPerMicrosecond / 4
-        / 1000);
+    int fpgaCycles = (int) (nanoseconds * SensorUtil.kSystemClockTicksPerMicrosecond / 4 / 1000);
     setPeriodCycles(fpgaCycles);
   }
 
@@ -166,8 +164,7 @@ public class DigitalGlitchFilter extends SendableBase {
   public long getPeriodNanoSeconds() {
     int fpgaCycles = getPeriodCycles();
 
-    return (long) fpgaCycles * 1000L
-        / (long) (SensorUtil.kSystemClockTicksPerMicrosecond / 4);
+    return (long) fpgaCycles * 1000L / (long) (SensorUtil.kSystemClockTicksPerMicrosecond / 4);
   }
 
   @Override

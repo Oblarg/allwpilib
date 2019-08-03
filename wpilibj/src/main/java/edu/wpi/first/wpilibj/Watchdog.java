@@ -82,8 +82,7 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
   /**
    * Sets the watchdog's timeout.
    *
-   * @param timeout The watchdog's timeout in seconds with microsecond
-   *                resolution.
+   * @param timeout The watchdog's timeout in seconds with microsecond resolution.
    */
   public void setTimeout(double timeout) {
     m_startTime = RobotController.getFPGATime();
@@ -146,7 +145,7 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
    */
   public void printEpochs() {
     long now = RobotController.getFPGATime();
-    if (now  - m_lastEpochsPrintTime > kMinPrintPeriod) {
+    if (now - m_lastEpochsPrintTime > kMinPrintPeriod) {
       m_lastEpochsPrintTime = now;
       m_epochs.forEach((key, value) -> System.out.format("\t%s: %.6fs\n", key, value / 1.0e6));
     }
@@ -222,8 +221,8 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
         if (m_watchdogs.size() > 0) {
           boolean timedOut = !awaitUntil(m_schedulerWaiter, m_watchdogs.peek().m_expirationTime);
           if (timedOut) {
-            if (m_watchdogs.size() == 0 || m_watchdogs.peek().m_expirationTime
-                > RobotController.getFPGATime()) {
+            if (m_watchdogs.size() == 0 || m_watchdogs.peek().m_expirationTime > RobotController
+                .getFPGATime()) {
               continue;
             }
 
@@ -232,7 +231,7 @@ public class Watchdog implements Closeable, Comparable<Watchdog> {
             Watchdog watchdog = m_watchdogs.poll();
 
             long now = RobotController.getFPGATime();
-            if (now  - watchdog.m_lastTimeoutPrintTime > kMinPrintPeriod) {
+            if (now - watchdog.m_lastTimeoutPrintTime > kMinPrintPeriod) {
               watchdog.m_lastTimeoutPrintTime = now;
               if (!watchdog.m_suppressTimeoutMessage) {
                 System.out.format("Watchdog not fed within %.6fs\n", watchdog.m_timeout / 1.0e6);

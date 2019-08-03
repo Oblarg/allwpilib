@@ -68,7 +68,8 @@ public class Servo extends PWM {
   /**
    * Set the servo angle.
    *
-   * <p>Assume that the servo angle is linear with respect to the PWM value (big assumption, need to
+   * <p>Assume that the servo angle is linear with respect to the PWM value (big assumption, need
+   * to
    * test).
    *
    * <p>Servo angles that are out of the supported range of the servo simply "saturate" in that
@@ -91,7 +92,8 @@ public class Servo extends PWM {
   /**
    * Get the servo angle.
    *
-   * <p>Assume that the servo angle is linear with respect to the PWM value (big assumption, need to
+   * <p>Assume that the servo angle is linear with respect to the PWM value (big assumption, need
+   * to
    * test).
    *
    * @return The angle in degrees to which the servo is set.

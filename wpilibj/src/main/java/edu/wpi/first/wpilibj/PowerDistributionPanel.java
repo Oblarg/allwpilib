@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * Class for getting voltage, current, temperature, power and energy from the Power Distribution
  * Panel over CAN.
  */
-public class PowerDistributionPanel extends SendableBase  {
+public class PowerDistributionPanel extends SendableBase {
   private final int m_handle;
 
   /**

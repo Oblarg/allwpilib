@@ -73,8 +73,8 @@ public class AnalogTriggerOutput extends DigitalSource {
 
     m_trigger = trigger;
     m_outputType = outputType;
-    HAL.report(tResourceType.kResourceType_AnalogTriggerOutput,
-        trigger.getIndex(), outputType.value);
+    HAL.report(tResourceType.kResourceType_AnalogTriggerOutput, trigger.getIndex(),
+        outputType.value);
   }
 
   /**
@@ -109,8 +109,8 @@ public class AnalogTriggerOutput extends DigitalSource {
   /**
    * Defines the state in which the AnalogTrigger triggers.
    */
-  public enum AnalogTriggerType {
-    kInWindow(AnalogJNI.AnalogTriggerType.kInWindow), kState(AnalogJNI.AnalogTriggerType.kState),
+  public enum AnalogTriggerType {kInWindow(AnalogJNI.AnalogTriggerType.kInWindow),
+    kState(AnalogJNI.AnalogTriggerType.kState),
     kRisingPulse(AnalogJNI.AnalogTriggerType.kRisingPulse),
     kFallingPulse(AnalogJNI.AnalogTriggerType.kFallingPulse);
 
@@ -119,8 +119,7 @@ public class AnalogTriggerOutput extends DigitalSource {
 
     AnalogTriggerType(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   @Override
   public void initSendable(SendableBuilder builder) {

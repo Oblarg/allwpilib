@@ -277,9 +277,8 @@ public class PIDController extends SendableBase {
   }
 
   /**
-   * Returns true if the error is within the percentage of the total input range,
-   * determined by SetTolerance. This asssumes that the maximum and minimum
-   * input were set using SetInput.
+   * Returns true if the error is within the percentage of the total input range, determined by
+   * SetTolerance. This asssumes that the maximum and minimum input were set using SetInput.
    *
    * <p>This will return false until at least one input value has been computed.
    *
@@ -292,10 +291,10 @@ public class PIDController extends SendableBase {
   /**
    * Returns true if the error and change in error are below the specified tolerances.
    *
-   * @param tolerance The maximum allowable error.
+   * @param tolerance      The maximum allowable error.
    * @param deltaTolerance The maximum allowable change in error from the previous iteration.
-   * @param toleranceType Whether the given tolerance values are absolute, or percentages of the
-   *                      total input range.
+   * @param toleranceType  Whether the given tolerance values are absolute, or percentages of the
+   *                       total input range.
    * @return Whether the error is within the acceptable bounds.
    */
   public boolean atSetpoint(double tolerance, double deltaTolerance, Tolerance toleranceType) {
@@ -308,8 +307,7 @@ public class PIDController extends SendableBase {
         return Math.abs(error) < tolerance / 100 * m_inputRange
             && Math.abs(deltaError) < deltaTolerance / 100 * m_inputRange;
       } else {
-        return Math.abs(error) < tolerance
-            && Math.abs(deltaError) < deltaTolerance;
+        return Math.abs(error) < tolerance && Math.abs(deltaError) < deltaTolerance;
       }
     } finally {
       m_thisMutex.unlock();
@@ -479,7 +477,7 @@ public class PIDController extends SendableBase {
    * Returns the next output of the PID controller.
    *
    * @param measurement The current measurement of the process variable.
-   * @param setpoint The new setpoint of the controller.
+   * @param setpoint    The new setpoint of the controller.
    */
   public double calculate(double measurement, double setpoint) {
     m_thisMutex.lock();
@@ -558,8 +556,9 @@ public class PIDController extends SendableBase {
           m_maximumOutput / m_Ki);
     }
 
-    m_output = clamp(m_Kp * m_currError + m_Ki * m_totalError
-        + m_Kd * (m_currError - m_prevError) / getPeriod(), m_minimumOutput, m_maximumOutput);
+    m_output = clamp(
+        m_Kp * m_currError + m_Ki * m_totalError + m_Kd * (m_currError - m_prevError) / getPeriod(),
+        m_minimumOutput, m_maximumOutput);
 
     return m_output;
   }

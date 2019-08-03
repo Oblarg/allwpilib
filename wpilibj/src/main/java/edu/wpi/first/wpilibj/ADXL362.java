@@ -41,9 +41,7 @@ public class ADXL362 extends SendableBase implements Accelerometer {
   private static final byte kPowerCtl_Measure = 0x02;
 
   public enum Axes {
-    kX((byte) 0x00),
-    kY((byte) 0x02),
-    kZ((byte) 0x04);
+    kX((byte) 0x00), kY((byte) 0x02), kZ((byte) 0x04);
 
     @SuppressWarnings("MemberName")
     public final byte value;
@@ -147,8 +145,8 @@ public class ADXL362 extends SendableBase implements Accelerometer {
     }
 
     // Specify the data format to read
-    byte[] commands = new byte[]{kRegWrite, kFilterCtlRegister, (byte) (kFilterCtl_ODR_100Hz
-        | value)};
+    byte[] commands =
+        new byte[]{kRegWrite, kFilterCtlRegister, (byte) (kFilterCtl_ODR_100Hz | value)};
     m_spi.write(commands, commands.length);
   }
 

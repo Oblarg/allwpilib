@@ -21,8 +21,8 @@ import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
  * function (intended for hand created drive code, such as autonomous) or with the Tank/Arcade
  * functions intended to be used for Operator Control driving.
  *
- * @deprecated Use {@link edu.wpi.first.wpilibj.drive.DifferentialDrive}
- *             or {@link edu.wpi.first.wpilibj.drive.MecanumDrive} classes instead.
+ * @deprecated Use {@link edu.wpi.first.wpilibj.drive.DifferentialDrive} or {@link
+ * edu.wpi.first.wpilibj.drive.MecanumDrive} classes instead.
  */
 @Deprecated
 @SuppressWarnings({"PMD.GodClass", "PMD.TooManyMethods"})
@@ -30,16 +30,14 @@ public class RobotDrive extends MotorSafety implements AutoCloseable {
   /**
    * The location of a motor on the robot for the purpose of driving.
    */
-  public enum MotorType {
-    kFrontLeft(0), kFrontRight(1), kRearLeft(2), kRearRight(3);
+  public enum MotorType {kFrontLeft(0), kFrontRight(1), kRearLeft(2), kRearRight(3);
 
     @SuppressWarnings("MemberName")
     public final int value;
 
     MotorType(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   public static final double kDefaultExpirationTime = 0.1;
   public static final double kDefaultSensitivity = 0.5;
@@ -352,8 +350,8 @@ public class RobotDrive extends MotorSafety implements AutoCloseable {
 
   /**
    * Arcade drive implements single stick driving. Given two joystick instances and two axis,
-   * compute the values to send to either two or four motors. The calculated values will be
-   * squared to decrease sensitivity at low speeds.
+   * compute the values to send to either two or four motors. The calculated values will be squared
+   * to decrease sensitivity at low speeds.
    *
    * @param moveStick   The Joystick object that represents the forward/backward direction
    * @param moveAxis    The axis on the moveStick object to use for forwards/backwards (typically
@@ -368,8 +366,8 @@ public class RobotDrive extends MotorSafety implements AutoCloseable {
   }
 
   /**
-   * Arcade drive implements single stick driving. This function lets you directly provide
-   * joystick values from any source.
+   * Arcade drive implements single stick driving. This function lets you directly provide joystick
+   * values from any source.
    *
    * @param moveValue     The value to use for forwards/backwards
    * @param rotateValue   The value to use for the rotate right/left
@@ -420,9 +418,9 @@ public class RobotDrive extends MotorSafety implements AutoCloseable {
   }
 
   /**
-   * Arcade drive implements single stick driving. This function lets you directly provide
-   * joystick values from any source. The calculated values will be squared to decrease
-   * sensitivity at low speeds.
+   * Arcade drive implements single stick driving. This function lets you directly provide joystick
+   * values from any source. The calculated values will be squared to decrease sensitivity at low
+   * speeds.
    *
    * @param moveValue   The value to use for forwards/backwards
    * @param rotateValue The value to use for the rotate right/left
@@ -455,10 +453,8 @@ public class RobotDrive extends MotorSafety implements AutoCloseable {
           tInstances.kRobotDrive_MecanumCartesian);
       kMecanumCartesian_Reported = true;
     }
-    @SuppressWarnings("LocalVariableName")
-    double xIn = x;
-    @SuppressWarnings("LocalVariableName")
-    double yIn = y;
+    @SuppressWarnings("LocalVariableName") double xIn = x;
+    @SuppressWarnings("LocalVariableName") double yIn = y;
     // Negate y for the joystick.
     yIn = -yIn;
     // Compensate for gyro angle.
@@ -489,8 +485,8 @@ public class RobotDrive extends MotorSafety implements AutoCloseable {
    * top, the roller axles should form an X across the robot.
    *
    * @param magnitude The speed that the robot should drive in a given direction. [-1.0..1.0]
-   * @param direction The angle the robot should drive in degrees. The direction and magnitude
-   *                  are independent of the rotation rate. [-180.0..180.0]
+   * @param direction The angle the robot should drive in degrees. The direction and magnitude are
+   *                  independent of the rotation rate. [-180.0..180.0]
    * @param rotation  The rate of rotation for the robot that is completely independent of the
    *                  magnitude or direction. [-1.0..1.0]
    */
@@ -540,8 +536,8 @@ public class RobotDrive extends MotorSafety implements AutoCloseable {
 
   /**
    * Set the speed of the right and left motors. This is used once an appropriate drive setup
-   * function is called such as twoWheelDrive(). The motors are set to "leftSpeed" and
-   * "rightSpeed" and includes flipping the direction of one side for opposing motors.
+   * function is called such as twoWheelDrive(). The motors are set to "leftSpeed" and "rightSpeed"
+   * and includes flipping the direction of one side for opposing motors.
    *
    * @param leftOutput  The speed to send to the left side of the robot.
    * @param rightOutput The speed to send to the right side of the robot.

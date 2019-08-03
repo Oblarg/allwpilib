@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * This class provides an easy way to link commands to OI inputs.
  *
- * <p>It is very easy to link a button to a command. For instance, you could link the trigger button
+ * <p>It is very easy to link a button to a command. For instance, you could link the trigger
+ * button
  * of a joystick to a "score" command.
  *
  * <p>This class represents a subclass of Trigger that is specifically aimed at buttons on an

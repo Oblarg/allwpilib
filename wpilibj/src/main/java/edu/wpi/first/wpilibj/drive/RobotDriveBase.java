@@ -26,8 +26,7 @@ public abstract class RobotDriveBase extends MotorSafety implements Sendable, Au
   /**
    * The location of a motor on the robot for the purpose of driving.
    */
-  public enum MotorType {
-    kFrontLeft(0), kFrontRight(1), kRearLeft(2), kRearRight(3), kLeft(0),
+  public enum MotorType {kFrontLeft(0), kFrontRight(1), kRearLeft(2), kRearRight(3), kLeft(0),
     kRight(1), kBack(2);
 
     @SuppressWarnings("MemberName")
@@ -35,8 +34,7 @@ public abstract class RobotDriveBase extends MotorSafety implements Sendable, Au
 
     MotorType(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * RobotDriveBase constructor.
@@ -106,9 +104,10 @@ public abstract class RobotDriveBase extends MotorSafety implements Sendable, Au
   /**
    * Sets the deadband applied to the drive inputs (e.g., joystick values).
    *
-   * <p>The default value is {@value #kDefaultDeadband}. Inputs smaller than the deadband are set to
-   * 0.0 while inputs larger than the deadband are scaled from 0.0 to 1.0. See
-   * {@link #applyDeadband}.
+   * <p>The default value is {@value #kDefaultDeadband}. Inputs smaller than the deadband are set
+   * to
+   * 0.0 while inputs larger than the deadband are scaled from 0.0 to 1.0. See {@link
+   * #applyDeadband}.
    *
    * @param deadband The deadband to set.
    */

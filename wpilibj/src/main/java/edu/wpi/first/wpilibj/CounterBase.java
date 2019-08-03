@@ -19,11 +19,10 @@ public interface CounterBase {
   /**
    * The number of edges for the counterbase to increment or decrement on.
    */
-  enum EncodingType {
-    /**
-     * Count only the rising edge.
-     */
-    k1X(0),
+  enum EncodingType {/**
+   * Count only the rising edge.
+   */
+  k1X(0),
     /**
      * Count both the rising and falling edge.
      */
@@ -38,8 +37,7 @@ public interface CounterBase {
 
     EncodingType(int value) {
       this.value = value;
-    }
-  }
+    }}
 
   /**
    * Get the count.

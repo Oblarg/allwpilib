@@ -67,8 +67,7 @@ public class AnalogTrigger extends SendableBase {
     ByteBuffer index = ByteBuffer.allocateDirect(4);
     index.order(ByteOrder.LITTLE_ENDIAN);
 
-    m_port =
-        AnalogJNI.initializeAnalogTrigger(channel.m_port, index.asIntBuffer());
+    m_port = AnalogJNI.initializeAnalogTrigger(channel.m_port, index.asIntBuffer());
     m_index = index.asIntBuffer().get(0);
 
     HAL.report(tResourceType.kResourceType_AnalogTrigger, channel.getChannel());

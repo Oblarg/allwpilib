@@ -13,9 +13,8 @@ import java.util.Objects;
  * A trapezoid-shaped velocity profile.
  *
  * <p>While this class can be used for a profiled movement from start to finish,
- * the intended usage is to filter a reference's dynamics based on trapezoidal
- * velocity constraints. To compute the reference obeying this constraint, do
- * the following.
+ * the intended usage is to filter a reference's dynamics based on trapezoidal velocity constraints.
+ * To compute the reference obeying this constraint, do the following.
  *
  * <p>Initialization:
  * <pre><code>
@@ -33,12 +32,11 @@ import java.util.Objects;
  * </code></pre>
  *
  * <p>where `unprofiledReference` is free to change between calls. Note that when
- * the unprofiled reference is within the constraints, `calculate()` returns the
- * unprofiled reference unchanged.
+ * the unprofiled reference is within the constraints, `calculate()` returns the unprofiled
+ * reference unchanged.
  *
  * <p>Otherwise, a timer can be started to provide monotonic values for
- * `calculate()` and to determine when the profile has completed via
- * `isFinished()`.
+ * `calculate()` and to determine when the profile has completed via `isFinished()`.
  */
 public class TrapezoidProfile {
   // The direction of the profile, either 1 for forwards or -1 for inverted
@@ -126,12 +124,12 @@ public class TrapezoidProfile {
     // Now we can calculate the parameters as if it was a full trapezoid instead
     // of a truncated one
 
-    double fullTrapezoidDist = cutoffDistBegin + (m_goal.position - m_initial.position)
-        + cutoffDistEnd;
+    double fullTrapezoidDist =
+        cutoffDistBegin + (m_goal.position - m_initial.position) + cutoffDistEnd;
     double accelerationTime = m_constraints.maxVelocity / m_constraints.maxAcceleration;
 
-    double fullSpeedDist = fullTrapezoidDist - accelerationTime * accelerationTime
-        * m_constraints.maxAcceleration;
+    double fullSpeedDist =
+        fullTrapezoidDist - accelerationTime * accelerationTime * m_constraints.maxAcceleration;
 
     // Handle the case where the profile never reaches full speed
     if (fullSpeedDist < 0) {
@@ -155,8 +153,8 @@ public class TrapezoidProfile {
   }
 
   /**
-   * Calculate the correct position and velocity for the profile at a time t
-   * where the beginning of the profile was at time t = 0.
+   * Calculate the correct position and velocity for the profile at a time t where the beginning of
+   * the profile was at time t = 0.
    *
    * @param t The time since the beginning of the profile.
    */
@@ -169,13 +167,14 @@ public class TrapezoidProfile {
       result.position += (m_initial.velocity + t * m_constraints.maxAcceleration / 2.0) * t;
     } else if (t < m_endFullSpeed) {
       result.velocity = m_constraints.maxVelocity;
-      result.position += (m_initial.velocity + m_endAccel * m_constraints.maxAcceleration
-          / 2.0) * m_endAccel + m_constraints.maxVelocity * (t - m_endAccel);
+      result.position +=
+          (m_initial.velocity + m_endAccel * m_constraints.maxAcceleration / 2.0) * m_endAccel
+              + m_constraints.maxVelocity * (t - m_endAccel);
     } else if (t <= m_endDeccel) {
       result.velocity = m_goal.velocity + (m_endDeccel - t) * m_constraints.maxAcceleration;
       double timeLeft = m_endDeccel - t;
-      result.position = m_goal.position - (m_goal.velocity + timeLeft
-          * m_constraints.maxAcceleration / 2.0) * timeLeft;
+      result.position = m_goal.position
+          - (m_goal.velocity + timeLeft * m_constraints.maxAcceleration / 2.0) * timeLeft;
     } else {
       result = m_goal;
     }
@@ -240,11 +239,13 @@ public class TrapezoidProfile {
       deccelDist = distToTarget - fullSpeedDist - accelDist;
     }
 
-    double accelTime = (-velocity + Math.sqrt(Math.abs(velocity * velocity + 2 * acceleration
-        * accelDist))) / acceleration;
+    double accelTime =
+        (-velocity + Math.sqrt(Math.abs(velocity * velocity + 2 * acceleration * accelDist)))
+            / acceleration;
 
-    double deccelTime = (-deccelVelocity + Math.sqrt(Math.abs(deccelVelocity * deccelVelocity
-        + 2 * decceleration * deccelDist))) / decceleration;
+    double deccelTime = (-deccelVelocity + Math
+        .sqrt(Math.abs(deccelVelocity * deccelVelocity + 2 * decceleration * deccelDist)))
+        / decceleration;
 
     double fullSpeedTime = fullSpeedDist / m_constraints.maxVelocity;
 
@@ -276,8 +277,8 @@ public class TrapezoidProfile {
    *
    * <p>The profile is inverted if goal position is less than the initial position.
    *
-   * @param initial     The initial state (usually the current state).
-   * @param goal        The desired state when the profile is complete.
+   * @param initial The initial state (usually the current state).
+   * @param goal    The desired state when the profile is complete.
    */
   private static boolean shouldFlipAcceleration(State initial, State goal) {
     return initial.position > goal.position;

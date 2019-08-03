@@ -65,14 +65,14 @@ public final class Preferences {
     m_table.getEntry(".type").setString("RobotPreferences");
     // Listener to set all Preferences values to persistent
     // (for backwards compatibility with old dashboards).
-    m_table.addEntryListener(
-        (table, key, entry, value, flags) -> entry.setPersistent(),
+    m_table.addEntryListener((table, key, entry, value, flags) -> entry.setPersistent(),
         EntryListenerFlags.kImmediate | EntryListenerFlags.kNew);
     HAL.report(tResourceType.kResourceType_Preferences, 0);
   }
 
   /**
    * Gets the vector of keys.
+   *
    * @return a vector of the keys
    */
   @SuppressWarnings({"PMD.LooseCoupling", "PMD.UseArrayListInsteadOfVector"})

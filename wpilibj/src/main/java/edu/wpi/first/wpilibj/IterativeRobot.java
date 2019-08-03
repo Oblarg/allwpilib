@@ -20,7 +20,7 @@ import edu.wpi.first.hal.HAL;
  * the driver station.
  *
  * @deprecated Use TimedRobot instead. It's a drop-in replacement that provides more regular
- *     execution periods.
+ * execution periods.
  */
 @Deprecated
 public class IterativeRobot extends IterativeRobotBase {

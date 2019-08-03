@@ -35,8 +35,8 @@ public interface Gyro extends AutoCloseable {
    * the gyro output as it sweeps past from 360 to 0 on the second time around.
    *
    * <p>The angle is expected to increase as the gyro turns clockwise when looked
-   * at from the top. It needs to follow NED axis conventions in order to work
-   * properly with dependent control loops.
+   * at from the top. It needs to follow NED axis conventions in order to work properly with
+   * dependent control loops.
    *
    * <p>This heading is based on integration of the returned rate from the gyro.
    *
@@ -50,8 +50,8 @@ public interface Gyro extends AutoCloseable {
    * <p>The rate is based on the most recent reading of the gyro analog value
    *
    * <p>The rate is expected to be positive as the gyro turns clockwise when looked
-   * at from the top. It needs to follow NED axis conventions in order to work
-   * properly with dependent control loops.
+   * at from the top. It needs to follow NED axis conventions in order to work properly with
+   * dependent control loops.
    *
    * @return the current rate in degrees per second
    */

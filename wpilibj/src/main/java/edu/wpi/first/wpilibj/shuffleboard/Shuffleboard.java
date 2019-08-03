@@ -64,7 +64,8 @@ public final class Shuffleboard {
   /**
    * Updates all the values in Shuffleboard. Iterative and timed robots are pre-configured to call
    * this method in the main robot loop; teams using custom robot base classes, or subclass
-   * SampleRobot, should make sure to call this repeatedly to keep data on the dashboard up to date.
+   * SampleRobot, should make sure to call this repeatedly to keep data on the dashboard up to
+   * date.
    */
   public static void update() {
     root.update();
@@ -81,8 +82,8 @@ public final class Shuffleboard {
   }
 
   /**
-   * Selects the tab in the dashboard with the given index in the range [0..n-1], where <i>n</i>
-   * is the number of tabs in the dashboard at the time this method is called.
+   * Selects the tab in the dashboard with the given index in the range [0..n-1], where <i>n</i> is
+   * the number of tabs in the dashboard at the time this method is called.
    *
    * @param index the index of the tab to select
    */
@@ -101,9 +102,9 @@ public final class Shuffleboard {
 
   /**
    * Enables user control of widgets containing actuators: speed controllers, relays, etc. This
-   * should only be used when the robot is in test mode. IterativeRobotBase and SampleRobot are
-   * both configured to call this method when entering test mode; most users should not need to use
-   * this method directly.
+   * should only be used when the robot is in test mode. IterativeRobotBase and SampleRobot are both
+   * configured to call this method when entering test mode; most users should not need to use this
+   * method directly.
    */
   public static void enableActuatorWidgets() {
     root.enableActuatorWidgets();
@@ -112,8 +113,8 @@ public final class Shuffleboard {
   /**
    * Disables user control of widgets containing actuators. For safety reasons, actuators should
    * only be controlled while in test mode. IterativeRobotBase and SampleRobot are both configured
-   * to call this method when exiting in test mode; most users should not need to use
-   * this method directly.
+   * to call this method when exiting in test mode; most users should not need to use this method
+   * directly.
    */
   public static void disableActuatorWidgets() {
     update(); // Need to update to make sure the sendable builders are initialized
@@ -144,8 +145,8 @@ public final class Shuffleboard {
    *
    * <p>To avoid recording files overwriting each other, make sure to use unique recording file
    * names. File name formats accept templates for inserting the date and time when the recording
-   * started with the {@code ${date}} and {@code ${time}} templates, respectively. For example,
-   * the default format is {@code "recording-${time}"} and recording files created with it will have
+   * started with the {@code ${date}} and {@code ${time}} templates, respectively. For example, the
+   * default format is {@code "recording-${time}"} and recording files created with it will have
    * names like {@code "recording-2018.01.15.sbr"}. Users are <strong>strongly</strong> recommended
    * to use the {@code ${time}} template to ensure unique file names.
    * </p>
@@ -190,8 +191,8 @@ public final class Shuffleboard {
    * <p>If {@code name} is {@code null} or empty, or {@code importance} is {@code null}, then
    * no event will be sent and an error will be printed to the driver station.
    *
-   * @param name        the name of the event
-   * @param importance  the importance of the event
+   * @param name       the name of the event
+   * @param importance the importance of the event
    */
   public static void addEventMarker(String name, EventImportance importance) {
     addEventMarker(name, "", importance);

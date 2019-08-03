@@ -24,8 +24,8 @@ public class Talon extends PWMSpeedController {
    * available from CTRE.
    *
    * <p>- 2.037ms = full "forward" - 1.539ms = the "high end" of the deadband range - 1.513ms =
-   * center of the deadband range (off) - 1.487ms = the "low end" of the deadband range - .989ms
-   * = full "reverse"
+   * center of the deadband range (off) - 1.487ms = the "low end" of the deadband range - .989ms =
+   * full "reverse"
    *
    * @param channel The PWM channel that the Talon is attached to. 0-9 are on-board, 10-19 are on
    *                the MXP port

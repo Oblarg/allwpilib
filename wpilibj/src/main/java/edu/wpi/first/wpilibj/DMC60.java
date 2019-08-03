@@ -27,8 +27,8 @@ public class DMC60 extends PWMSpeedController {
    * center of the deadband range (off) - 1.48ms = the "low end" of the deadband range - .997ms =
    * full "reverse"
    *
-   * @param channel The PWM channel that the DMC60 is attached to. 0-9 are
-   *        on-board, 10-19 are on the MXP port
+   * @param channel The PWM channel that the DMC60 is attached to. 0-9 are on-board, 10-19 are on
+   *                the MXP port
    */
   public DMC60(final int channel) {
     super(channel);

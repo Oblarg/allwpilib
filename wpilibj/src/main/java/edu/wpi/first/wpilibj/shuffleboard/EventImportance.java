@@ -9,8 +9,8 @@ package edu.wpi.first.wpilibj.shuffleboard;
 
 /**
  * The importance of an event marker in Shuffleboard.  The exact meaning of each importance level is
- * up for interpretation on a team-to-team basis, but users should follow the general guidelines
- * of the various importance levels.  The examples given are for reference and may be ignored or
+ * up for interpretation on a team-to-team basis, but users should follow the general guidelines of
+ * the various importance levels.  The examples given are for reference and may be ignored or
  * considered to be more or less important from team to team.
  */
 public enum EventImportance {
@@ -29,7 +29,8 @@ public enum EventImportance {
   kLow("LOW"),
 
   /**
-   * A "normal" importance event, such as a transition from autonomous mode to teleoperated control.
+   * A "normal" importance event, such as a transition from autonomous mode to teleoperated
+   * control.
    */
   kNormal("NORMAL"),
 
@@ -51,5 +52,4 @@ public enum EventImportance {
 
   public String getSimpleName() {
     return m_simpleName;
-  }
-}
+  }}

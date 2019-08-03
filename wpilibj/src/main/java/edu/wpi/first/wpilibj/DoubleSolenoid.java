@@ -23,11 +23,7 @@ public class DoubleSolenoid extends SolenoidBase {
   /**
    * Possible values for a DoubleSolenoid.
    */
-  public enum Value {
-    kOff,
-    kForward,
-    kReverse
-  }
+  public enum Value {kOff, kForward, kReverse}
 
   private byte m_forwardMask; // The mask for the forward channel.
   private byte m_reverseMask; // The mask for the reverse channel.
@@ -76,10 +72,8 @@ public class DoubleSolenoid extends SolenoidBase {
     m_forwardMask = (byte) (1 << forwardChannel);
     m_reverseMask = (byte) (1 << reverseChannel);
 
-    HAL.report(tResourceType.kResourceType_Solenoid, forwardChannel,
-                                   m_moduleNumber);
-    HAL.report(tResourceType.kResourceType_Solenoid, reverseChannel,
-                                   m_moduleNumber);
+    HAL.report(tResourceType.kResourceType_Solenoid, forwardChannel, m_moduleNumber);
+    HAL.report(tResourceType.kResourceType_Solenoid, reverseChannel, m_moduleNumber);
     setName("DoubleSolenoid", m_moduleNumber, forwardChannel);
   }
 

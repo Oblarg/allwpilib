@@ -29,8 +29,7 @@ public class AnalogAccelerometer extends SendableBase implements PIDSource {
    * Common initialization.
    */
   private void initAccelerometer() {
-    HAL.report(tResourceType.kResourceType_Accelerometer,
-                                   m_analogChannel.getChannel());
+    HAL.report(tResourceType.kResourceType_Accelerometer, m_analogChannel.getChannel());
     setName("Accelerometer", m_analogChannel.getChannel());
   }
 

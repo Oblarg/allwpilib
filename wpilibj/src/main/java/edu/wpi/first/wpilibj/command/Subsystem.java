@@ -172,10 +172,9 @@ public abstract class Subsystem extends SendableBase {
   }
 
   /**
-   * Associate a {@link Sendable} with this Subsystem.
-   * Also update the child's name.
+   * Associate a {@link Sendable} with this Subsystem. Also update the child's name.
    *
-   * @param name name to give child
+   * @param name  name to give child
    * @param child sendable
    */
   public void addChild(String name, Sendable child) {

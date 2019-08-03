@@ -89,12 +89,11 @@ public class Solenoid extends SolenoidBase {
   }
 
   /**
-   * Set the pulse duration in the PCM. This is used in conjunction with
-   * the startPulse method to allow the PCM to control the timing of a pulse.
-   * The timing can be controlled in 0.01 second increments.
+   * Set the pulse duration in the PCM. This is used in conjunction with the startPulse method to
+   * allow the PCM to control the timing of a pulse. The timing can be controlled in 0.01 second
+   * increments.
    *
    * @param durationSeconds The duration of the pulse, from 0.01 to 2.55 seconds.
-   *
    * @see #startPulse()
    */
   public void setPulseDuration(double durationSeconds) {
@@ -103,8 +102,7 @@ public class Solenoid extends SolenoidBase {
   }
 
   /**
-   * Trigger the PCM to generate a pulse of the duration set in
-   * setPulseDuration.
+   * Trigger the PCM to generate a pulse of the duration set in setPulseDuration.
    *
    * @see #setPulseDuration(double)
    */

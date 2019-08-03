@@ -24,8 +24,8 @@ public final class SensorUtil {
   /**
    * Ticks per microsecond.
    */
-  public static final int kSystemClockTicksPerMicrosecond
-      = ConstantsJNI.getSystemClockTicksPerMicrosecond();
+  public static final int kSystemClockTicksPerMicrosecond =
+      ConstantsJNI.getSystemClockTicksPerMicrosecond();
 
   /**
    * Number of digital channels per roboRIO.
@@ -81,9 +81,7 @@ public final class SensorUtil {
     if (!SolenoidJNI.checkSolenoidModule(moduleNumber)) {
       StringBuilder buf = new StringBuilder();
       buf.append("Requested solenoid module is out of range. Minimum: 0, Maximum: ")
-        .append(kPCMModules)
-        .append(", Requested: ")
-        .append(moduleNumber);
+          .append(kPCMModules).append(", Requested: ").append(moduleNumber);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }
@@ -98,9 +96,7 @@ public final class SensorUtil {
     if (!DIOJNI.checkDIOChannel(channel)) {
       StringBuilder buf = new StringBuilder();
       buf.append("Requested DIO channel is out of range. Minimum: 0, Maximum: ")
-        .append(kDigitalChannels)
-        .append(", Requested: ")
-        .append(channel);
+          .append(kDigitalChannels).append(", Requested: ").append(channel);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }
@@ -115,9 +111,7 @@ public final class SensorUtil {
     if (!RelayJNI.checkRelayChannel(channel)) {
       StringBuilder buf = new StringBuilder();
       buf.append("Requested relay channel is out of range. Minimum: 0, Maximum: ")
-        .append(kRelayChannels)
-        .append(", Requested: ")
-        .append(channel);
+          .append(kRelayChannels).append(", Requested: ").append(channel);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }
@@ -132,9 +126,7 @@ public final class SensorUtil {
     if (!PWMJNI.checkPWMChannel(channel)) {
       StringBuilder buf = new StringBuilder();
       buf.append("Requested PWM channel is out of range. Minimum: 0, Maximum: ")
-        .append(kPwmChannels)
-        .append(", Requested: ")
-        .append(channel);
+          .append(kPwmChannels).append(", Requested: ").append(channel);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }
@@ -149,9 +141,7 @@ public final class SensorUtil {
     if (!AnalogJNI.checkAnalogInputChannel(channel)) {
       StringBuilder buf = new StringBuilder();
       buf.append("Requested analog input channel is out of range. Minimum: 0, Maximum: ")
-        .append(kAnalogInputChannels)
-        .append(", Requested: ")
-        .append(channel);
+          .append(kAnalogInputChannels).append(", Requested: ").append(channel);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }
@@ -166,9 +156,7 @@ public final class SensorUtil {
     if (!AnalogJNI.checkAnalogOutputChannel(channel)) {
       StringBuilder buf = new StringBuilder();
       buf.append("Requested analog output channel is out of range. Minimum: 0, Maximum: ")
-        .append(kAnalogOutputChannels)
-        .append(", Requested: ")
-        .append(channel);
+          .append(kAnalogOutputChannels).append(", Requested: ").append(channel);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }
@@ -182,9 +170,7 @@ public final class SensorUtil {
     if (!SolenoidJNI.checkSolenoidChannel(channel)) {
       StringBuilder buf = new StringBuilder();
       buf.append("Requested solenoid channel is out of range. Minimum: 0, Maximum: ")
-        .append(kSolenoidChannels)
-        .append(", Requested: ")
-        .append(channel);
+          .append(kSolenoidChannels).append(", Requested: ").append(channel);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }
@@ -199,9 +185,7 @@ public final class SensorUtil {
     if (!PDPJNI.checkPDPChannel(channel)) {
       StringBuilder buf = new StringBuilder();
       buf.append("Requested PDP channel is out of range. Minimum: 0, Maximum: ")
-        .append(kPDPChannels)
-        .append(", Requested: ")
-        .append(channel);
+          .append(kPDPChannels).append(", Requested: ").append(channel);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }
@@ -214,10 +198,8 @@ public final class SensorUtil {
   public static void checkPDPModule(final int module) {
     if (!PDPJNI.checkPDPModule(module)) {
       StringBuilder buf = new StringBuilder();
-      buf.append("Requested PDP module is out of range. Minimum: 0, Maximum: ")
-        .append(kPDPModules)
-        .append(", Requested: ")
-        .append(module);
+      buf.append("Requested PDP module is out of range. Minimum: 0, Maximum: ").append(kPDPModules)
+          .append(", Requested: ").append(module);
       throw new IndexOutOfBoundsException(buf.toString());
     }
   }

@@ -130,8 +130,7 @@ public class Compressor extends SendableBase {
   }
 
   /**
-   * If PCM sticky fault is set : Compressor is disabled due to compressor current being too
-   * high.
+   * If PCM sticky fault is set : Compressor is disabled due to compressor current being too high.
    *
    * @return true if PCM sticky fault is set.
    */
@@ -181,8 +180,8 @@ public class Compressor extends SendableBase {
    * Clear ALL sticky faults inside PCM that Compressor is wired to.
    *
    * <p>If a sticky fault is set, then it will be persistently cleared. The compressor might
-   * momentarily disable while the flags are being cleared. Doo not call this method too
-   * frequently, otherwise normal compressor functionality may be prevented.
+   * momentarily disable while the flags are being cleared. Doo not call this method too frequently,
+   * otherwise normal compressor functionality may be prevented.
    *
    * <p>If no sticky faults are set then this call will have no effect.
    */

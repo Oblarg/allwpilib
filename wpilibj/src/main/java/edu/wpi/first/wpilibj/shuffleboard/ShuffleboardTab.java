@@ -17,9 +17,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Sendable;
 
 /**
- * Represents a tab in the Shuffleboard dashboard. Widgets can be added to the tab with
- * {@link #add(Sendable)}, {@link #add(String, Object)}, and {@link #add(String, Sendable)}. Widgets
- * can also be added to layouts with {@link #getLayout(String, String)}; layouts can be nested
+ * Represents a tab in the Shuffleboard dashboard. Widgets can be added to the tab with {@link
+ * #add(Sendable)}, {@link #add(String, Object)}, and {@link #add(String, Sendable)}. Widgets can
+ * also be added to layouts with {@link #getLayout(String, String)}; layouts can be nested
  * arbitrarily deep (note that too many levels may make deeper components unusable).
  */
 @SuppressWarnings("PMD.TooManyMethods")
@@ -73,22 +73,19 @@ public final class ShuffleboardTab implements ShuffleboardContainer {
   }
 
   @Override
-  public SuppliedValueWidget<String> addString(String title,
-                                               Supplier<String> valueSupplier)
+  public SuppliedValueWidget<String> addString(String title, Supplier<String> valueSupplier)
       throws IllegalArgumentException {
     return m_helper.addString(title, valueSupplier);
   }
 
   @Override
-  public SuppliedValueWidget<Double> addNumber(String title,
-                                               DoubleSupplier valueSupplier)
+  public SuppliedValueWidget<Double> addNumber(String title, DoubleSupplier valueSupplier)
       throws IllegalArgumentException {
     return m_helper.addNumber(title, valueSupplier);
   }
 
   @Override
-  public SuppliedValueWidget<Boolean> addBoolean(String title,
-                                                 BooleanSupplier valueSupplier)
+  public SuppliedValueWidget<Boolean> addBoolean(String title, BooleanSupplier valueSupplier)
       throws IllegalArgumentException {
     return m_helper.addBoolean(title, valueSupplier);
   }
@@ -115,8 +112,7 @@ public final class ShuffleboardTab implements ShuffleboardContainer {
   }
 
   @Override
-  public SuppliedValueWidget<byte[]> addRaw(String title,
-                                            Supplier<byte[]> valueSupplier)
+  public SuppliedValueWidget<byte[]> addRaw(String title, Supplier<byte[]> valueSupplier)
       throws IllegalArgumentException {
     return m_helper.addRaw(title, valueSupplier);
   }

@@ -34,8 +34,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
- * Singleton class for creating and keeping camera servers.
- * Also publishes camera information to NetworkTables.
+ * Singleton class for creating and keeping camera servers. Also publishes camera information to
+ * NetworkTables.
  *
  * @deprecated Replaced with edu.wpi.first.cameraserver.CameraServer
  */
@@ -136,7 +136,7 @@ public final class CameraServer {
   private synchronized String[] getSourceStreamValues(int source) {
     // Ignore all but HttpCamera
     if (VideoSource.getKindFromInt(CameraServerJNI.getSourceKind(source))
-            != VideoSource.Kind.kHttp) {
+        != VideoSource.Kind.kHttp) {
       return new String[0];
     }
 
@@ -152,8 +152,7 @@ public final class CameraServer {
       for (VideoSink i : m_sinks.values()) {
         int sink = i.getHandle();
         int sinkSource = CameraServerJNI.getSinkSource(sink);
-        if (source == sinkSource
-            && VideoSink.getKindFromInt(CameraServerJNI.getSinkKind(sink))
+        if (source == sinkSource && VideoSink.getKindFromInt(CameraServerJNI.getSinkKind(sink))
             == VideoSink.Kind.kMjpeg) {
           // Add USB-only passthrough
           String[] finalValues = Arrays.copyOf(values, values.length + 1);
@@ -232,8 +231,8 @@ public final class CameraServer {
   /// The returned string is "{width}x{height} {format} {fps} fps".
   @SuppressWarnings("JavadocMethod")
   private static String videoModeToString(VideoMode mode) {
-    return mode.width + "x" + mode.height + " " + pixelFormatToString(mode.pixelFormat)
-        + " " + mode.fps + " fps";
+    return mode.width + "x" + mode.height + " " + pixelFormatToString(mode.pixelFormat) + " "
+        + mode.fps + " fps";
   }
 
   @SuppressWarnings("JavadocMethod")
@@ -272,14 +271,14 @@ public final class CameraServer {
         case kEnum:
           if (isNew) {
             entry.setDefaultDouble(event.value);
-            table.getEntry(infoName + "/min").setDouble(
-                CameraServerJNI.getPropertyMin(event.propertyHandle));
-            table.getEntry(infoName + "/max").setDouble(
-                CameraServerJNI.getPropertyMax(event.propertyHandle));
-            table.getEntry(infoName + "/step").setDouble(
-                CameraServerJNI.getPropertyStep(event.propertyHandle));
-            table.getEntry(infoName + "/default").setDouble(
-                CameraServerJNI.getPropertyDefault(event.propertyHandle));
+            table.getEntry(infoName + "/min")
+                .setDouble(CameraServerJNI.getPropertyMin(event.propertyHandle));
+            table.getEntry(infoName + "/max")
+                .setDouble(CameraServerJNI.getPropertyMax(event.propertyHandle));
+            table.getEntry(infoName + "/step")
+                .setDouble(CameraServerJNI.getPropertyStep(event.propertyHandle));
+            table.getEntry(infoName + "/default")
+                .setDouble(CameraServerJNI.getPropertyDefault(event.propertyHandle));
           } else {
             entry.setDouble(event.value);
           }
@@ -329,10 +328,10 @@ public final class CameraServer {
           NetworkTable table = m_publishTable.getSubTable(event.name);
           m_tables.put(event.sourceHandle, table);
           table.getEntry("source").setString(makeSourceValue(event.sourceHandle));
-          table.getEntry("description").setString(
-              CameraServerJNI.getSourceDescription(event.sourceHandle));
-          table.getEntry("connected").setBoolean(
-              CameraServerJNI.isSourceConnected(event.sourceHandle));
+          table.getEntry("description")
+              .setString(CameraServerJNI.getSourceDescription(event.sourceHandle));
+          table.getEntry("connected")
+              .setBoolean(CameraServerJNI.isSourceConnected(event.sourceHandle));
           table.getEntry("streams").setStringArray(getSourceStreamValues(event.sourceHandle));
           try {
             VideoMode mode = CameraServerJNI.getSourceVideoMode(event.sourceHandle);
@@ -356,8 +355,8 @@ public final class CameraServer {
           NetworkTable table = m_tables.get(event.sourceHandle);
           if (table != null) {
             // update the description too (as it may have changed)
-            table.getEntry("description").setString(
-                CameraServerJNI.getSourceDescription(event.sourceHandle));
+            table.getEntry("description")
+                .setString(CameraServerJNI.getSourceDescription(event.sourceHandle));
             table.getEntry("connected").setBoolean(true);
           }
           break;
@@ -426,73 +425,72 @@ public final class CameraServer {
     // We don't currently support changing settings via NT due to
     // synchronization issues, so just update to current setting if someone
     // else tries to change it.
-    m_tableListener = NetworkTableInstance.getDefault().addEntryListener(kPublishName + "/",
-      event -> {
-        String relativeKey = event.name.substring(kPublishName.length() + 1);
+    m_tableListener =
+        NetworkTableInstance.getDefault().addEntryListener(kPublishName + "/", event -> {
+          String relativeKey = event.name.substring(kPublishName.length() + 1);
 
-        // get source (sourceName/...)
-        int subKeyIndex = relativeKey.indexOf('/');
-        if (subKeyIndex == -1) {
-          return;
-        }
-        String sourceName = relativeKey.substring(0, subKeyIndex);
-        VideoSource source = m_sources.get(sourceName);
-        if (source == null) {
-          return;
-        }
+          // get source (sourceName/...)
+          int subKeyIndex = relativeKey.indexOf('/');
+          if (subKeyIndex == -1) {
+            return;
+          }
+          String sourceName = relativeKey.substring(0, subKeyIndex);
+          VideoSource source = m_sources.get(sourceName);
+          if (source == null) {
+            return;
+          }
 
-        // get subkey
-        relativeKey = relativeKey.substring(subKeyIndex + 1);
+          // get subkey
+          relativeKey = relativeKey.substring(subKeyIndex + 1);
 
-        // handle standard names
-        String propName;
-        if ("mode".equals(relativeKey)) {
-          // reset to current mode
-          event.getEntry().setString(videoModeToString(source.getVideoMode()));
-          return;
-        } else if (relativeKey.startsWith("Property/")) {
-          propName = relativeKey.substring(9);
-        } else if (relativeKey.startsWith("RawProperty/")) {
-          propName = relativeKey.substring(12);
-        } else {
-          return;  // ignore
-        }
+          // handle standard names
+          String propName;
+          if ("mode".equals(relativeKey)) {
+            // reset to current mode
+            event.getEntry().setString(videoModeToString(source.getVideoMode()));
+            return;
+          } else if (relativeKey.startsWith("Property/")) {
+            propName = relativeKey.substring(9);
+          } else if (relativeKey.startsWith("RawProperty/")) {
+            propName = relativeKey.substring(12);
+          } else {
+            return;  // ignore
+          }
 
-        // everything else is a property
-        VideoProperty property = source.getProperty(propName);
-        switch (property.getKind()) {
-          case kNone:
-            return;
-          case kBoolean:
-            // reset to current setting
-            event.getEntry().setBoolean(property.get() != 0);
-            return;
-          case kInteger:
-          case kEnum:
-            // reset to current setting
-            event.getEntry().setDouble(property.get());
-            return;
-          case kString:
-            // reset to current setting
-            event.getEntry().setString(property.getString());
-            return;
-          default:
-            return;
-        }
-      }, EntryListenerFlags.kImmediate | EntryListenerFlags.kUpdate);
+          // everything else is a property
+          VideoProperty property = source.getProperty(propName);
+          switch (property.getKind()) {
+            case kNone:
+              return;
+            case kBoolean:
+              // reset to current setting
+              event.getEntry().setBoolean(property.get() != 0);
+              return;
+            case kInteger:
+            case kEnum:
+              // reset to current setting
+              event.getEntry().setDouble(property.get());
+              return;
+            case kString:
+              // reset to current setting
+              event.getEntry().setString(property.getString());
+              return;
+            default:
+              return;
+          }
+        }, EntryListenerFlags.kImmediate | EntryListenerFlags.kUpdate);
   }
 
   /**
    * Start automatically capturing images to send to the dashboard.
    *
    * <p>You should call this method to see a camera feed on the dashboard.
-   * If you also want to perform vision processing on the roboRIO, use
-   * getVideo() to get access to the camera images.
+   * If you also want to perform vision processing on the roboRIO, use getVideo() to get access to
+   * the camera images.
    *
    * <p>The first time this overload is called, it calls
-   * {@link #startAutomaticCapture(int)} with device 0, creating a camera
-   * named "USB Camera 0".  Subsequent calls increment the device number
-   * (e.g. 1, 2, etc).
+   * {@link #startAutomaticCapture(int)} with device 0, creating a camera named "USB Camera 0".
+   * Subsequent calls increment the device number (e.g. 1, 2, etc).
    */
   public UsbCamera startAutomaticCapture() {
     UsbCamera camera = startAutomaticCapture(m_defaultUsbDevice.getAndIncrement());
@@ -519,7 +517,7 @@ public final class CameraServer {
    * Start automatically capturing images to send to the dashboard.
    *
    * @param name The name to give the camera
-   * @param dev The device number of the camera interface
+   * @param dev  The device number of the camera interface
    */
   public UsbCamera startAutomaticCapture(String name, int dev) {
     UsbCamera camera = new UsbCamera(name, dev);
@@ -542,8 +540,7 @@ public final class CameraServer {
   }
 
   /**
-   * Start automatically capturing images to send to the dashboard from
-   * an existing camera.
+   * Start automatically capturing images to send to the dashboard from an existing camera.
    *
    * @param camera Camera
    */
@@ -594,7 +591,7 @@ public final class CameraServer {
   /**
    * Adds an Axis IP camera.
    *
-   * @param name The name to give the camera
+   * @param name  The name to give the camera
    * @param hosts Array of Camera host IPs/DNS names
    */
   public AxisCamera addAxisCamera(String name, String[] hosts) {
@@ -606,8 +603,8 @@ public final class CameraServer {
   }
 
   /**
-   * Get OpenCV access to the primary camera feed.  This allows you to
-   * get images from the camera for image processing on the roboRIO.
+   * Get OpenCV access to the primary camera feed.  This allows you to get images from the camera
+   * for image processing on the roboRIO.
    *
    * <p>This is only valid to call after a camera feed has been added
    * with startAutomaticCapture() or addServer().
@@ -627,8 +624,8 @@ public final class CameraServer {
   }
 
   /**
-   * Get OpenCV access to the specified camera.  This allows you to get
-   * images from the camera for image processing on the roboRIO.
+   * Get OpenCV access to the specified camera.  This allows you to get images from the camera for
+   * image processing on the roboRIO.
    *
    * @param camera Camera (e.g. as returned by startAutomaticCapture).
    */
@@ -653,8 +650,8 @@ public final class CameraServer {
   }
 
   /**
-   * Get OpenCV access to the specified camera.  This allows you to get
-   * images from the camera for image processing on the roboRIO.
+   * Get OpenCV access to the specified camera.  This allows you to get images from the camera for
+   * image processing on the roboRIO.
    *
    * @param name Camera name
    */
@@ -670,11 +667,11 @@ public final class CameraServer {
   }
 
   /**
-   * Create a MJPEG stream with OpenCV input. This can be called to pass custom
-   * annotated images to the dashboard.
+   * Create a MJPEG stream with OpenCV input. This can be called to pass custom annotated images to
+   * the dashboard.
    *
-   * @param name Name to give the stream
-   * @param width Width of the image being sent
+   * @param name   Name to give the stream
+   * @param width  Width of the image being sent
    * @param height Height of the image being sent
    */
   public CvSource putVideo(String name, int width, int height) {

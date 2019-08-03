@@ -11,8 +11,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * This base class runs a watchdog timer and calls the subclass's StopMotor()
- * function if the timeout expires.
+ * This base class runs a watchdog timer and calls the subclass's StopMotor() function if the
+ * timeout expires.
  *
  * <p>The subclass should call feed() whenever the motor value is updated.
  */

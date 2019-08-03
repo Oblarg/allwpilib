@@ -29,9 +29,9 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
 
   /**
    * Gets the layout with the given type and title, creating it if it does not already exist at the
-   * time this method is called. Note: this method should only be used to use a layout type that
-   * is not already built into Shuffleboard. To use a layout built into Shuffleboard, use
-   * {@link #getLayout(String, LayoutType)} and the layouts in {@link BuiltInLayouts}.
+   * time this method is called. Note: this method should only be used to use a layout type that is
+   * not already built into Shuffleboard. To use a layout built into Shuffleboard, use {@link
+   * #getLayout(String, LayoutType)} and the layouts in {@link BuiltInLayouts}.
    *
    * @param title the title of the layout
    * @param type  the type of the layout, eg "List Layout" or "Grid Layout"
@@ -133,7 +133,7 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
    * supplier. Changes made on the dashboard will not propagate to the widget object, and will be
    * overridden by values from the value supplier.
    *
-   * @param title the title of the widget
+   * @param title         the title of the widget
    * @param valueSupplier the supplier for values
    * @return a widget to display data
    * @throws IllegalArgumentException if a widget already exists in this container with the given
@@ -147,7 +147,7 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
    * supplier. Changes made on the dashboard will not propagate to the widget object, and will be
    * overridden by values from the value supplier.
    *
-   * @param title the title of the widget
+   * @param title         the title of the widget
    * @param valueSupplier the supplier for values
    * @return a widget to display data
    * @throws IllegalArgumentException if a widget already exists in this container with the given
@@ -161,7 +161,7 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
    * supplier. Changes made on the dashboard will not propagate to the widget object, and will be
    * overridden by values from the value supplier.
    *
-   * @param title the title of the widget
+   * @param title         the title of the widget
    * @param valueSupplier the supplier for values
    * @return a widget to display data
    * @throws IllegalArgumentException if a widget already exists in this container with the given
@@ -175,7 +175,7 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
    * supplier. Changes made on the dashboard will not propagate to the widget object, and will be
    * overridden by values from the value supplier.
    *
-   * @param title the title of the widget
+   * @param title         the title of the widget
    * @param valueSupplier the supplier for values
    * @return a widget to display data
    * @throws IllegalArgumentException if a widget already exists in this container with the given
@@ -189,7 +189,7 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
    * supplier. Changes made on the dashboard will not propagate to the widget object, and will be
    * overridden by values from the value supplier.
    *
-   * @param title the title of the widget
+   * @param title         the title of the widget
    * @param valueSupplier the supplier for values
    * @return a widget to display data
    * @throws IllegalArgumentException if a widget already exists in this container with the given
@@ -203,7 +203,7 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
    * supplier. Changes made on the dashboard will not propagate to the widget object, and will be
    * overridden by values from the value supplier.
    *
-   * @param title the title of the widget
+   * @param title         the title of the widget
    * @param valueSupplier the supplier for values
    * @return a widget to display data
    * @throws IllegalArgumentException if a widget already exists in this container with the given
@@ -217,7 +217,7 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
    * supplier. Changes made on the dashboard will not propagate to the widget object, and will be
    * overridden by values from the value supplier.
    *
-   * @param title the title of the widget
+   * @param title         the title of the widget
    * @param valueSupplier the supplier for values
    * @return a widget to display data
    * @throws IllegalArgumentException if a widget already exists in this container with the given
@@ -227,9 +227,9 @@ public interface ShuffleboardContainer extends ShuffleboardValue {
       throws IllegalArgumentException;
 
   /**
-   * Adds a widget to this container to display a simple piece of data. Unlike
-   * {@link #add(String, Object)}, the value in the widget will be saved on the robot and will be
-   * used when the robot program next starts rather than {@code defaultValue}.
+   * Adds a widget to this container to display a simple piece of data. Unlike {@link #add(String,
+   * Object)}, the value in the widget will be saved on the robot and will be used when the robot
+   * program next starts rather than {@code defaultValue}.
    *
    * @param title        the title of the widget
    * @param defaultValue the default value of the widget

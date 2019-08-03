@@ -29,16 +29,14 @@ public class Ultrasonic extends SendableBase implements PIDSource {
   /**
    * The units to return when PIDGet is called.
    */
-  public enum Unit {
-    /**
-     * Use inches for PIDGet.
-     */
-    kInches,
+  public enum Unit {/**
+   * Use inches for PIDGet.
+   */
+  kInches,
     /**
      * Use millimeters for PIDGet.
      */
-    kMillimeters
-  }
+    kMillimeters}
 
   // Time (sec) for the ping trigger pulse.
   private static final double kPingTime = 10 * 1e-6;
@@ -62,7 +60,8 @@ public class Ultrasonic extends SendableBase implements PIDSource {
    * Background task that goes through the list of ultrasonic sensors and pings each one in turn.
    * The counter is configured to read the timing of the returned echo pulse.
    *
-   * <p><b>DANGER WILL ROBINSON, DANGER WILL ROBINSON:</b> This code runs as a task and assumes that
+   * <p><b>DANGER WILL ROBINSON, DANGER WILL ROBINSON:</b> This code runs as a task and assumes
+   * that
    * none of the ultrasonic sensors will change while it's running. If one does, then this will
    * certainly break. Make sure to disable automatic mode before changing anything with the
    * sensors!!
@@ -71,7 +70,7 @@ public class Ultrasonic extends SendableBase implements PIDSource {
     @Override
     public synchronized void run() {
       while (m_automaticEnabled) {
-        for (Ultrasonic sensor: m_sensors) {
+        for (Ultrasonic sensor : m_sensors) {
           if (!m_automaticEnabled) {
             break;
           }

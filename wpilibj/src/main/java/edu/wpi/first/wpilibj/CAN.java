@@ -15,15 +15,14 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 
 /**
- * High level class for interfacing with CAN devices conforming to
- * the standard CAN spec.
+ * High level class for interfacing with CAN devices conforming to the standard CAN spec.
  *
  * <p>No packets that can be sent gets blocked by the RoboRIO, so all methods
  * work identically in all robot modes.
  *
  * <p>All methods are thread safe, however the CANData object passed into the
- * read methods and the byte[] passed into the write methods need to not
- * be modified for the duration of their respective calls.
+ * read methods and the byte[] passed into the write methods need to not be modified for the
+ * duration of their respective calls.
  */
 public class CAN implements Closeable {
   public static final int kTeamManufacturer = 8;
@@ -32,9 +31,8 @@ public class CAN implements Closeable {
   private final int m_handle;
 
   /**
-   * Create a new CAN communication interface with the specific device ID.
-   * This uses the team manufacturer and device types.
-   * The device ID is 6 bits (0-63).
+   * Create a new CAN communication interface with the specific device ID. This uses the team
+   * manufacturer and device types. The device ID is 6 bits (0-63).
    *
    * @param deviceId The device id
    */
@@ -44,9 +42,8 @@ public class CAN implements Closeable {
   }
 
   /**
-   * Create a new CAN communication interface with a specific device ID,
-   * manufacturer and device type. The device ID is 6 bits, the
-   * manufacturer is 8 bits, and the device type is 5 bits.
+   * Create a new CAN communication interface with a specific device ID, manufacturer and device
+   * type. The device ID is 6 bits, the manufacturer is 8 bits, and the device type is 5 bits.
    *
    * @param deviceId           The device ID
    * @param deviceManufacturer The device manufacturer
@@ -70,7 +67,7 @@ public class CAN implements Closeable {
   /**
    * Write a packet to the CAN device with a specific ID. This ID is 10 bits.
    *
-   * @param data The data to write (8 bytes max)
+   * @param data  The data to write (8 bytes max)
    * @param apiId The API ID to write.
    */
   public void writePacket(byte[] data, int apiId) {
@@ -78,11 +75,11 @@ public class CAN implements Closeable {
   }
 
   /**
-   * Write a repeating packet to the CAN device with a specific ID. This ID is 10 bits.
-   * The RoboRIO will automatically repeat the packet at the specified interval
+   * Write a repeating packet to the CAN device with a specific ID. This ID is 10 bits. The RoboRIO
+   * will automatically repeat the packet at the specified interval
    *
-   * @param data The data to write (8 bytes max)
-   * @param apiId The API ID to write.
+   * @param data     The data to write (8 bytes max)
+   * @param apiId    The API ID to write.
    * @param repeatMs The period to repeat the packet at.
    */
   public void writePacketRepeating(byte[] data, int apiId, int repeatMs) {
@@ -99,11 +96,11 @@ public class CAN implements Closeable {
   }
 
   /**
-   * Read a new CAN packet. This will only return properly once per packet
-   * received. Multiple calls without receiving another packet will return false.
+   * Read a new CAN packet. This will only return properly once per packet received. Multiple calls
+   * without receiving another packet will return false.
    *
    * @param apiId The API ID to read.
-   * @param data Storage for the received data.
+   * @param data  Storage for the received data.
    * @return True if the data is valid, otherwise false.
    */
   public boolean readPacketNew(int apiId, CANData data) {
@@ -111,11 +108,11 @@ public class CAN implements Closeable {
   }
 
   /**
-   * Read a CAN packet. The will continuously return the last packet received,
-   * without accounting for packet age.
+   * Read a CAN packet. The will continuously return the last packet received, without accounting
+   * for packet age.
    *
    * @param apiId The API ID to read.
-   * @param data Storage for the received data.
+   * @param data  Storage for the received data.
    * @return True if the data is valid, otherwise false.
    */
   public boolean readPacketLatest(int apiId, CANData data) {
@@ -123,12 +120,12 @@ public class CAN implements Closeable {
   }
 
   /**
-   * Read a CAN packet. The will return the last packet received until the
-   * packet is older then the requested timeout. Then it will return false.
+   * Read a CAN packet. The will return the last packet received until the packet is older then the
+   * requested timeout. Then it will return false.
    *
-   * @param apiId The API ID to read.
+   * @param apiId     The API ID to read.
    * @param timeoutMs The timeout time for the packet
-   * @param data Storage for the received data.
+   * @param data      Storage for the received data.
    * @return True if the data is valid, otherwise false.
    */
   public boolean readPacketTimeout(int apiId, int timeoutMs, CANData data) {
@@ -136,17 +133,16 @@ public class CAN implements Closeable {
   }
 
   /**
-   * Read a CAN packet. The will return the last packet received until the
-   * packet is older then the requested timeout. Then it will return false.
-   * The period parameter is used when you know the packet is sent at specific
-   * intervals, so calls will not attempt to read a new packet from the
-   * network until that period has passed. We do not recommend users use this
-   * API unless they know the implications.
+   * Read a CAN packet. The will return the last packet received until the packet is older then the
+   * requested timeout. Then it will return false. The period parameter is used when you know the
+   * packet is sent at specific intervals, so calls will not attempt to read a new packet from the
+   * network until that period has passed. We do not recommend users use this API unless they know
+   * the implications.
    *
-   * @param apiId The API ID to read.
+   * @param apiId     The API ID to read.
    * @param timeoutMs The timeout time for the packet
-   * @param periodMs The usual period for the packet
-   * @param data Storage for the received data.
+   * @param periodMs  The usual period for the packet
+   * @param data      Storage for the received data.
    * @return True if the data is valid, otherwise false.
    */
   public boolean readPeriodicPacket(int apiId, int timeoutMs, int periodMs, CANData data) {

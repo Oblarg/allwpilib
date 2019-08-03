@@ -44,8 +44,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * positive.
  *
  * <p>Inputs smaller then {@value edu.wpi.first.wpilibj.drive.RobotDriveBase#kDefaultDeadband} will
- * be set to 0, and larger values will be scaled so that the full range is still used. This
- * deadband value can be changed with {@link #setDeadband}.
+ * be set to 0, and larger values will be scaled so that the full range is still used. This deadband
+ * value can be changed with {@link #setDeadband}.
  *
  * <p>RobotDrive porting guide:
  * <br>In MecanumDrive, the right side speed controllers are automatically inverted, while in
@@ -55,8 +55,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
  * if a deadband of 0 is used, and the ySpeed and gyroAngle values are inverted compared to
  * RobotDrive (eg driveCartesian(xSpeed, -ySpeed, zRotation, -gyroAngle).
  * <br>{@link #drivePolar(double, double, double)} is equivalent to
- * {@link edu.wpi.first.wpilibj.RobotDrive#mecanumDrive_Polar(double, double, double)} if a
- * deadband of 0 is used.
+ * {@link edu.wpi.first.wpilibj.RobotDrive#mecanumDrive_Polar(double, double, double)} if a deadband
+ * of 0 is used.
  */
 public class MecanumDrive extends RobotDriveBase {
   private static int instances;
@@ -90,8 +90,8 @@ public class MecanumDrive extends RobotDriveBase {
   }
 
   /**
-   * Verifies that all motors are nonnull, throwing a NullPointerException if any of them are.
-   * The exception's error message will specify all null motors, e.g. {@code
+   * Verifies that all motors are nonnull, throwing a NullPointerException if any of them are. The
+   * exception's error message will specify all null motors, e.g. {@code
    * NullPointerException("frontLeftMotor, rearRightMotor")}, to give as much information as
    * possible to the programmer.
    *
@@ -145,14 +145,14 @@ public class MecanumDrive extends RobotDriveBase {
    * @param xSpeed    The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
    * @param zRotation The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
    *                  positive.
-   * @param gyroAngle The current angle reading from the gyro in degrees around the Z axis. Use
-   *                  this to implement field-oriented controls.
+   * @param gyroAngle The current angle reading from the gyro in degrees around the Z axis. Use this
+   *                  to implement field-oriented controls.
    */
   @SuppressWarnings("ParameterName")
   public void driveCartesian(double ySpeed, double xSpeed, double zRotation, double gyroAngle) {
     if (!m_reported) {
       HAL.report(tResourceType.kResourceType_RobotDrive, 4,
-                 tInstances.kRobotDrive2_MecanumCartesian);
+          tInstances.kRobotDrive2_MecanumCartesian);
       m_reported = true;
     }
 
@@ -175,11 +175,11 @@ public class MecanumDrive extends RobotDriveBase {
     normalize(wheelSpeeds);
 
     m_frontLeftMotor.set(wheelSpeeds[MotorType.kFrontLeft.value] * m_maxOutput);
-    m_frontRightMotor.set(wheelSpeeds[MotorType.kFrontRight.value] * m_maxOutput
-        * m_rightSideInvertMultiplier);
+    m_frontRightMotor
+        .set(wheelSpeeds[MotorType.kFrontRight.value] * m_maxOutput * m_rightSideInvertMultiplier);
     m_rearLeftMotor.set(wheelSpeeds[MotorType.kRearLeft.value] * m_maxOutput);
-    m_rearRightMotor.set(wheelSpeeds[MotorType.kRearRight.value] * m_maxOutput
-        * m_rightSideInvertMultiplier);
+    m_rearRightMotor
+        .set(wheelSpeeds[MotorType.kRearRight.value] * m_maxOutput * m_rightSideInvertMultiplier);
 
     feed();
   }
@@ -203,7 +203,7 @@ public class MecanumDrive extends RobotDriveBase {
     }
 
     driveCartesian(magnitude * Math.sin(angle * (Math.PI / 180.0)),
-                   magnitude * Math.cos(angle * (Math.PI / 180.0)), zRotation, 0.0);
+        magnitude * Math.cos(angle * (Math.PI / 180.0)), zRotation, 0.0);
   }
 
   /**
@@ -243,15 +243,12 @@ public class MecanumDrive extends RobotDriveBase {
     builder.setSmartDashboardType("MecanumDrive");
     builder.setActuator(true);
     builder.setSafeState(this::stopMotor);
-    builder.addDoubleProperty("Front Left Motor Speed",
-        m_frontLeftMotor::get,
-        m_frontLeftMotor::set);
+    builder
+        .addDoubleProperty("Front Left Motor Speed", m_frontLeftMotor::get, m_frontLeftMotor::set);
     builder.addDoubleProperty("Front Right Motor Speed",
         () -> m_frontRightMotor.get() * m_rightSideInvertMultiplier,
         value -> m_frontRightMotor.set(value * m_rightSideInvertMultiplier));
-    builder.addDoubleProperty("Rear Left Motor Speed",
-        m_rearLeftMotor::get,
-        m_rearLeftMotor::set);
+    builder.addDoubleProperty("Rear Left Motor Speed", m_rearLeftMotor::get, m_rearLeftMotor::set);
     builder.addDoubleProperty("Rear Right Motor Speed",
         () -> m_rearRightMotor.get() * m_rightSideInvertMultiplier,
         value -> m_rearRightMotor.set(value * m_rightSideInvertMultiplier));

@@ -30,15 +30,15 @@ import edu.wpi.first.hal.HAL;
  * impact of these high frequency components.  Likewise, a "high pass" filter gets rid of
  * slow-moving signal components, letting you detect large changes more easily.
  *
- * <p>Example FRC applications of filters: - Getting rid of noise from an analog sensor input (note:
+ * <p>Example FRC applications of filters: - Getting rid of noise from an analog sensor input
+ * (note:
  * the roboRIO's FPGA can do this faster in hardware) - Smoothing out joystick input to prevent the
  * wheels from slipping or the robot from tipping - Smoothing motor commands so that unnecessary
  * strain isn't put on electrical or mechanical components - If you use clever gains, you can make a
  * PID controller out of this class!
  *
  * <p>For more on filters, we highly recommend the following articles:<br>
- * https://en.wikipedia.org/wiki/Linear_filter<br>
- * https://en.wikipedia.org/wiki/Iir_filter<br>
+ * https://en.wikipedia.org/wiki/Linear_filter<br> https://en.wikipedia.org/wiki/Iir_filter<br>
  * https://en.wikipedia.org/wiki/Fir_filter<br>
  *
  * <p>Note 1: calculate() should be called by the user on a known, regular period. You can use a
@@ -82,8 +82,7 @@ public class LinearFilter {
    * @param timeConstant The discrete-time time constant in seconds.
    * @param period       The period in seconds between samples taken by the user.
    */
-  public static LinearFilter singlePoleIIR(double timeConstant,
-                                           double period) {
+  public static LinearFilter singlePoleIIR(double timeConstant, double period) {
     double gain = Math.exp(-period / timeConstant);
     double[] ffGains = {1.0 - gain};
     double[] fbGains = {-gain};
@@ -100,8 +99,7 @@ public class LinearFilter {
    * @param timeConstant The discrete-time time constant in seconds.
    * @param period       The period in seconds between samples taken by the user.
    */
-  public static LinearFilter highPass(double timeConstant,
-                                      double period) {
+  public static LinearFilter highPass(double timeConstant, double period) {
     double gain = Math.exp(-period / timeConstant);
     double[] ffGains = {gain, -gain};
     double[] fbGains = {-gain};
@@ -145,7 +143,6 @@ public class LinearFilter {
    * Calculates the next value of the filter.
    *
    * @param input Current input value.
-   *
    * @return The filtered value at this step
    */
   public double calculate(double input) {

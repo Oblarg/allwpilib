@@ -83,10 +83,9 @@ public class SendableChooser<V> extends SendableBase {
   /**
    * Adds the given object to the list of options.
    *
-   * @deprecated Use {@link #addOption(String, Object)} instead.
-   *
    * @param name   the name of the option
    * @param object the option
+   * @deprecated Use {@link #addOption(String, Object)} instead.
    */
   @Deprecated
   public void addObject(String name, V object) {
@@ -111,10 +110,9 @@ public class SendableChooser<V> extends SendableBase {
   /**
    * Adds the given object to the list of options and marks it as the default.
    *
-   * @deprecated Use {@link #setDefaultOption(String, Object)} instead.
-   *
    * @param name   the name of the option
    * @param object the option
+   * @deprecated Use {@link #setDefaultOption(String, Object)} instead.
    */
   @Deprecated
   public void addDefault(String name, V object) {

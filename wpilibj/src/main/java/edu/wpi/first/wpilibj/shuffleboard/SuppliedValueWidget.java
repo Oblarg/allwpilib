@@ -30,9 +30,7 @@ public final class SuppliedValueWidget<T> extends ShuffleboardWidget<SuppliedVal
    * @param supplier the supplier for values to place in the NetworkTable entry
    * @param setter   the function for placing values in the NetworkTable entry
    */
-  SuppliedValueWidget(ShuffleboardContainer parent,
-                      String title,
-                      Supplier<T> supplier,
+  SuppliedValueWidget(ShuffleboardContainer parent, String title, Supplier<T> supplier,
                       BiConsumer<NetworkTableEntry, T> setter) {
     super(parent, title);
     this.m_supplier = supplier;

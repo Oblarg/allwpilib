@@ -42,8 +42,8 @@ public final class Resource {
 
   /**
    * Allocate storage for a new instance of Resource. Allocate a bool array of values that will get
-   * initialized to indicate that no resources have been allocated yet. The indices of the
-   * resources are 0..size-1.
+   * initialized to indicate that no resources have been allocated yet. The indices of the resources
+   * are 0..size-1.
    *
    * @param size The number of blocks to allocate
    */
