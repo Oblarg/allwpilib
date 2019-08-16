@@ -65,6 +65,17 @@ public class Pose2d {
   }
 
   /**
+   * Returns the Transform2d that maps the one pose to another.
+   *
+   * @param other The initial pose of the transformation.
+   * @return The transform that maps the other pose to the current pose.
+   */
+  public Transform2d minus(Pose2d other) {
+    final var pose = this.relativeTo(other);
+    return new Transform2d(pose.getTranslation(), pose.getRotation());
+  }
+
+  /**
    * Returns the translation component of the transformation.
    *
    * @return The translational component of the pose.
@@ -91,7 +102,7 @@ public class Pose2d {
    */
   public Pose2d transformBy(Transform2d other) {
     return new Pose2d(m_translation.plus(other.getTranslation().rotateBy(m_rotation)),
-            m_rotation.plus(other.getRotation()));
+        m_rotation.plus(other.getRotation()));
   }
 
   /**
@@ -150,7 +161,7 @@ public class Pose2d {
       c = (1 - cosTheta) / dtheta;
     }
     var transform = new Transform2d(new Translation2d(dx * s - dy * c, dx * c + dy * s),
-            new Rotation2d(cosTheta, sinTheta));
+        new Rotation2d(cosTheta, sinTheta));
 
     return this.plus(transform);
   }

@@ -69,6 +69,14 @@ class Pose2d {
   Pose2d& operator+=(const Transform2d& other);
 
   /**
+   * Returns the Transform2d that maps the one pose to another.
+   *
+   * @param other The initial pose of the transformation.
+   * @return The transform that maps the other pose to the current pose.
+   */
+  Transform2d operator-(const Pose2d& other) const;
+
+  /**
    * Returns the underlying translation.
    *
    * @return Reference to the translational component of the pose.
