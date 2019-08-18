@@ -50,4 +50,18 @@ class Twist2dTest {
         () -> assertEquals(diagonalPose.getRotation().getDegrees(), 0.0, kEpsilon)
     );
   }
+
+  @Test
+  void testPose2dLog() {
+    final var start = new Pose2d();
+    final var end = new Pose2d(5.0, 5.0, Rotation2d.fromDegrees(90.0));
+
+    final var twist = start.log(end);
+
+    assertAll(
+        () -> assertEquals(twist.dx, 5.0 / 2.0 * Math.PI, kEpsilon),
+        () -> assertEquals(twist.dy, 0.0, kEpsilon),
+        () -> assertEquals(twist.dtheta, Math.PI / 2.0, kEpsilon)
+    );
+  }
 }
