@@ -90,3 +90,19 @@ TEST(TrajectoryGenerationTest, ObeysConstraints) {
     time += dt;
   }
 }
+
+TEST(ClampedSplineTest, ClampedSplineGenTest) {
+  Pose2d start{0_m, 0_m, Rotation2d(90_deg)};
+  std::vector<Translation2d> waypoints{
+    Translation2d(1_m, 1_m),
+    Translation2d(2_m, -1_m)
+  };
+  Pose2d end{3_m, 0_m, Rotation2d{90_deg}};
+
+  auto spline = TrajectoryGenerator::SplinePointsFromWaypoints(start, waypoints, end);
+
+  for (auto&& pose : spline) {
+    std::cout << pose.first.Translation().X().to<double>() 
+      << "," << pose.first.Translation().Y().to<double> () << std::endl;
+  }
+}

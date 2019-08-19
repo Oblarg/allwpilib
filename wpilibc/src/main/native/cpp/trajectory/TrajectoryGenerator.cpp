@@ -8,6 +8,7 @@
 #include "frc/trajectory/TrajectoryGenerator.h"
 
 #include <utility>
+#include <iostream>
 
 using namespace frc;
 
@@ -61,6 +62,170 @@ TrajectoryGenerator::SplinePointsFromWaypoints(std::vector<Pose2d> poses) {
   }
   return splinePoints;
 }
+
+std::vector<TrajectoryGenerator::PoseWithCurvature>
+TrajectoryGenerator::SplinePointsFromWaypoints(Pose2d start,
+  std::vector<Translation2d> waypoints, Pose2d end) {
+  // Create the vector of spline points.
+  std::vector<PoseWithCurvature> splinePoints;
+
+  // Add the first point.
+  splinePoints.emplace_back(start, 0.0);
+
+  double scalar; 
+  // This just makes the splines look better.
+  if (waypoints.empty()) {
+    scalar =
+        1.2 * start.Translation().Distance(end.Translation()).to<double>();
+  }
+  else {
+    scalar = 1.2 * start.Translation().Distance(waypoints.front()).to<double>();
+  }
+
+  std::vector<double> startXControlVector{start.Translation().X().to<double>(),
+      start.Rotation().Cos() * scalar, 0.0};
+
+  std::vector<double> startYControlVector{start.Translation().Y().to<double>(),
+      start.Rotation().Sin() * scalar, 0.0};
+
+  // This just makes the splines look better.
+  if (!waypoints.empty()) {
+    scalar = 1.2 * end.Translation().Distance(waypoints.back()).to<double>();
+  }
+
+  std::vector<double> endXControlVector{end.Translation().X().to<double>(),
+      end.Rotation().Cos() * scalar, 0.0};
+
+  std::vector<double> endYControlVector{end.Translation().Y().to<double>(),
+      end.Rotation().Sin() * scalar, 0.0};
+
+  if (!waypoints.empty()) {
+    waypoints.emplace(waypoints.begin(), start.Translation());
+    waypoints.emplace_back(end.Translation());
+
+    std::vector<double> a;
+    std::vector<double> b(waypoints.size() - 2, 4.0);
+    std::vector<double> c;
+    std::vector<double> dx, dy;
+    std::vector<double> fx(waypoints.size() - 2, 0.0), fy(waypoints.size() - 2, 0.0);
+    
+    a.emplace_back(0);
+    for (int i = 0; i < waypoints.size() - 3; i++) {
+      a.emplace_back(1);
+      c.emplace_back(1);
+    }
+    c.emplace_back(0);
+
+    dx.emplace_back(3 *
+     (waypoints[2].X().to<double>() - waypoints[0].X().to<double>()) - startXControlVector[1]);
+    dy.emplace_back(3 *
+     (waypoints[2].Y().to<double>() - waypoints[0].Y().to<double>()) - startYControlVector[1]);
+    if (waypoints.size() > 4) {
+      for (int i = 1; i <= waypoints.size() - 4; i++) {
+        dx.emplace_back(3 * (waypoints[i+1].X().to<double>() - waypoints[i-1].X().to<double>()));
+        dy.emplace_back(3 * (waypoints[i+1].Y().to<double>() - waypoints[i-1].Y().to<double>()));
+      }
+    }
+    dx.emplace_back(3 *
+     (waypoints[waypoints.size() - 1].X().to<double>() - waypoints[waypoints.size() - 3].X().to<double>()) - endXControlVector[1]);
+    dy.emplace_back(3 *
+     (waypoints[waypoints.size() - 1].Y().to<double>() - waypoints[waypoints.size() - 3].Y().to<double>()) - endYControlVector[1]);
+
+    thomas_algorithm(a, b, c, dx, fx);
+    thomas_algorithm(a, b, c, dy, fy);
+
+    fx.emplace(fx.begin(), startXControlVector[1]);
+    fx.emplace_back(endXControlVector[1]);
+    fy.emplace(fy.begin(), startYControlVector[1]);
+    fy.emplace_back(endYControlVector[1]);
+
+    for (int i = 0; i < fx.size() - 1; i++) {
+      // Create the spline.
+      std::cout << "FX " << fx[i] << " " << fx[i+1] << std::endl;
+      std::cout << "FY " << fy[i] << " " << fy[i+1] << std::endl;
+      const CubicHermiteSpline spline{waypoints[i].X().to<double>(), 
+                                      fx[i],
+                                      waypoints[i+1].X().to<double>(),
+                                      fx[i+1],
+                                      waypoints[i].Y().to<double>(),
+                                      fy[i],
+                                      waypoints[i+1].Y().to<double>(),
+                                      fy[i+1]};
+
+      // Get the array of poses.
+      std::vector<PoseWithCurvature> points;
+
+      for (double t = 0; t <= 1; t+=.01) {
+        points.emplace_back(spline.GetPoint(t));
+      }
+
+      // Append the array of poses to the vector. We are removing the first point
+      // because it's a duplicate of the last point from the previous spline.
+      splinePoints.insert(std::end(splinePoints), std::begin(points) + 1,
+                          std::end(points));
+    }
+  }
+  else {
+    // Create the spline.
+    const CubicHermiteSpline spline{startXControlVector[0], 
+                                    startXControlVector[1],
+                                    endXControlVector[0],
+                                    endXControlVector[1],
+                                    startYControlVector[0],
+                                    startYControlVector[1],
+                                    endYControlVector[0],
+                                    endYControlVector[1]};
+    // Get the array of poses.
+    auto points = spline.Parameterize();
+    // Append the array of poses to the vector. We are removing the first point
+    // because it's a duplicate of the last point from the previous spline.
+    splinePoints.insert(std::end(splinePoints), std::begin(points) + 1,
+                        std::end(points));
+  }
+
+  return splinePoints;
+}
+
+// Vectors a, b, c and d are const. They will not be modified                                                                                                                                                        
+// by the function. Vector f (the solution vector) is non-const                                                                                                                                                      
+// and thus will be calculated and updated by the function.                                                                                                                                                          
+void TrajectoryGenerator::thomas_algorithm(const std::vector<double>& a,
+                      const std::vector<double>& b,
+                      const std::vector<double>& c,
+                      const std::vector<double>& d,
+                      std::vector<double>& f) {
+  size_t N = d.size();
+
+  // Create the temporary vectors                                                                                                                                                                                    
+  // Note that this is inefficient as it is possible to call                                                                                                                                                         
+  // this function many times. A better implementation would                                                                                                                                                         
+  // pass these temporary matrices by non-const reference to                                                                                                                                                         
+  // save excess allocation and deallocation                                                                                                                                                                         
+  std::vector<double> c_star(N, 0.0);
+  std::vector<double> d_star(N, 0.0);
+
+  // This updates the coefficients in the first row                                                                                                                                                                  
+  // Note that we should be checking for division by zero here                                                                                                                                                       
+  c_star[0] = c[0] / b[0];
+  d_star[0] = d[0] / b[0];
+
+  // Create the c_star and d_star coefficients in the forward sweep                                                                                                                                                  
+  for (int i=1; i<N; i++) {
+    double m = 1.0 / (b[i] - a[i] * c_star[i-1]);
+    std::cout << "IN_FOR:" << a[i] << " " << b[i] << " " << c[i] << std::endl;
+    c_star[i] = c[i] * m;
+    d_star[i] = (d[i] - a[i] * d_star[i-1]) * m;
+  }
+
+  f[N-1] = d_star[N-1];
+  // This is the reverse sweep, used to update the solution vector f                                                                                                                                                 
+  for (int i=N-2; i >= 0; i--) {
+    std::cout << "IN_FOR2:" << d_star[i] << " " << d[i+1] << " " << c_star[i] << std::endl;
+    f[i] = d_star[i] - c_star[i] * f[i+1];
+  }
+}
+
+
 
 Trajectory TrajectoryGenerator::TimeParameterizeTrajectory(
     std::vector<PoseWithCurvature> points,

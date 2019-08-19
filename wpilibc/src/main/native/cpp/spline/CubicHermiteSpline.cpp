@@ -17,16 +17,16 @@ CubicHermiteSpline::CubicHermiteSpline(double x0, double dx0, double x1,
   auto hermite = MakeHermiteBasis();
 
   // Populate first two rows with coefficients.
-  m_coefficients.template block<1, 6>(0, 0) = hermite * x;
-  m_coefficients.template block<1, 6>(1, 0) = hermite * y;
+  m_coefficients.template block<1, 4>(0, 0) = hermite * x;
+  m_coefficients.template block<1, 4>(1, 0) = hermite * y;
 
   // Populate Row 2 and Row 3 with the derivatives of the equations above.
   // Then populate row 4 and 5 with the second derivatives.
   for (int i = 0; i < 4; i++) {
     m_coefficients.template block<2, 1>(2, i) =
-        m_coefficients.template block<2, 1>(0, i) * (4 - i);
+        m_coefficients.template block<2, 1>(0, i) * (3 - i);
 
     m_coefficients.template block<2, 1>(4, i) =
-        m_coefficients.template block<2, 1>(2, i) * (4 - i);
+        m_coefficients.template block<2, 1>(2, i) * (3 - i);
   }
 }

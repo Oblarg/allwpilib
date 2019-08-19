@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "constraints/TrajectoryConstraint.h"
+#include "frc/spline/CubicHermiteSpline.h"
 #include "frc/spline/QuinticHermiteSpline.h"
 #include "frc/trajectory/Trajectory.h"
 
@@ -46,6 +47,14 @@ class TrajectoryGenerator {
       units::meters_per_second_t maxVelocity,
       units::meters_per_second_squared_t maxAcceleration, bool reversed);
 
+  /**
+   * Creates a clamped cubic spline from the waypoints.  Headings are only 
+   * specified at the start and end of the spline; waypoints in-between are 
+   * position-only.
+   */
+  static std::vector<PoseWithCurvature> SplinePointsFromWaypoints(
+      Pose2d start, std::vector<Translation2d> waypoints, Pose2d end);
+
  private:
   constexpr static double kEpsilon = 1E-6;
 
@@ -56,6 +65,21 @@ class TrajectoryGenerator {
     units::meters_per_second_squared_t minAcceleration;
     units::meters_per_second_squared_t maxAcceleration;
   };
+
+  /**
+   * Thomas algorithm for solving tridiagonal systems Af = d.
+   * 
+   * @param a the values of A above the diagonal
+   * @param b the values of A on the diagonal
+   * @param c the values of A below the diagonal
+   * @param d the vector on the rhs
+   * @param f the unknown (solution) vector, modified in-place
+   */
+  static void thomas_algorithm(const std::vector<double>& a,
+                      const std::vector<double>& b,
+                      const std::vector<double>& c,
+                      const std::vector<double>& d,
+                      std::vector<double>& f);
 
   /**
    * Creates splines from the waypoints and parameterizes the splines to get a

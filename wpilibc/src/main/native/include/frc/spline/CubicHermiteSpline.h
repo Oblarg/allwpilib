@@ -51,9 +51,9 @@ class CubicHermiteSpline : public Spline<3> {
    * Returns the hermite basis matrix for cubic hermite spline interpolation.
    * @return The hermite basis matrix for cubic hermite spline interpolation.
    */
-  static Eigen::Matrix<double, 6, 4> MakeHermiteBasis() {
+  static Eigen::Matrix<double, 4, 4> MakeHermiteBasis() {
     // clang-format off
-    static auto basis = (Eigen::Matrix<double, 6, 4>() <<
+    static auto basis = (Eigen::Matrix<double, 4, 4>() <<
      +2.0, +1.0, +1.0, -2.0,
      -3.0, -2.0, -1.0, +3.0,
      +0.0, +1.0, +0.0, +0.0,

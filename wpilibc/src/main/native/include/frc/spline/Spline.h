@@ -46,41 +46,6 @@ class Spline {
     return arr;
   }
 
- protected:
-  /**
-   * Returns the coefficients of the spline.
-   *
-   * @return The coefficients of the spline.
-   */
-  virtual Eigen::Matrix<double, 6, Degree + 1> Coefficients() const = 0;
-
-  /**
-   * Converts a Translation2d into a vector that is compatible with Eigen.
-   *
-   * @param translation The Translation2d to convert.
-   * @return The vector.
-   */
-  static Eigen::Vector2d ToVector(const Translation2d& translation) {
-    return (Eigen::Vector2d() << translation.X().to<double>(),
-            translation.Y().to<double>())
-        .finished();
-  }
-
-  /**
-   * Converts an Eigen vector into a Translation2d.
-   *
-   * @param vector The vector to convert.
-   * @return The Translation2d.
-   */
-  static Translation2d FromVector(const Eigen::Vector2d& vector) {
-    return Translation2d(units::meter_t(vector(0)), units::meter_t(vector(1)));
-  }
-
- private:
-  constexpr static units::meter_t kMaxDx = 5_in;
-  constexpr static units::meter_t kMaxDy = 0.05_in;
-  constexpr static units::radian_t kMaxDtheta = 0.0872_rad;
-
   /**
    * Gets the pose and curvature at some point t on the spline.
    *
@@ -115,6 +80,41 @@ class Spline {
         {FromVector(combined.template block<2, 1>(0, 0)), Rotation2d(dx, dy)},
         curvature};
   }
+
+ protected:
+  /**
+   * Returns the coefficients of the spline.
+   *
+   * @return The coefficients of the spline.
+   */
+  virtual Eigen::Matrix<double, 6, Degree + 1> Coefficients() const = 0;
+
+  /**
+   * Converts a Translation2d into a vector that is compatible with Eigen.
+   *
+   * @param translation The Translation2d to convert.
+   * @return The vector.
+   */
+  static Eigen::Vector2d ToVector(const Translation2d& translation) {
+    return (Eigen::Vector2d() << translation.X().to<double>(),
+            translation.Y().to<double>())
+        .finished();
+  }
+
+  /**
+   * Converts an Eigen vector into a Translation2d.
+   *
+   * @param vector The vector to convert.
+   * @return The Translation2d.
+   */
+  static Translation2d FromVector(const Eigen::Vector2d& vector) {
+    return Translation2d(units::meter_t(vector(0)), units::meter_t(vector(1)));
+  }
+
+ private:
+  constexpr static units::meter_t kMaxDx = 5_in;
+  constexpr static units::meter_t kMaxDy = 0.05_in;
+  constexpr static units::radian_t kMaxDtheta = 0.0872_rad;
 
   /**
    * Breaks up the spline into arcs until the dx, dy, and theta of each arc is
