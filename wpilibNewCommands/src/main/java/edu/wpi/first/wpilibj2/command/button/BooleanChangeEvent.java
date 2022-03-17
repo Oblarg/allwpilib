@@ -1,9 +1,10 @@
 package edu.wpi.first.wpilibj2.command.button;
 
-import java.util.function.BooleanSupplier;
-
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
 
+import java.util.function.BooleanSupplier;
+
+// TODO: should this be an anonymous class inside BooleanEvent instead?
 class BooleanChangeEvent extends BooleanEvent {
   private boolean m_previous;
   private final ChangeType m_type;
@@ -11,7 +12,7 @@ class BooleanChangeEvent extends BooleanEvent {
   public BooleanChangeEvent(EventLoop loop, BooleanSupplier condition, ChangeType type) {
     super(loop, condition);
     m_previous = condition.getAsBoolean();
-    m_type = requireNonNullParam(type, "type", "BooleanChangeType");
+    m_type = requireNonNullParam(type, "type", "BooleanChangeEvent");
   }
 
   @Override
@@ -35,6 +36,7 @@ class BooleanChangeEvent extends BooleanEvent {
   }
 
   enum ChangeType {
-    FALLING, RISING
+    FALLING,
+    RISING
   }
 }

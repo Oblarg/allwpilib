@@ -4,6 +4,8 @@
 
 package edu.wpi.first.wpilibj2.command;
 
+import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
+
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
@@ -16,12 +18,11 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj2.command.button.EventLoop;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,7 +66,7 @@ public final class CommandScheduler implements NTSendable, AutoCloseable {
   private final Map<Subsystem, Command> m_subsystems = new LinkedHashMap<>();
 
   // The set of currently-registered buttons that will be polled every iteration.
-  private final Collection<Runnable> m_buttons = new LinkedHashSet<>();
+  private EventLoop m_buttonLoop = new EventLoop();
 
   private boolean m_disabled;
 
@@ -115,17 +116,41 @@ public final class CommandScheduler implements NTSendable, AutoCloseable {
   }
 
   /**
+   * Get the current button poll.
+   *
+   * @return a reference to the current {@link EventLoop} object polling buttons.
+   */
+  public EventLoop getButtonLoop() {
+    return m_buttonLoop;
+  }
+
+  /**
+   * Replace the button poll with another one.
+   *
+   * @param loop the new button polling loop object.
+   * @return the old object.
+   */
+  public EventLoop replaceButtonLoop(EventLoop loop) {
+    EventLoop oldLoop = m_buttonLoop;
+    m_buttonLoop =
+        requireNonNullParam(loop, "loop", "CommandScheduler" + ".replaceButtonEventLoop");
+    return oldLoop;
+  }
+
+  /**
    * Adds a button binding to the scheduler, which will be polled to schedule commands.
    *
    * @param button The button to add
    */
+  @Deprecated
   public void addButton(Runnable button) {
-    m_buttons.add(button);
+    m_buttonLoop.bind(() -> true, button);
   }
 
-  /** Removes all button bindings from the scheduler. */
+  /** Removes all button bindings from the current event loop. */
+  @Deprecated
   public void clearButtons() {
-    m_buttons.clear();
+    m_buttonLoop.clear();
   }
 
   /**
@@ -255,9 +280,7 @@ public final class CommandScheduler implements NTSendable, AutoCloseable {
     }
 
     // Poll buttons for new commands to add.
-    for (Runnable button : m_buttons) {
-      button.run();
-    }
+    m_buttonLoop.poll();
     m_watchdog.addEpoch("buttons.run()");
 
     m_inRunLoop = true;
