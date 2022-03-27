@@ -28,7 +28,6 @@ import java.util.function.BooleanSupplier;
  * <p>This class is provided by the NewCommands VendorDep
  */
 public class Trigger extends BooleanEvent {
-
   /**
    * Creates a new trigger with the given condition determining whether it is active.
    *
