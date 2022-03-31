@@ -13,7 +13,7 @@ class BooleanChangeEvent extends BooleanEvent {
   private boolean m_previous;
   private final ChangeType m_type;
 
-  public BooleanChangeEvent(EventLoop loop, BooleanSupplier condition, ChangeType type) {
+  BooleanChangeEvent(EventLoop loop, BooleanSupplier condition, ChangeType type) {
     super(loop, condition);
     m_previous = condition.getAsBoolean();
     m_type = requireNonNullParam(type, "type", "BooleanChangeEvent");
@@ -32,7 +32,7 @@ class BooleanChangeEvent extends BooleanEvent {
         ret = !m_previous && present;
         break;
       default:
-        throw new NullPointerException("Null change type!");
+        throw new IllegalArgumentException("Null change type!");
     }
 
     m_previous = present;

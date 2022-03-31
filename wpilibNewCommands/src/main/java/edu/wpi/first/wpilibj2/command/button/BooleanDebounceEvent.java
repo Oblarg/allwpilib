@@ -13,7 +13,7 @@ import java.util.function.BooleanSupplier;
 class BooleanDebounceEvent extends BooleanEvent {
   private final Debouncer m_debouncer;
 
-  public BooleanDebounceEvent(
+  BooleanDebounceEvent(
       EventLoop loop,
       BooleanSupplier condition,
       double debounceSeconds,

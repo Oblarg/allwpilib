@@ -20,12 +20,13 @@ import java.util.function.BooleanSupplier;
  * <p>To get an event that activates only when this one changes, see {@link #falling()} and {@link
  * #rising()}.
  *
- * <p>If custom functionality is needed, overriding
+ * <p>If custom functionality is needed, override and pass a different condition to the {@code
+ * super()} call or override {@link #get()}.
  */
 public class BooleanEvent implements BooleanSupplier {
-  /** Poller loop */
+  /** Poller loop. */
   protected final EventLoop m_loop;
-  /** Condition */
+  /** Condition. */
   protected final BooleanSupplier m_condition;
 
   /**

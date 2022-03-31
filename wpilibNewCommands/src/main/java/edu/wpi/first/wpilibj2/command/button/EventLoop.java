@@ -33,17 +33,17 @@ public final class EventLoop {
   }
 
   private static class Binding {
-    final BooleanSupplier condition;
-    final Runnable action;
+    private final BooleanSupplier m_condition;
+    private final Runnable m_action;
 
     private Binding(BooleanSupplier condition, Runnable action) {
-      this.condition = condition;
-      this.action = action;
+      this.m_condition = condition;
+      this.m_action = action;
     }
 
     void poll() {
-      if (condition.getAsBoolean()) {
-        action.run();
+      if (m_condition.getAsBoolean()) {
+        m_action.run();
       }
     }
   }
