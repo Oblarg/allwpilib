@@ -14,8 +14,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import java.util.function.BooleanSupplier;
 
 /**
- * This class is a command-based wrapper around {@link BooleanEvent}, providing an easy way to link
- * commands to inputs.
+ * This class provides an easy way to link commands to inputs.
  *
  * <p>It is very easy to link a button to a command. For instance, you could link the trigger button
  * of a joystick to a "score" command.
@@ -27,37 +26,16 @@ import java.util.function.BooleanSupplier;
  *
  * <p>This class is provided by the NewCommands VendorDep
  */
-public class Trigger extends BooleanEvent {
-  /**
-   * Creates a new trigger with the given condition determining whether it is active.
-   *
-   * @param loop the loop that polls this trigger
-   * @param isActive returns whether or not the trigger should be active
-   */
-  public Trigger(EventLoop loop, BooleanSupplier isActive) {
-    super(loop, isActive);
-  }
-
-  /**
-   * Copies the BooleanEvent into a Trigger object.
-   *
-   * @param toCast the BooleanEvent
-   */
-  public static Trigger cast(BooleanEvent toCast) {
-    // use the event itself as a condition (instead of copying the condition) so that debounce and
-    // similar are kept.
-    return new Trigger(toCast.m_loop, toCast);
-  }
+public class Trigger implements BooleanSupplier {
+  private final BooleanSupplier m_isActive;
 
   /**
    * Creates a new trigger with the given condition determining whether it is active.
-   *
-   * <p>Polled by the current scheduler button loop.
    *
    * @param isActive returns whether or not the trigger should be active
    */
   public Trigger(BooleanSupplier isActive) {
-    this(CommandScheduler.getInstance().getButtonLoop(), isActive);
+    m_isActive = isActive;
   }
 
   /**
@@ -65,7 +43,34 @@ public class Trigger extends BooleanEvent {
    * subclasses that will be overriding {@link Trigger#get()} anyway.
    */
   public Trigger() {
-    this(() -> false);
+    m_isActive = () -> false;
+  }
+
+  /**
+   * Returns whether or not the trigger is active.
+   *
+   * <p>This method will be called repeatedly a command is linked to the Trigger.
+   *
+   * <p>Functionally identical to {@link Trigger#getAsBoolean()}.
+   *
+   * @return whether or not the trigger condition is active.
+   */
+  public boolean get() {
+    return this.getAsBoolean();
+  }
+
+  /**
+   * Returns whether or not the trigger is active.
+   *
+   * <p>This method will be called repeatedly a command is linked to the Trigger.
+   *
+   * <p>Functionally identical to {@link Trigger#get()}.
+   *
+   * @return whether or not the trigger condition is active.
+   */
+  @Override
+  public boolean getAsBoolean() {
+    return m_isActive.getAsBoolean();
   }
 
   /**
@@ -78,7 +83,23 @@ public class Trigger extends BooleanEvent {
   public Trigger whenActive(final Command command, boolean interruptible) {
     requireNonNullParam(command, "command", "whenActive");
 
-    this.rising().whenTrue(() -> command.schedule(interruptible));
+    CommandScheduler.getInstance()
+        .addButton(
+            new Runnable() {
+              private boolean m_pressedLast = get();
+
+              @Override
+              public void run() {
+                boolean pressed = get();
+
+                if (!m_pressedLast && pressed) {
+                  command.schedule(interruptible);
+                }
+
+                m_pressedLast = pressed;
+              }
+            });
+
     return this;
   }
 
@@ -101,7 +122,6 @@ public class Trigger extends BooleanEvent {
    * @return this trigger, so calls can be chained
    */
   public Trigger whenActive(final Runnable toRun, Subsystem... requirements) {
-    // TODO perhaps replace with directly binding it if no requirements are given?
     return whenActive(new InstantCommand(toRun, requirements));
   }
 
@@ -118,9 +138,24 @@ public class Trigger extends BooleanEvent {
   public Trigger whileActiveContinuous(final Command command, boolean interruptible) {
     requireNonNullParam(command, "command", "whileActiveContinuous");
 
-    this.whenTrue(() -> command.schedule(interruptible));
-    this.falling().whenTrue(command::cancel);
+    CommandScheduler.getInstance()
+        .addButton(
+            new Runnable() {
+              private boolean m_pressedLast = get();
 
+              @Override
+              public void run() {
+                boolean pressed = get();
+
+                if (pressed) {
+                  command.schedule(interruptible);
+                } else if (m_pressedLast) {
+                  command.cancel();
+                }
+
+                m_pressedLast = pressed;
+              }
+            });
     return this;
   }
 
@@ -145,7 +180,6 @@ public class Trigger extends BooleanEvent {
    * @return this trigger, so calls can be chained
    */
   public Trigger whileActiveContinuous(final Runnable toRun, Subsystem... requirements) {
-    // TODO perhaps replace with directly binding it if no requirements are given?
     return whileActiveContinuous(new InstantCommand(toRun, requirements));
   }
 
@@ -160,9 +194,24 @@ public class Trigger extends BooleanEvent {
   public Trigger whileActiveOnce(final Command command, boolean interruptible) {
     requireNonNullParam(command, "command", "whileActiveOnce");
 
-    this.rising().whenTrue(() -> command.schedule(interruptible));
-    this.falling().whenTrue(command::cancel);
+    CommandScheduler.getInstance()
+        .addButton(
+            new Runnable() {
+              private boolean m_pressedLast = get();
 
+              @Override
+              public void run() {
+                boolean pressed = get();
+
+                if (!m_pressedLast && pressed) {
+                  command.schedule(interruptible);
+                } else if (m_pressedLast && !pressed) {
+                  command.cancel();
+                }
+
+                m_pressedLast = pressed;
+              }
+            });
     return this;
   }
 
@@ -187,8 +236,22 @@ public class Trigger extends BooleanEvent {
   public Trigger whenInactive(final Command command, boolean interruptible) {
     requireNonNullParam(command, "command", "whenInactive");
 
-    this.falling().whenTrue(() -> command.schedule(interruptible));
+    CommandScheduler.getInstance()
+        .addButton(
+            new Runnable() {
+              private boolean m_pressedLast = get();
 
+              @Override
+              public void run() {
+                boolean pressed = get();
+
+                if (m_pressedLast && !pressed) {
+                  command.schedule(interruptible);
+                }
+
+                m_pressedLast = pressed;
+              }
+            });
     return this;
   }
 
@@ -210,7 +273,6 @@ public class Trigger extends BooleanEvent {
    * @return this trigger, so calls can be chained
    */
   public Trigger whenInactive(final Runnable toRun, Subsystem... requirements) {
-    // TODO perhaps replace with directly binding it if no requirements are given?
     return whenInactive(new InstantCommand(toRun, requirements));
   }
 
@@ -224,16 +286,26 @@ public class Trigger extends BooleanEvent {
   public Trigger toggleWhenActive(final Command command, boolean interruptible) {
     requireNonNullParam(command, "command", "toggleWhenActive");
 
-    this.rising()
-        .whenTrue(
-            () -> {
-              if (command.isScheduled()) {
-                command.cancel();
-              } else {
-                command.schedule(interruptible);
+    CommandScheduler.getInstance()
+        .addButton(
+            new Runnable() {
+              private boolean m_pressedLast = get();
+
+              @Override
+              public void run() {
+                boolean pressed = get();
+
+                if (!m_pressedLast && pressed) {
+                  if (command.isScheduled()) {
+                    command.cancel();
+                  } else {
+                    command.schedule(interruptible);
+                  }
+                }
+
+                m_pressedLast = pressed;
               }
             });
-
     return this;
   }
 
@@ -256,45 +328,85 @@ public class Trigger extends BooleanEvent {
   public Trigger cancelWhenActive(final Command command) {
     requireNonNullParam(command, "command", "cancelWhenActive");
 
-    this.rising().whenTrue(command::cancel);
+    CommandScheduler.getInstance()
+        .addButton(
+            new Runnable() {
+              private boolean m_pressedLast = get();
 
+              @Override
+              public void run() {
+                boolean pressed = get();
+
+                if (!m_pressedLast && pressed) {
+                  command.cancel();
+                }
+
+                m_pressedLast = pressed;
+              }
+            });
     return this;
   }
 
-  /* ----------- Super method type redeclarations ----------------- */
-
-  @Override
-  public Trigger and(BooleanEvent trigger) {
-    return cast(super.and(trigger));
+  /**
+   * Composes this trigger with another trigger, returning a new trigger that is active when both
+   * triggers are active.
+   *
+   * @param trigger the trigger to compose with
+   * @return the trigger that is active when both triggers are active
+   */
+  public Trigger and(Trigger trigger) {
+    return new Trigger(() -> get() && trigger.get());
   }
 
-  @Override
-  public Trigger or(BooleanEvent trigger) {
-    return cast(super.or(trigger));
+  /**
+   * Composes this trigger with another trigger, returning a new trigger that is active when either
+   * trigger is active.
+   *
+   * @param trigger the trigger to compose with
+   * @return the trigger that is active when either trigger is active
+   */
+  public Trigger or(Trigger trigger) {
+    return new Trigger(() -> get() || trigger.get());
   }
 
-  @Override
+  /**
+   * Creates a new trigger that is active when this trigger is inactive, i.e. that acts as the
+   * negation of this trigger.
+   *
+   * @return the negated trigger
+   */
   public Trigger negate() {
-    return cast(super.negate());
+    return new Trigger(() -> !get());
   }
 
-  @Override
+  /**
+   * Creates a new debounced trigger from this trigger - it will become active when this trigger has
+   * been active for longer than the specified period.
+   *
+   * @param seconds The debounce period.
+   * @return The debounced trigger (rising edges debounced only)
+   */
   public Trigger debounce(double seconds) {
     return debounce(seconds, Debouncer.DebounceType.kRising);
   }
 
-  @Override
+  /**
+   * Creates a new debounced trigger from this trigger - it will become active when this trigger has
+   * been active for longer than the specified period.
+   *
+   * @param seconds The debounce period.
+   * @param type The debounce type.
+   * @return The debounced trigger.
+   */
   public Trigger debounce(double seconds, Debouncer.DebounceType type) {
-    return cast(super.debounce(seconds, type));
-  }
+    return new Trigger(
+        new BooleanSupplier() {
+          Debouncer m_debouncer = new Debouncer(seconds, type);
 
-  @Override
-  public Trigger rising() {
-    return cast(super.rising());
-  }
-
-  @Override
-  public Trigger falling() {
-    return cast(super.falling());
+          @Override
+          public boolean getAsBoolean() {
+            return m_debouncer.calculate(get());
+          }
+        });
   }
 }

@@ -7,7 +7,7 @@ package edu.wpi.first.wpilibj2.command.button;
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
 
 import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.wpilibj2.command.button.BooleanChangeEvent.ChangeType;
+
 import java.util.function.BooleanSupplier;
 
 /**
@@ -19,15 +19,12 @@ import java.util.function.BooleanSupplier;
  *
  * <p>To get an event that activates only when this one changes, see {@link #falling()} and {@link
  * #rising()}.
- *
- * <p>If custom functionality is needed, override and pass a different condition to the {@code
- * super()} call or override {@link #get()}.
  */
-public class BooleanEvent implements BooleanSupplier {
+public class UnitEvent implements BooleanSupplier {
   /** Poller loop. */
   protected final EventLoop m_loop;
   /** Condition. */
-  protected final BooleanSupplier m_condition;
+  protected final BooleanSignal m_trigger;
 
   /**
    * Creates a new event with the given condition determining whether it is active.
@@ -35,23 +32,14 @@ public class BooleanEvent implements BooleanSupplier {
    * @param loop the loop that polls this event
    * @param condition returns whether or not the event should be active
    */
-  public BooleanEvent(EventLoop loop, BooleanSupplier condition) {
+  public UnitEvent(EventLoop loop, BooleanSupplier condition) {
     m_loop = requireNonNullParam(loop, "loop", "BooleanEvent");
-    m_condition = requireNonNullParam(condition, "condition", "BooleanEvent");
-  }
-
-  /**
-   * Check whether this event is active or not.
-   *
-   * @return true if active.
-   */
-  public boolean get() {
-    return m_condition.getAsBoolean();
+    m_trigger = requireNonNullParam(condition, "condition", "BooleanEvent")::getAsBoolean;
   }
 
   @Override
   public final boolean getAsBoolean() {
-    return get();
+    return m_trigger.getAsBoolean();
   }
 
   /**
@@ -68,8 +56,8 @@ public class BooleanEvent implements BooleanSupplier {
    *
    * @return a new event representing when this one newly changes to true.
    */
-  public BooleanEvent rising() {
-    return new BooleanChangeEvent(m_loop, this, ChangeType.RISING);
+  public UnitEvent rising() {
+    return new UnitEvent(m_loop, m_trigger.rising());
   }
 
   /**
@@ -77,8 +65,12 @@ public class BooleanEvent implements BooleanSupplier {
    *
    * @return a new event representing when this one newly changes to false.
    */
-  public BooleanEvent falling() {
-    return new BooleanChangeEvent(m_loop, this, ChangeType.FALLING);
+  public UnitEvent falling() {
+    return new UnitEvent(m_loop, m_trigger.falling());
+  }
+
+  public UnitEvent changed() {
+    return new UnitEvent(m_loop, m_trigger.changed());
   }
 
   /**
@@ -88,7 +80,7 @@ public class BooleanEvent implements BooleanSupplier {
    * @param seconds The debounce period.
    * @return The debounced event (rising edges debounced only)
    */
-  public BooleanEvent debounce(double seconds) {
+  public UnitEvent debounce(double seconds) {
     return debounce(seconds, Debouncer.DebounceType.kRising);
   }
 
@@ -100,18 +92,8 @@ public class BooleanEvent implements BooleanSupplier {
    * @param type The debounce type.
    * @return The debounced event.
    */
-  public BooleanEvent debounce(double seconds, Debouncer.DebounceType type) {
-    return new BooleanDebounceEvent(m_loop, this, seconds, type);
-  }
-
-  /**
-   * Creates a new event that is active when this event is inactive, i.e. that acts as the negation
-   * of this event.
-   *
-   * @return the negated event
-   */
-  public BooleanEvent negate() {
-    return new BooleanEvent(m_loop, () -> !this.get());
+  public UnitEvent debounce(double seconds, Debouncer.DebounceType type) {
+    return new UnitEvent(m_loop, m_trigger.debounce(seconds, type));
   }
 
   /**
@@ -123,8 +105,8 @@ public class BooleanEvent implements BooleanSupplier {
    * @param other the event to compose with
    * @return the event that is active when both events are active
    */
-  public BooleanEvent and(BooleanEvent other) {
-    return new BooleanEvent(m_loop, () -> this.get() && other.get());
+  public UnitEvent and(BooleanSupplier other) {
+    return new UnitEvent(m_loop, m_trigger.and(other));
   }
 
   /**
@@ -136,7 +118,17 @@ public class BooleanEvent implements BooleanSupplier {
    * @param other the event to compose with
    * @return the event that is active when either event is active
    */
-  public BooleanEvent or(BooleanEvent other) {
-    return new BooleanEvent(m_loop, () -> this.get() || other.get());
+  public UnitEvent or(BooleanSupplier other) {
+    return new UnitEvent(m_loop, m_trigger.or(other));
+  }
+
+  /**
+   * Creates a new event that is active when this event is inactive, i.e. that acts as the negation
+   * of this event.
+   *
+   * @return the negated event
+   */
+  public UnitEvent negate() {
+    return new UnitEvent(m_loop, m_trigger.negate());
   }
 }
