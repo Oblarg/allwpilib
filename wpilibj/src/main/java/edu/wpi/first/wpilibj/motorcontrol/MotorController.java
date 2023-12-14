@@ -38,6 +38,15 @@ public interface MotorController {
   double get();
 
   /**
+   * Gets the voltage currently being applied to the motor by the controller.
+   *
+   * @return The voltage applied to the motor in volts.
+   */
+  default double getVoltage() {
+    return get() * RobotController.getBatteryVoltage();
+  }
+
+  /**
    * Common interface for inverting direction of a motor controller.
    *
    * @param isInverted The state of inversion true is inverted.

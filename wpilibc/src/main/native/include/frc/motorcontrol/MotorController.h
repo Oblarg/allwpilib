@@ -44,6 +44,13 @@ class MotorController {
   virtual double Get() const = 0;
 
   /**
+   * Gets the voltage currently being applied to the motor by the controller.
+   *
+   * @return The voltage applied to the motor in volts.
+   */
+  virtual units::volt_t GetVoltage();
+
+  /**
    * Common interface for inverting direction of a motor controller.
    *
    * @param isInverted The state of inversion, true is inverted.
