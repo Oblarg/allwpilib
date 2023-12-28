@@ -233,13 +233,12 @@ public final class Commands {
    * the others.
    *
    * @param deadline the deadline command
-   * @param otherCommands the other commands to include
+   * @param commands the commands to include
    * @return the command group
    * @see ParallelDeadlineGroup
-   * @throws IllegalArgumentException if the deadline command is also in the otherCommands argument
    */
-  public static Command deadline(Command deadline, Command... otherCommands) {
-    return new ParallelDeadlineGroup(deadline, otherCommands);
+  public static Command deadline(Command deadline, Command... commands) {
+    return new ParallelDeadlineGroup(deadline, commands);
   }
 
   private Commands() {

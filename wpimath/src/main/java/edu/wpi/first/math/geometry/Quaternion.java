@@ -13,14 +13,11 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.proto.QuaternionProto;
 import edu.wpi.first.math.geometry.struct.QuaternionStruct;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.util.protobuf.ProtobufSerializable;
-import edu.wpi.first.util.struct.StructSerializable;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-public class Quaternion
-    implements ProtobufSerializable<Quaternion>, StructSerializable<Quaternion> {
+public class Quaternion {
   // Scalar r in versor form
   private final double m_w;
 

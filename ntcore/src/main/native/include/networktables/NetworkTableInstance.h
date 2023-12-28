@@ -37,11 +37,9 @@ class ProtobufTopic;
 class RawTopic;
 class StringArrayTopic;
 class StringTopic;
-template <typename T, typename... I>
-  requires wpi::StructSerializable<T, I...>
+template <wpi::StructSerializable T>
 class StructArrayTopic;
-template <typename T, typename... I>
-  requires wpi::StructSerializable<T, I...>
+template <wpi::StructSerializable T>
 class StructTopic;
 class Subscriber;
 class Topic;
@@ -262,24 +260,19 @@ class NetworkTableInstance final {
    * Gets a raw struct serialized value topic.
    *
    * @param name topic name
-   * @param info optional struct type info
    * @return Topic
    */
-  template <typename T, typename... I>
-    requires wpi::StructSerializable<T, I...>
-  StructTopic<T, I...> GetStructTopic(std::string_view name, I... info) const;
+  template <wpi::StructSerializable T>
+  StructTopic<T> GetStructTopic(std::string_view name) const;
 
   /**
    * Gets a raw struct serialized array topic.
    *
    * @param name topic name
-   * @param info optional struct type info
    * @return Topic
    */
-  template <typename T, typename... I>
-    requires wpi::StructSerializable<T, I...>
-  StructArrayTopic<T, I...> GetStructArrayTopic(std::string_view name,
-                                                I... info) const;
+  template <wpi::StructSerializable T>
+  StructArrayTopic<T> GetStructArrayTopic(std::string_view name) const;
 
   /**
    * Get Published Topics.
@@ -825,12 +818,10 @@ class NetworkTableInstance final {
    * Registers a struct schema. Duplicate calls to this function with the same
    * name are silently ignored.
    *
-   * @tparam T struct serializable type
-   * @param info optional struct type info
+   * @param T struct serializable type
    */
-  template <typename T, typename... I>
-    requires wpi::StructSerializable<T, I...>
-  void AddStructSchema(const I&... info);
+  template <wpi::StructSerializable T>
+  void AddStructSchema();
 
   /**
    * Equality operator.  Returns true if both instances refer to the same

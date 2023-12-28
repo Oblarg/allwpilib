@@ -11,7 +11,6 @@
 #include "units/angular_velocity.h"
 #include "units/math.h"
 #include "units/voltage.h"
-#include "wpimath/MathShared.h"
 
 namespace frc {
 /**
@@ -30,6 +29,8 @@ class WPILIB_DLLEXPORT ArmFeedforward {
   using ka_unit =
       units::compound_unit<units::volts, units::inverse<Acceleration>>;
 
+  constexpr ArmFeedforward() = default;
+
   /**
    * Creates a new ArmFeedforward with the specified gains.
    *
@@ -41,20 +42,7 @@ class WPILIB_DLLEXPORT ArmFeedforward {
   constexpr ArmFeedforward(
       units::volt_t kS, units::volt_t kG, units::unit_t<kv_unit> kV,
       units::unit_t<ka_unit> kA = units::unit_t<ka_unit>(0))
-      : kS(kS), kG(kG), kV(kV), kA(kA) {
-    if (kV.value() < 0) {
-      wpi::math::MathSharedStore::ReportError(
-          "kV must be a non-negative number, got {}!", kV.value());
-      kV = units::unit_t<kv_unit>{0};
-      wpi::math::MathSharedStore::ReportWarning("kV defaulted to 0.");
-    }
-    if (kA.value() < 0) {
-      wpi::math::MathSharedStore::ReportError(
-          "kA must be a non-negative number, got {}!", kA.value());
-      kA = units::unit_t<ka_unit>{0};
-      wpi::math::MathSharedStore::ReportWarning("kA defaulted to 0;");
-    }
-  }
+      : kS(kS), kG(kG), kV(kV), kA(kA) {}
 
   /**
    * Calculates the feedforward from the gains and setpoints.
@@ -175,10 +163,10 @@ class WPILIB_DLLEXPORT ArmFeedforward {
     return MaxAchievableAcceleration(-maxVoltage, angle, velocity);
   }
 
-  const units::volt_t kS;
-  const units::volt_t kG;
-  const units::unit_t<kv_unit> kV;
-  const units::unit_t<ka_unit> kA;
+  units::volt_t kS{0};
+  units::volt_t kG{0};
+  units::unit_t<kv_unit> kV{0};
+  units::unit_t<ka_unit> kA{0};
 };
 }  // namespace frc
 

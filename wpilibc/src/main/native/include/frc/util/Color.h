@@ -10,7 +10,6 @@
 #include <string_view>
 
 #include <fmt/core.h>
-#include <gcem.hpp>
 #include <wpi/StringExtras.h>
 #include <wpi/ct_string.h>
 
@@ -869,8 +868,12 @@ class Color {
   double blue = 0.0;
 
  private:
+  static constexpr double kPrecision = 1.0 / (1 << 12);
+
   static constexpr double roundAndClamp(double value) {
-    return std::clamp(gcem::ceil(value * (1 << 12)) / (1 << 12), 0.0, 1.0);
+    const auto rounded =
+        (static_cast<int>(value / kPrecision) + 0.5) * kPrecision;
+    return std::clamp(rounded, 0.0, 1.0);
   }
 };
 

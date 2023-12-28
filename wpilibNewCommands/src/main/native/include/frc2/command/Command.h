@@ -432,7 +432,6 @@ class Command : public wpi::Sendable, public wpi::SendableHelper<Command> {
    * Transfers ownership of this command to a unique pointer.  Used for
    * decorator methods.
    */
-  [[deprecated("Use ToPtr() instead")]]
   virtual std::unique_ptr<Command> TransferOwnership() && = 0;
 
   std::optional<std::string> m_previousComposition;

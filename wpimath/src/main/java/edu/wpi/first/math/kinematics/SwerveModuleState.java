@@ -12,15 +12,10 @@ import edu.wpi.first.math.kinematics.struct.SwerveModuleStateStruct;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Velocity;
-import edu.wpi.first.util.protobuf.ProtobufSerializable;
-import edu.wpi.first.util.struct.StructSerializable;
 import java.util.Objects;
 
 /** Represents the state of one swerve module. */
-public class SwerveModuleState
-    implements Comparable<SwerveModuleState>,
-        ProtobufSerializable<SwerveModuleState>,
-        StructSerializable<SwerveModuleState> {
+public class SwerveModuleState implements Comparable<SwerveModuleState> {
   /** Speed of the wheel of the module. */
   public double speedMetersPerSecond;
 

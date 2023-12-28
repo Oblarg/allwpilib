@@ -176,14 +176,5 @@ public class RoboRioDataJNI extends JNIWrapper {
 
   public static native void setComments(String comments);
 
-  public static native int registerRadioLEDStateCallback(
-      NotifyCallback callback, boolean initialNotify);
-
-  public static native void cancelRadioLEDStateCallback(int uid);
-
-  public static native int getRadioLEDState();
-
-  public static native void setRadioLEDState(int state);
-
   public static native void resetData();
 }

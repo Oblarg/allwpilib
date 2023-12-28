@@ -96,12 +96,13 @@ TEST(FeedforwardAnalysisTest, Arm1) {
     sysid::ArmSim model{Ks, Kv, Ka, Kg, offset};
     auto ff = sysid::CalculateFeedforwardGains(CollectData(model),
                                                sysid::analysis::kArm);
+    auto& gains = std::get<0>(ff);
 
-    EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-    EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-    EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
-    EXPECT_NEAR(ff.coeffs[3], Kg, 0.003);
-    EXPECT_NEAR(ff.coeffs[4], offset, 0.007);
+    EXPECT_NEAR(gains[0], Ks, 0.003);
+    EXPECT_NEAR(gains[1], Kv, 0.003);
+    EXPECT_NEAR(gains[2], Ka, 0.003);
+    EXPECT_NEAR(gains[3], Kg, 0.003);
+    EXPECT_NEAR(gains[4], offset, 0.007);
   }
 }
 
@@ -115,12 +116,13 @@ TEST(FeedforwardAnalysisTest, Arm2) {
     sysid::ArmSim model{Ks, Kv, Ka, Kg, offset};
     auto ff = sysid::CalculateFeedforwardGains(CollectData(model),
                                                sysid::analysis::kArm);
+    auto& gains = std::get<0>(ff);
 
-    EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-    EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-    EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
-    EXPECT_NEAR(ff.coeffs[3], Kg, 0.003);
-    EXPECT_NEAR(ff.coeffs[4], offset, 0.007);
+    EXPECT_NEAR(gains[0], Ks, 0.003);
+    EXPECT_NEAR(gains[1], Kv, 0.003);
+    EXPECT_NEAR(gains[2], Ka, 0.003);
+    EXPECT_NEAR(gains[3], Kg, 0.003);
+    EXPECT_NEAR(gains[4], offset, 0.007);
   }
 }
 
@@ -132,10 +134,11 @@ TEST(FeedforwardAnalysisTest, Drivetrain1) {
   sysid::SimpleMotorSim model{Ks, Kv, Ka};
   auto ff = sysid::CalculateFeedforwardGains(CollectData(model),
                                              sysid::analysis::kDrivetrain);
+  auto& gains = std::get<0>(ff);
 
-  EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-  EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-  EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
+  EXPECT_NEAR(gains[0], Ks, 0.003);
+  EXPECT_NEAR(gains[1], Kv, 0.003);
+  EXPECT_NEAR(gains[2], Ka, 0.003);
 }
 
 TEST(FeedforwardAnalysisTest, Drivetrain2) {
@@ -146,10 +149,11 @@ TEST(FeedforwardAnalysisTest, Drivetrain2) {
   sysid::SimpleMotorSim model{Ks, Kv, Ka};
   auto ff = sysid::CalculateFeedforwardGains(CollectData(model),
                                              sysid::analysis::kDrivetrain);
+  auto& gains = std::get<0>(ff);
 
-  EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-  EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-  EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
+  EXPECT_NEAR(gains[0], Ks, 0.003);
+  EXPECT_NEAR(gains[1], Kv, 0.003);
+  EXPECT_NEAR(gains[2], Ka, 0.003);
 }
 
 TEST(FeedforwardAnalysisTest, DrivetrainAngular1) {
@@ -160,10 +164,11 @@ TEST(FeedforwardAnalysisTest, DrivetrainAngular1) {
   sysid::SimpleMotorSim model{Ks, Kv, Ka};
   auto ff = sysid::CalculateFeedforwardGains(
       CollectData(model), sysid::analysis::kDrivetrainAngular);
+  auto& gains = std::get<0>(ff);
 
-  EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-  EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-  EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
+  EXPECT_NEAR(gains[0], Ks, 0.003);
+  EXPECT_NEAR(gains[1], Kv, 0.003);
+  EXPECT_NEAR(gains[2], Ka, 0.003);
 }
 
 TEST(FeedforwardAnalysisTest, DrivetrainAngular2) {
@@ -174,10 +179,11 @@ TEST(FeedforwardAnalysisTest, DrivetrainAngular2) {
   sysid::SimpleMotorSim model{Ks, Kv, Ka};
   auto ff = sysid::CalculateFeedforwardGains(
       CollectData(model), sysid::analysis::kDrivetrainAngular);
+  auto& gains = std::get<0>(ff);
 
-  EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-  EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-  EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
+  EXPECT_NEAR(gains[0], Ks, 0.003);
+  EXPECT_NEAR(gains[1], Kv, 0.003);
+  EXPECT_NEAR(gains[2], Ka, 0.003);
 }
 
 TEST(FeedforwardAnalysisTest, Elevator1) {
@@ -189,11 +195,12 @@ TEST(FeedforwardAnalysisTest, Elevator1) {
   sysid::ElevatorSim model{Ks, Kv, Ka, Kg};
   auto ff = sysid::CalculateFeedforwardGains(CollectData(model),
                                              sysid::analysis::kElevator);
+  auto& gains = std::get<0>(ff);
 
-  EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-  EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-  EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
-  EXPECT_NEAR(ff.coeffs[3], Kg, 0.003);
+  EXPECT_NEAR(gains[0], Ks, 0.003);
+  EXPECT_NEAR(gains[1], Kv, 0.003);
+  EXPECT_NEAR(gains[2], Ka, 0.003);
+  EXPECT_NEAR(gains[3], Kg, 0.003);
 }
 
 TEST(FeedforwardAnalysisTest, Elevator2) {
@@ -205,11 +212,12 @@ TEST(FeedforwardAnalysisTest, Elevator2) {
   sysid::ElevatorSim model{Ks, Kv, Ka, Kg};
   auto ff = sysid::CalculateFeedforwardGains(CollectData(model),
                                              sysid::analysis::kElevator);
+  auto& gains = std::get<0>(ff);
 
-  EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-  EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-  EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
-  EXPECT_NEAR(ff.coeffs[3], Kg, 0.003);
+  EXPECT_NEAR(gains[0], Ks, 0.003);
+  EXPECT_NEAR(gains[1], Kv, 0.003);
+  EXPECT_NEAR(gains[2], Ka, 0.003);
+  EXPECT_NEAR(gains[3], Kg, 0.003);
 }
 
 TEST(FeedforwardAnalysisTest, Simple1) {
@@ -220,10 +228,11 @@ TEST(FeedforwardAnalysisTest, Simple1) {
   sysid::SimpleMotorSim model{Ks, Kv, Ka};
   auto ff = sysid::CalculateFeedforwardGains(CollectData(model),
                                              sysid::analysis::kSimple);
+  auto& gains = std::get<0>(ff);
 
-  EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-  EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-  EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
+  EXPECT_NEAR(gains[0], Ks, 0.003);
+  EXPECT_NEAR(gains[1], Kv, 0.003);
+  EXPECT_NEAR(gains[2], Ka, 0.003);
 }
 
 TEST(FeedforwardAnalysisTest, Simple2) {
@@ -234,8 +243,9 @@ TEST(FeedforwardAnalysisTest, Simple2) {
   sysid::SimpleMotorSim model{Ks, Kv, Ka};
   auto ff = sysid::CalculateFeedforwardGains(CollectData(model),
                                              sysid::analysis::kSimple);
+  auto& gains = std::get<0>(ff);
 
-  EXPECT_NEAR(ff.coeffs[0], Ks, 0.003);
-  EXPECT_NEAR(ff.coeffs[1], Kv, 0.003);
-  EXPECT_NEAR(ff.coeffs[2], Ka, 0.003);
+  EXPECT_NEAR(gains[0], Ks, 0.003);
+  EXPECT_NEAR(gains[1], Kv, 0.003);
+  EXPECT_NEAR(gains[2], Ka, 0.003);
 }

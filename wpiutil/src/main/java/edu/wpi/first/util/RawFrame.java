@@ -12,16 +12,17 @@ import java.nio.ByteBuffer;
  * <p>Data is reused for each frame read, rather then reallocating every frame.
  */
 public class RawFrame implements AutoCloseable {
-  private long m_nativeObj;
-  private ByteBuffer m_data;
+  private final long m_framePtr;
+  private ByteBuffer m_dataByteBuffer;
+  private long m_dataPtr;
+  private int m_totalData;
   private int m_width;
   private int m_height;
-  private int m_stride;
-  private PixelFormat m_pixelFormat;
+  private int m_pixelFormat;
 
-  /** Construct a new empty RawFrame. */
+  /** Construct a new RawFrame. */
   public RawFrame() {
-    m_nativeObj = WPIUtilJNI.allocateRawFrame();
+    m_framePtr = WPIUtilJNI.allocateRawFrame();
   }
 
   /**
@@ -30,79 +31,32 @@ public class RawFrame implements AutoCloseable {
    */
   @Override
   public void close() {
-    WPIUtilJNI.freeRawFrame(m_nativeObj);
-    m_nativeObj = 0;
+    WPIUtilJNI.freeRawFrame(m_framePtr);
   }
 
   /**
    * Called from JNI to set data in class.
    *
-   * @param data A native ByteBuffer pointing to the frame data.
-   * @param width The width of the frame, in pixels
-   * @param height The height of the frame, in pixels
-   * @param stride The number of bytes in each row of image data
-   * @param pixelFormat The PixelFormat of the frame
+   * @param dataByteBuffer A ByteBuffer pointing to the frame data.
+   * @param dataPtr A long (a char* in native code) pointing to the frame data.
+   * @param totalData The total length of the data stored in the frame.
+   * @param width The width of the frame.
+   * @param height The height of the frame.
+   * @param pixelFormat The PixelFormat of the frame.
    */
-  void setDataJNI(ByteBuffer data, int width, int height, int stride, int pixelFormat) {
-    m_data = data;
+  public void setData(
+      ByteBuffer dataByteBuffer,
+      long dataPtr,
+      int totalData,
+      int width,
+      int height,
+      int pixelFormat) {
+    m_dataByteBuffer = dataByteBuffer;
+    m_dataPtr = dataPtr;
+    m_totalData = totalData;
     m_width = width;
     m_height = height;
-    m_stride = stride;
-    m_pixelFormat = PixelFormat.getFromInt(pixelFormat);
-  }
-
-  /**
-   * Called from JNI to set info in class.
-   *
-   * @param width The width of the frame, in pixels
-   * @param height The height of the frame, in pixels
-   * @param stride The number of bytes in each row of image data
-   * @param pixelFormat The PixelFormat of the frame
-   */
-  void setInfoJNI(int width, int height, int stride, int pixelFormat) {
-    m_width = width;
-    m_height = height;
-    m_stride = stride;
-    m_pixelFormat = PixelFormat.getFromInt(pixelFormat);
-  }
-
-  /**
-   * Set frame data.
-   *
-   * @param data A native ByteBuffer pointing to the frame data.
-   * @param width The width of the frame, in pixels
-   * @param height The height of the frame, in pixels
-   * @param stride The number of bytes in each row of image data
-   * @param pixelFormat The PixelFormat of the frame
-   */
-  public void setData(ByteBuffer data, int width, int height, int stride, PixelFormat pixelFormat) {
-    if (!data.isDirect()) {
-      throw new UnsupportedOperationException("ByteBuffer must be direct");
-    }
-    m_data = data;
-    m_width = width;
-    m_height = height;
-    m_stride = stride;
     m_pixelFormat = pixelFormat;
-    WPIUtilJNI.setRawFrameData(
-        m_nativeObj, data, data.limit(), width, height, stride, pixelFormat.getValue());
-  }
-
-  /**
-   * Call to set frame information.
-   *
-   * @param width The width of the frame, in pixels
-   * @param height The height of the frame, in pixels
-   * @param stride The number of bytes in each row of image data
-   * @param pixelFormat The PixelFormat of the frame
-   */
-  public void setInfo(int width, int height, int stride, PixelFormat pixelFormat) {
-    m_width = width;
-    m_height = height;
-    m_stride = stride;
-    m_pixelFormat = pixelFormat;
-    WPIUtilJNI.setRawFrameInfo(
-        m_nativeObj, m_data.limit(), width, height, stride, pixelFormat.getValue());
   }
 
   /**
@@ -110,8 +64,8 @@ public class RawFrame implements AutoCloseable {
    *
    * @return The pointer to native representation of this frame.
    */
-  public long getNativeObj() {
-    return m_nativeObj;
+  public long getFramePtr() {
+    return m_framePtr;
   }
 
   /**
@@ -121,55 +75,64 @@ public class RawFrame implements AutoCloseable {
    *
    * @return A ByteBuffer pointing to the frame data.
    */
-  public ByteBuffer getData() {
-    return m_data;
+  public ByteBuffer getDataByteBuffer() {
+    return m_dataByteBuffer;
   }
 
   /**
-   * Get a long (is a uint8_t* in native code) pointing to the frame data. This pointer is backed by
+   * Get a long (is a char* in native code) pointing to the frame data. This pointer is backed by
    * the frame directly. Its lifetime is controlled by the frame. If a new frame gets read, it will
    * overwrite the current one.
    *
    * @return A long pointing to the frame data.
    */
   public long getDataPtr() {
-    return WPIUtilJNI.getRawFrameDataPtr(m_nativeObj);
+    return m_dataPtr;
   }
 
   /**
-   * Get the total size of the data stored in the frame, in bytes.
+   * Get the total length of the data stored in the frame.
    *
-   * @return The total size of the data stored in the frame.
+   * @return The total length of the data stored in the frame.
    */
-  public int getSize() {
-    return m_data.limit();
+  public int getTotalData() {
+    return m_totalData;
   }
 
   /**
-   * Get the width of the image.
+   * Get the width of the frame.
    *
-   * @return The width of the image, in pixels.
+   * @return The width of the frame.
    */
   public int getWidth() {
     return m_width;
   }
 
   /**
-   * Get the height of the image.
+   * Set the width of the frame.
    *
-   * @return The height of the image, in pixels.
+   * @param width The width of the frame.
+   */
+  public void setWidth(int width) {
+    this.m_width = width;
+  }
+
+  /**
+   * Get the height of the frame.
+   *
+   * @return The height of the frame.
    */
   public int getHeight() {
     return m_height;
   }
 
   /**
-   * Get the number of bytes in each row of image data.
+   * Set the height of the frame.
    *
-   * @return The image data stride, in bytes.
+   * @param height The height of the frame.
    */
-  public int getStride() {
-    return m_stride;
+  public void setHeight(int height) {
+    this.m_height = height;
   }
 
   /**
@@ -177,7 +140,16 @@ public class RawFrame implements AutoCloseable {
    *
    * @return The PixelFormat of the frame.
    */
-  public PixelFormat getPixelFormat() {
+  public int getPixelFormat() {
     return m_pixelFormat;
+  }
+
+  /**
+   * Set the PixelFormat of the frame.
+   *
+   * @param pixelFormat The PixelFormat of the frame.
+   */
+  public void setPixelFormat(int pixelFormat) {
+    this.m_pixelFormat = pixelFormat;
   }
 }

@@ -35,10 +35,9 @@ public final class SmartDashboard {
   /** The executor for listener tasks; calls listener tasks synchronously from main thread. */
   private static final ListenerExecutor listenerExecutor = new ListenerExecutor();
 
-  private static boolean m_reported = false; // NOPMD redundant field initializer
-
   static {
     setNetworkTableInstance(NetworkTableInstance.getDefault());
+    HAL.report(tResourceType.kResourceType_SmartDashboard, 0);
   }
 
   private SmartDashboard() {
@@ -65,10 +64,6 @@ public final class SmartDashboard {
    */
   @SuppressWarnings("PMD.CompareObjectsWithEquals")
   public static synchronized void putData(String key, Sendable data) {
-    if (!m_reported) {
-      HAL.report(tResourceType.kResourceType_SmartDashboard, 0);
-      m_reported = true;
-    }
     Sendable sddata = tablesToData.get(key);
     if (sddata == null || sddata != data) {
       tablesToData.put(key, data);
@@ -119,10 +114,6 @@ public final class SmartDashboard {
    * @return Network table entry.
    */
   public static NetworkTableEntry getEntry(String key) {
-    if (!m_reported) {
-      HAL.report(tResourceType.kResourceType_SmartDashboard, 0);
-      m_reported = true;
-    }
     return table.getEntry(key);
   }
 

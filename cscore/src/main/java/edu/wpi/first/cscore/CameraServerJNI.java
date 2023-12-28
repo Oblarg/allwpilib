@@ -182,13 +182,21 @@ public class CameraServerJNI {
   //
   // Image Source Functions
   //
-  public static native void putRawSourceFrame(int source, long frame);
-
   public static native void putRawSourceFrameBB(
-      int source, ByteBuffer data, int size, int width, int height, int stride, int pixelFormat);
+      int source, ByteBuffer data, int width, int height, int pixelFormat, int totalData);
 
-  public static native void putRawSourceFrameData(
-      int source, long data, int size, int width, int height, int stride, int pixelFormat);
+  public static native void putRawSourceFrame(
+      int source, long data, int width, int height, int pixelFormat, int totalData);
+
+  public static void putRawSourceFrame(int source, RawFrame raw) {
+    putRawSourceFrame(
+        source,
+        raw.getDataPtr(),
+        raw.getWidth(),
+        raw.getHeight(),
+        raw.getPixelFormat(),
+        raw.getTotalData());
+  }
 
   public static native void notifySourceError(int source, String msg);
 
@@ -255,10 +263,47 @@ public class CameraServerJNI {
   //
   public static native void setSinkDescription(int sink, String description);
 
-  public static native long grabRawSinkFrame(int sink, RawFrame frame, long nativeObj);
+  private static native long grabRawSinkFrameImpl(
+      int sink,
+      RawFrame rawFrame,
+      long rawFramePtr,
+      ByteBuffer byteBuffer,
+      int width,
+      int height,
+      int pixelFormat);
 
-  public static native long grabRawSinkFrameTimeout(
-      int sink, RawFrame frame, long nativeObj, double timeout);
+  private static native long grabRawSinkFrameTimeoutImpl(
+      int sink,
+      RawFrame rawFrame,
+      long rawFramePtr,
+      ByteBuffer byteBuffer,
+      int width,
+      int height,
+      int pixelFormat,
+      double timeout);
+
+  public static long grabSinkFrame(int sink, RawFrame rawFrame) {
+    return grabRawSinkFrameImpl(
+        sink,
+        rawFrame,
+        rawFrame.getFramePtr(),
+        rawFrame.getDataByteBuffer(),
+        rawFrame.getWidth(),
+        rawFrame.getHeight(),
+        rawFrame.getPixelFormat());
+  }
+
+  public static long grabSinkFrameTimeout(int sink, RawFrame rawFrame, double timeout) {
+    return grabRawSinkFrameTimeoutImpl(
+        sink,
+        rawFrame,
+        rawFrame.getFramePtr(),
+        rawFrame.getDataByteBuffer(),
+        rawFrame.getWidth(),
+        rawFrame.getHeight(),
+        rawFrame.getPixelFormat(),
+        timeout);
+  }
 
   public static native String getSinkError(int sink);
 

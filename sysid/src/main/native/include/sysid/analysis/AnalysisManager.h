@@ -98,7 +98,7 @@ class AnalysisManager {
     /**
      * Stores the Feedforward gains.
      */
-    OLSResult ffGains;
+    std::tuple<std::vector<double>, double, double> ffGains;
 
     /**
      * Stores the trackwidth for angular drivetrain tests.

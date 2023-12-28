@@ -19,6 +19,8 @@ using namespace frc;
 
 namespace {
 struct Instance {
+  Instance() { HAL_Report(HALUsageReporting::kResourceType_SmartDashboard, 0); }
+
   detail::ListenerExecutor listenerExecutor;
   std::shared_ptr<nt::NetworkTable> table =
       nt::NetworkTableInstance::GetDefault().GetTable("SmartDashboard");
@@ -44,8 +46,6 @@ void ResetSmartDashboardInstance() {
 }  // namespace frc::impl
 #endif
 
-static bool gReported = false;
-
 void SmartDashboard::init() {
   GetInstance();
 }
@@ -59,32 +59,24 @@ std::vector<std::string> SmartDashboard::GetKeys(int types) {
 }
 
 void SmartDashboard::SetPersistent(std::string_view key) {
-  GetEntry(key).SetPersistent();
+  GetInstance().table->GetEntry(key).SetPersistent();
 }
 
 void SmartDashboard::ClearPersistent(std::string_view key) {
-  GetEntry(key).ClearPersistent();
+  GetInstance().table->GetEntry(key).ClearPersistent();
 }
 
 bool SmartDashboard::IsPersistent(std::string_view key) {
-  return GetEntry(key).IsPersistent();
+  return GetInstance().table->GetEntry(key).IsPersistent();
 }
 
 nt::NetworkTableEntry SmartDashboard::GetEntry(std::string_view key) {
-  if (!gReported) {
-    HAL_Report(HALUsageReporting::kResourceType_SmartDashboard, 0);
-    gReported = true;
-  }
   return GetInstance().table->GetEntry(key);
 }
 
 void SmartDashboard::PutData(std::string_view key, wpi::Sendable* data) {
   if (!data) {
     throw FRC_MakeError(err::NullParameter, "value");
-  }
-  if (!gReported) {
-    HAL_Report(HALUsageReporting::kResourceType_SmartDashboard, 0);
-    gReported = true;
   }
   auto& inst = GetInstance();
   std::scoped_lock lock(inst.tablesToDataMutex);
@@ -128,7 +120,7 @@ bool SmartDashboard::PutBoolean(std::string_view keyName, bool value) {
 
 bool SmartDashboard::SetDefaultBoolean(std::string_view key,
                                        bool defaultValue) {
-  return GetEntry(key).SetDefaultBoolean(defaultValue);
+  return GetInstance().table->GetEntry(key).SetDefaultBoolean(defaultValue);
 }
 
 bool SmartDashboard::GetBoolean(std::string_view keyName, bool defaultValue) {
@@ -141,7 +133,7 @@ bool SmartDashboard::PutNumber(std::string_view keyName, double value) {
 
 bool SmartDashboard::SetDefaultNumber(std::string_view key,
                                       double defaultValue) {
-  return GetEntry(key).SetDefaultDouble(defaultValue);
+  return GetInstance().table->GetEntry(key).SetDefaultDouble(defaultValue);
 }
 
 double SmartDashboard::GetNumber(std::string_view keyName,
@@ -156,7 +148,7 @@ bool SmartDashboard::PutString(std::string_view keyName,
 
 bool SmartDashboard::SetDefaultString(std::string_view key,
                                       std::string_view defaultValue) {
-  return GetEntry(key).SetDefaultString(defaultValue);
+  return GetInstance().table->GetEntry(key).SetDefaultString(defaultValue);
 }
 
 std::string SmartDashboard::GetString(std::string_view keyName,
@@ -166,62 +158,63 @@ std::string SmartDashboard::GetString(std::string_view keyName,
 
 bool SmartDashboard::PutBooleanArray(std::string_view key,
                                      std::span<const int> value) {
-  return GetEntry(key).SetBooleanArray(value);
+  return GetInstance().table->GetEntry(key).SetBooleanArray(value);
 }
 
 bool SmartDashboard::SetDefaultBooleanArray(std::string_view key,
                                             std::span<const int> defaultValue) {
-  return GetEntry(key).SetDefaultBooleanArray(defaultValue);
+  return GetInstance().table->GetEntry(key).SetDefaultBooleanArray(
+      defaultValue);
 }
 
 std::vector<int> SmartDashboard::GetBooleanArray(
     std::string_view key, std::span<const int> defaultValue) {
-  return GetEntry(key).GetBooleanArray(defaultValue);
+  return GetInstance().table->GetEntry(key).GetBooleanArray(defaultValue);
 }
 
 bool SmartDashboard::PutNumberArray(std::string_view key,
                                     std::span<const double> value) {
-  return GetEntry(key).SetDoubleArray(value);
+  return GetInstance().table->GetEntry(key).SetDoubleArray(value);
 }
 
 bool SmartDashboard::SetDefaultNumberArray(
     std::string_view key, std::span<const double> defaultValue) {
-  return GetEntry(key).SetDefaultDoubleArray(defaultValue);
+  return GetInstance().table->GetEntry(key).SetDefaultDoubleArray(defaultValue);
 }
 
 std::vector<double> SmartDashboard::GetNumberArray(
     std::string_view key, std::span<const double> defaultValue) {
-  return GetEntry(key).GetDoubleArray(defaultValue);
+  return GetInstance().table->GetEntry(key).GetDoubleArray(defaultValue);
 }
 
 bool SmartDashboard::PutStringArray(std::string_view key,
                                     std::span<const std::string> value) {
-  return GetEntry(key).SetStringArray(value);
+  return GetInstance().table->GetEntry(key).SetStringArray(value);
 }
 
 bool SmartDashboard::SetDefaultStringArray(
     std::string_view key, std::span<const std::string> defaultValue) {
-  return GetEntry(key).SetDefaultStringArray(defaultValue);
+  return GetInstance().table->GetEntry(key).SetDefaultStringArray(defaultValue);
 }
 
 std::vector<std::string> SmartDashboard::GetStringArray(
     std::string_view key, std::span<const std::string> defaultValue) {
-  return GetEntry(key).GetStringArray(defaultValue);
+  return GetInstance().table->GetEntry(key).GetStringArray(defaultValue);
 }
 
 bool SmartDashboard::PutRaw(std::string_view key,
                             std::span<const uint8_t> value) {
-  return GetEntry(key).SetRaw(value);
+  return GetInstance().table->GetEntry(key).SetRaw(value);
 }
 
 bool SmartDashboard::SetDefaultRaw(std::string_view key,
                                    std::span<const uint8_t> defaultValue) {
-  return GetEntry(key).SetDefaultRaw(defaultValue);
+  return GetInstance().table->GetEntry(key).SetDefaultRaw(defaultValue);
 }
 
 std::vector<uint8_t> SmartDashboard::GetRaw(
     std::string_view key, std::span<const uint8_t> defaultValue) {
-  return GetEntry(key).GetRaw(defaultValue);
+  return GetInstance().table->GetEntry(key).GetRaw(defaultValue);
 }
 
 bool SmartDashboard::PutValue(std::string_view keyName,
@@ -231,7 +224,7 @@ bool SmartDashboard::PutValue(std::string_view keyName,
 
 bool SmartDashboard::SetDefaultValue(std::string_view key,
                                      const nt::Value& defaultValue) {
-  return GetEntry(key).SetDefaultValue(defaultValue);
+  return GetInstance().table->GetEntry(key).SetDefaultValue(defaultValue);
 }
 
 nt::Value SmartDashboard::GetValue(std::string_view keyName) {

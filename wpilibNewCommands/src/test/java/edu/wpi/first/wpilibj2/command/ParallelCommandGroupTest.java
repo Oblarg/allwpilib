@@ -14,7 +14,8 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 
-class ParallelCommandGroupTest extends MultiCompositionTestBase<ParallelCommandGroup> {
+class ParallelCommandGroupTest extends CommandTestBase
+    implements MultiCompositionTestBase<ParallelCommandGroup> {
   @Test
   void parallelGroupScheduleTest() {
     try (CommandScheduler scheduler = new CommandScheduler()) {

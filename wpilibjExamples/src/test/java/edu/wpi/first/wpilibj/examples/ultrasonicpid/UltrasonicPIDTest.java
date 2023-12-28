@@ -80,7 +80,7 @@ class UltrasonicPIDTest {
               m_driveSim.update(0.02);
 
               double startingDistance = m_startToObject;
-              double range = m_driveSim.getLeftPositionMeters() - startingDistance;
+              double range = startingDistance - m_driveSim.getLeftPositionMeters();
 
               m_ultrasonicSim.setRangeMeters(range);
               m_distanceMM = range * 1.0e3;
@@ -126,9 +126,10 @@ class UltrasonicPIDTest {
     }
 
     {
-      SimHooks.stepTiming(5.0);
+      // advance 100 timesteps
+      SimHooks.stepTiming(2.0);
 
-      assertEquals(Robot.kHoldDistanceMillimeters, m_distanceMM, 10.0);
+      assertEquals(Robot.kHoldDistanceMillimeters, m_distanceMM, 10);
     }
   }
 }

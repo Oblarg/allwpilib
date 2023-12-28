@@ -22,9 +22,7 @@ namespace frc {
  * By default, the timing supports WS2812B LEDs, but is configurable using
  * SetBitTiming()
  *
- * <p>Only 1 LED driver is currently supported by the roboRIO. However,
- * multiple LED strips can be connected in series and controlled from the
- * single driver.
+ * <p>Only 1 LED driver is currently supported by the roboRIO.
  */
 class AddressableLED {
  public:

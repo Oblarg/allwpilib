@@ -37,11 +37,9 @@ class ProtobufTopic;
 class RawTopic;
 class StringArrayTopic;
 class StringTopic;
-template <typename T, typename... I>
-  requires wpi::StructSerializable<T, I...>
+template <wpi::StructSerializable T>
 class StructArrayTopic;
-template <typename T, typename... I>
-  requires wpi::StructSerializable<T, I...>
+template <wpi::StructSerializable T>
 class StructTopic;
 class Topic;
 

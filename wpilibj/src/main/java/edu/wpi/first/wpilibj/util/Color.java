@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 @SuppressWarnings("MemberName")
 public class Color {
+  private static final double kPrecision = Math.pow(2, -12);
+
   public final double red;
   public final double green;
   public final double blue;
@@ -176,7 +178,8 @@ public class Color {
   }
 
   private static double roundAndClamp(double value) {
-    return MathUtil.clamp(Math.ceil(value * (1 << 12)) / (1 << 12), 0.0, 1.0);
+    final var rounded = Math.round((value + kPrecision / 2) / kPrecision) * kPrecision;
+    return MathUtil.clamp(rounded, 0.0, 1.0);
   }
 
   /*

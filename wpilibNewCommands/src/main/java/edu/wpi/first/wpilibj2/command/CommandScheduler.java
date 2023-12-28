@@ -581,20 +581,11 @@ public final class CommandScheduler implements Sendable, AutoCloseable {
    * directly or added to a composition.
    *
    * @param commands the commands to register
-   * @throws IllegalArgumentException if the given commands have already been composed, or the array
-   *     of commands has duplicates.
+   * @throws IllegalArgumentException if the given commands have already been composed.
    */
   public void registerComposedCommands(Command... commands) {
-    Set<Command> commandSet;
-    try {
-      commandSet = Set.of(commands);
-    } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException(
-          "Cannot compose a command twice in the same composition! (Original exception: "
-              + e
-              + ")");
-    }
-    requireNotComposedOrScheduled(commandSet);
+    var commandSet = Set.of(commands);
+    requireNotComposed(commandSet);
     var exception = new Exception("Originally composed at:");
     exception.fillInStackTrace();
     for (var command : commands) {
@@ -626,7 +617,7 @@ public final class CommandScheduler implements Sendable, AutoCloseable {
   }
 
   /**
-   * Requires that the specified command hasn't already been added to a composition.
+   * Requires that the specified command hasn't been already added to a composition.
    *
    * @param commands The commands to check
    * @throws IllegalArgumentException if the given commands have already been composed.
@@ -644,41 +635,13 @@ public final class CommandScheduler implements Sendable, AutoCloseable {
   }
 
   /**
-   * Requires that the specified commands have not already been added to a composition.
+   * Requires that the specified commands not have been already added to a composition.
    *
    * @param commands The commands to check
    * @throws IllegalArgumentException if the given commands have already been composed.
    */
   public void requireNotComposed(Collection<Command> commands) {
     requireNotComposed(commands.toArray(Command[]::new));
-  }
-
-  /**
-   * Requires that the specified command hasn't already been added to a composition, and is not
-   * currently scheduled.
-   *
-   * @param command The command to check
-   * @throws IllegalArgumentException if the given command has already been composed or scheduled.
-   */
-  public void requireNotComposedOrScheduled(Command command) {
-    if (isScheduled(command)) {
-      throw new IllegalArgumentException(
-          "Commands that have been scheduled individually may not be added to a composition!");
-    }
-    requireNotComposed(command);
-  }
-
-  /**
-   * Requires that the specified commands have not already been added to a composition, and are not
-   * currently scheduled.
-   *
-   * @param commands The commands to check
-   * @throws IllegalArgumentException if the given commands have already been composed or scheduled.
-   */
-  public void requireNotComposedOrScheduled(Collection<Command> commands) {
-    for (var command : commands) {
-      requireNotComposedOrScheduled(command);
-    }
   }
 
   /**

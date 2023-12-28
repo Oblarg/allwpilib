@@ -5,7 +5,6 @@
 package edu.wpi.first.wpilibj2.command;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
@@ -14,11 +13,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-abstract class MultiCompositionTestBase<T extends Command> extends SingleCompositionTestBase<T> {
-  abstract T compose(Command... members);
+interface MultiCompositionTestBase<T extends Command> extends SingleCompositionTestBase<T> {
+  T compose(Command... members);
 
   @Override
-  T composeSingle(Command member) {
+  default T composeSingle(Command member) {
     return compose(member);
   }
 
@@ -64,7 +63,7 @@ abstract class MultiCompositionTestBase<T extends Command> extends SingleComposi
 
   @MethodSource
   @ParameterizedTest(name = "interruptible[{index}]: {0}")
-  void interruptible(
+  default void interruptible(
       @SuppressWarnings("unused") String name,
       InterruptionBehavior expected,
       Command command1,
@@ -104,7 +103,7 @@ abstract class MultiCompositionTestBase<T extends Command> extends SingleComposi
 
   @MethodSource
   @ParameterizedTest(name = "runsWhenDisabled[{index}]: {0}")
-  void runsWhenDisabled(
+  default void runsWhenDisabled(
       @SuppressWarnings("unused") String name,
       boolean expected,
       Command command1,
@@ -112,20 +111,5 @@ abstract class MultiCompositionTestBase<T extends Command> extends SingleComposi
       Command command3) {
     var command = compose(command1, command2, command3);
     assertEquals(expected, command.runsWhenDisabled());
-  }
-
-  static Stream<Arguments> composeDuplicates() {
-    Command a = new InstantCommand(() -> {});
-    Command b = new InstantCommand(() -> {});
-    return Stream.of(
-        arguments("AA", new Command[] {a, a}),
-        arguments("ABA", new Command[] {a, b, a}),
-        arguments("BAA", new Command[] {b, a, a}));
-  }
-
-  @MethodSource
-  @ParameterizedTest(name = "composeDuplicates[{index}]: {0}")
-  void composeDuplicates(@SuppressWarnings("unused") String name, Command[] commands) {
-    assertThrows(IllegalArgumentException.class, () -> compose(commands));
   }
 }

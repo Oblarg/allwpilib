@@ -63,15 +63,6 @@ class SubsystemBase : public Subsystem,
   void AddChild(std::string name, wpi::Sendable* child);
 
  protected:
-  /**
-   * Constructor.  Telemetry/log name defaults to the classname.
-   */
   SubsystemBase();
-  /**
-   * Constructor.
-   *
-   * @param name Name of the subsystem for telemetry and logging.
-   */
-  explicit SubsystemBase(std::string_view name);
 };
 }  // namespace frc2

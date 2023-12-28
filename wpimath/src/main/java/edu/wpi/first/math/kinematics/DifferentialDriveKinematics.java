@@ -13,8 +13,6 @@ import edu.wpi.first.math.kinematics.proto.DifferentialDriveKinematicsProto;
 import edu.wpi.first.math.kinematics.struct.DifferentialDriveKinematicsStruct;
 import edu.wpi.first.units.Distance;
 import edu.wpi.first.units.Measure;
-import edu.wpi.first.util.protobuf.ProtobufSerializable;
-import edu.wpi.first.util.struct.StructSerializable;
 
 /**
  * Helper class that converts a chassis velocity (dx and dtheta components) to left and right wheel
@@ -25,9 +23,7 @@ import edu.wpi.first.util.struct.StructSerializable;
  * chassis speed.
  */
 public class DifferentialDriveKinematics
-    implements Kinematics<DifferentialDriveWheelSpeeds, DifferentialDriveWheelPositions>,
-        ProtobufSerializable<DifferentialDriveKinematics>,
-        StructSerializable<DifferentialDriveKinematics> {
+    implements Kinematics<DifferentialDriveWheelSpeeds, DifferentialDriveWheelPositions> {
   public final double trackWidthMeters;
 
   public static final DifferentialDriveKinematicsProto proto =

@@ -35,9 +35,6 @@ public class ProfiledPIDController implements Sendable {
    * @param Ki The integral coefficient.
    * @param Kd The derivative coefficient.
    * @param constraints Velocity and acceleration constraints for goal.
-   * @throws IllegalArgumentException if kp &lt; 0
-   * @throws IllegalArgumentException if ki &lt; 0
-   * @throws IllegalArgumentException if kd &lt; 0
    */
   public ProfiledPIDController(
       double Kp, double Ki, double Kd, TrapezoidProfile.Constraints constraints) {
@@ -52,10 +49,6 @@ public class ProfiledPIDController implements Sendable {
    * @param Kd The derivative coefficient.
    * @param constraints Velocity and acceleration constraints for goal.
    * @param period The period between controller updates in seconds. The default is 0.02 seconds.
-   * @throws IllegalArgumentException if kp &lt; 0
-   * @throws IllegalArgumentException if ki &lt; 0
-   * @throws IllegalArgumentException if kd &lt; 0
-   * @throws IllegalArgumentException if period &lt;= 0
    */
   @SuppressWarnings("this-escape")
   public ProfiledPIDController(
@@ -74,9 +67,9 @@ public class ProfiledPIDController implements Sendable {
    *
    * <p>Sets the proportional, integral, and differential coefficients.
    *
-   * @param Kp The proportional coefficient. Must be &gt;= 0.
-   * @param Ki The integral coefficient. Must be &gt;= 0.
-   * @param Kd The differential coefficient. Must be &gt;= 0.
+   * @param Kp Proportional coefficient
+   * @param Ki Integral coefficient
+   * @param Kd Differential coefficient
    */
   public void setPID(double Kp, double Ki, double Kd) {
     m_controller.setPID(Kp, Ki, Kd);
@@ -85,7 +78,7 @@ public class ProfiledPIDController implements Sendable {
   /**
    * Sets the proportional coefficient of the PID controller gain.
    *
-   * @param Kp The proportional coefficient. Must be &gt;= 0.
+   * @param Kp proportional coefficient
    */
   public void setP(double Kp) {
     m_controller.setP(Kp);
@@ -94,7 +87,7 @@ public class ProfiledPIDController implements Sendable {
   /**
    * Sets the integral coefficient of the PID controller gain.
    *
-   * @param Ki The integral coefficient. Must be &gt;= 0.
+   * @param Ki integral coefficient
    */
   public void setI(double Ki) {
     m_controller.setI(Ki);
@@ -103,7 +96,7 @@ public class ProfiledPIDController implements Sendable {
   /**
    * Sets the differential coefficient of the PID controller gain.
    *
-   * @param Kd The differential coefficient. Must be &gt;= 0.
+   * @param Kd differential coefficient
    */
   public void setD(double Kd) {
     m_controller.setD(Kd);
@@ -117,7 +110,6 @@ public class ProfiledPIDController implements Sendable {
    * of {@link Double#POSITIVE_INFINITY} disables IZone functionality.
    *
    * @param iZone Maximum magnitude of error to allow integral control.
-   * @throws IllegalArgumentException if iZone &lt;= 0
    */
   public void setIZone(double iZone) {
     m_controller.setIZone(iZone);
@@ -434,16 +426,7 @@ public class ProfiledPIDController implements Sendable {
     builder.addDoubleProperty("p", this::getP, this::setP);
     builder.addDoubleProperty("i", this::getI, this::setI);
     builder.addDoubleProperty("d", this::getD, this::setD);
-    builder.addDoubleProperty(
-        "izone",
-        this::getIZone,
-        (double toSet) -> {
-          try {
-            setIZone(toSet);
-          } catch (IllegalArgumentException e) {
-            MathSharedStore.reportError("IZone must be a non-negative number!", e.getStackTrace());
-          }
-        });
+    builder.addDoubleProperty("izone", this::getIZone, this::setIZone);
     builder.addDoubleProperty("goal", () -> getGoal().position, this::setGoal);
   }
 }

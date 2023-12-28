@@ -21,7 +21,8 @@ public class Robot extends TimedRobot {
   static final double kHoldDistanceMillimeters = 1.0e3;
 
   // proportional speed constant
-  private static final double kP = 0.001;
+  // negative because applying positive voltage will bring us closer to the target
+  private static final double kP = -0.001;
   // integral speed constant
   private static final double kI = 0.0;
   // derivative speed constant

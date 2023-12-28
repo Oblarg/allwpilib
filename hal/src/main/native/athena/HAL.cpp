@@ -83,7 +83,6 @@ void InitializeHAL() {
   InitializeFRCDriverStation();
   InitializeI2C();
   InitializeInterrupts();
-  InitializeLEDs();
   InitializeMain();
   InitializeNotifier();
   InitializeCTREPDP();
